@@ -32,23 +32,15 @@ namespace Geonorge.TiltaksplanApi.Web
             apiUrls.actionPlan = new ExpandoObject();
             apiUrls.actionPlan.get = GetControllerUrl(urlHelper, "GetById", "ActionPlan", new { id = 0 });
             apiUrls.actionPlan.getAll = GetControllerUrl(urlHelper, "GetAll", "ActionPlan");
+            apiUrls.actionPlan.create = GetControllerUrl(urlHelper, "Create", "ActionPlan");
+            apiUrls.actionPlan.update = GetControllerUrl(urlHelper, "Update", "ActionPlan", new { id = 0 });
+            apiUrls.actionPlan.delete = GetControllerUrl(urlHelper, "Delete", "ActionPlan", new { id = 0 });
 
             return apiUrls;
         }
 
         private string GetControllerUrl(IUrlHelper urlHelper, string action, string controller, object values = null)
         {
-            var hasValues = values != null;
-            var names = new List<string>();
-
-            if (hasValues)
-            {
-                names.AddRange(values.GetType().GetProperties()
-                    .Select(prop => prop.Name)
-                    .Select(propName => char.ToLowerInvariant(propName[0]) + propName.Substring(1))
-                );
-            }
-
             var url = urlHelper.Action(new UrlActionContext
             {
                 Action = action,
@@ -59,9 +51,21 @@ namespace Geonorge.TiltaksplanApi.Web
             });
 
             var uri = new Uri(url);
+            var parameters = GetParameters(values);
             var counter = 0;
+            var localPath = Regex.Replace(uri.LocalPath, @"\d+", m => $"{{{parameters[counter++]}}}", RegexOptions.IgnoreCase);
 
-            return Regex.Replace(uri.LocalPath, @"\d+", m => $"{{{names[counter++]}}}", RegexOptions.IgnoreCase);
+            return $"{GetProtocol()}://{GetHost()}{localPath}";
+        }
+
+        private static List<string> GetParameters(object values)
+        {
+            return values != null ?
+                values.GetType().GetProperties()
+                    .Select(prop => prop.Name)
+                    .Select(propName => char.ToLowerInvariant(propName[0]) + propName.Substring(1))
+                    .ToList() :
+                new List<string>();
         }
 
         private string GetProtocol()

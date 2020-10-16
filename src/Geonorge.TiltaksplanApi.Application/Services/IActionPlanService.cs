@@ -5,8 +5,8 @@ namespace Geonorge.TiltaksplanApi.Application.Services
 {
     public interface IActionPlanService
     {
-        Task<ActionPlanViewModel> CreateActionPlan(ActionPlanViewModel viewModel);
-        Task<ActionPlanViewModel> UpdateActionPlan(int id, ActionPlanViewModel viewModel);
-        Task DeleteActionPlan(int id);
+        Task<ActionPlanViewModel> CreateAsync(ActionPlanViewModel viewModel);
+        Task<ActionPlanViewModel> UpdateAsync(int id, ActionPlanViewModel viewModel);
+        Task DeleteAsync(int id);
     }
 }

@@ -57,7 +57,7 @@ namespace Geonorge.TiltaksplanApi
             services.AddTransient<IActivityService, ActivityService>();
 
             // Queries
-            services.AddTransient<IAsyncQuery<IEnumerable<ActionPlanViewModel>>, ActionPlanQuery>();
+            services.AddTransient<IActionPlanQuery, ActionPlanQuery>();
 
             // Repositories
             services.AddScoped<IActionPlanRepository, ActionPlanRepository>();

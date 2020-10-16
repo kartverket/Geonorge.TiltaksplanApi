@@ -15,7 +15,22 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
 
         public ActionPlan MapToDomainModel(ActionPlanViewModel viewModel)
         {
-            throw new System.NotImplementedException();
+            if (viewModel == null)
+                return null;
+
+            return new ActionPlan
+            {
+                Id = viewModel.Id,
+                Name = viewModel.Name,
+                Progress = viewModel.Progress,
+                Volume = viewModel.Volume,
+                Status = viewModel.Status,
+                TrafficLight = viewModel.TrafficLight,
+                Results = viewModel.Results,
+                Comment = viewModel.Comment,
+                Activities = viewModel.Activities?
+                    .ConvertAll(activity => _activityViewModelMapper.MapToDomainModel(activity))
+            };
         }
 
         public ActionPlanViewModel MapToViewModel(ActionPlan domainModel)
@@ -27,6 +42,12 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             {
                 Id = domainModel.Id,
                 Name = domainModel.Name,
+                Progress = domainModel.Progress,
+                Volume = domainModel.Volume,
+                Status = domainModel.Status,
+                TrafficLight = domainModel.TrafficLight,
+                Results = domainModel.Results,
+                Comment = domainModel.Comment,
                 Activities = domainModel.Activities?
                     .ConvertAll(activity => _activityViewModelMapper.MapToViewModel(activity))
             };

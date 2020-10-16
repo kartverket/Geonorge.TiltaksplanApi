@@ -23,7 +23,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             _actionPlanViewModelMapper = actionPlanViewModelMapper;
         }
 
-        public async Task<ActionPlanViewModel> CreateActionPlan(ActionPlanViewModel viewModel)
+        public async Task<ActionPlanViewModel> CreateAsync(ActionPlanViewModel viewModel)
         {
             var actionPlan = _actionPlanViewModelMapper.MapToDomainModel(viewModel);
 
@@ -34,7 +34,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             return _actionPlanViewModelMapper.MapToViewModel(actionPlan);
         }
 
-        public async Task<ActionPlanViewModel> UpdateActionPlan(int id, ActionPlanViewModel viewModel)
+        public async Task<ActionPlanViewModel> UpdateAsync(int id, ActionPlanViewModel viewModel)
         {
             var update = _actionPlanViewModelMapper.MapToDomainModel(viewModel);
 
@@ -46,7 +46,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             return _actionPlanViewModelMapper.MapToViewModel(update);
         }
 
-        public async Task DeleteActionPlan(int id)
+        public async Task DeleteAsync(int id)
         {
             using var uow = _uowManager.GetUnitOfWork();
             var actionPlan = await _actionPlanRepository.GetByIdAsync(id);
