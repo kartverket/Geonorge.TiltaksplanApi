@@ -3,13 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0CF0C385-25D2-45F7-A4B7-FC56E4AD75B2}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geonorge.TiltaksplanApi.Web", "src\Geonorge.TiltaksplanApi.Web\Geonorge.TiltaksplanApi.Web.csproj", "{0C70989D-814C-4394-BACB-B5B2960DF96F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geonorge.TiltaksplanApi.Application", "src\Geonorge.TiltaksplanApi.Application\Geonorge.TiltaksplanApi.Application.csproj", "{1E43BFF8-CC15-4274-8A75-1F5B07AEE2FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geonorge.TiltaksplanApi.Domain", "src\Geonorge.TiltaksplanApi.Domain\Geonorge.TiltaksplanApi.Domain.csproj", "{43DFB607-4AB5-44D6-A807-288A25591D1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geonorge.TiltaksplanApi.Domain", "src\Geonorge.TiltaksplanApi.Domain\Geonorge.TiltaksplanApi.Domain.csproj", "{43DFB607-4AB5-44D6-A807-288A25591D1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geonorge.TiltaksplanApi.Infrastructure", "src\Geonorge.TiltaksplanApi.Infrastructure\Geonorge.TiltaksplanApi.Infrastructure.csproj", "{93225858-8FD8-4C6A-AB1B-D1B95F8F2DEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geonorge.TiltaksplanApi.Infrastructure", "src\Geonorge.TiltaksplanApi.Infrastructure\Geonorge.TiltaksplanApi.Infrastructure.csproj", "{93225858-8FD8-4C6A-AB1B-D1B95F8F2DEE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{86C7105C-7735-4F51-8C0A-22042665050E}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\add-migration.cmd = scripts\add-migration.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{7E09DF11-FE61-4B78-8D0D-CA3D8CDA7BFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +45,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0C70989D-814C-4394-BACB-B5B2960DF96F} = {0CF0C385-25D2-45F7-A4B7-FC56E4AD75B2}
+		{1E43BFF8-CC15-4274-8A75-1F5B07AEE2FD} = {0CF0C385-25D2-45F7-A4B7-FC56E4AD75B2}
+		{43DFB607-4AB5-44D6-A807-288A25591D1A} = {0CF0C385-25D2-45F7-A4B7-FC56E4AD75B2}
+		{93225858-8FD8-4C6A-AB1B-D1B95F8F2DEE} = {0CF0C385-25D2-45F7-A4B7-FC56E4AD75B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DD99D238-C3E4-4B2D-98CD-4C1BC497DCD5}

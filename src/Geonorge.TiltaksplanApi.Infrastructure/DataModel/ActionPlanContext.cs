@@ -1,5 +1,5 @@
 ﻿using Geonorge.TiltaksplanApi.Domain.Models;
-using Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityFrameworkConfiguration;
+using Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration;
 using Microsoft.EntityFrameworkCore;
 
 namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel

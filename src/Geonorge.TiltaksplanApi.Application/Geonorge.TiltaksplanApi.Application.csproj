@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Geonorge.TiltaksplanApi.Domain\Geonorge.TiltaksplanApi.Domain.csproj" />
+    <ProjectReference Include="..\Geonorge.TiltaksplanApi.Infrastructure\Geonorge.TiltaksplanApi.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

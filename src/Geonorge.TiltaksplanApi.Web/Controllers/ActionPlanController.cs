@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
-using Geonorge.TiltaksplanApi.Application.Services;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Geonorge.TiltaksplanApi.Application.Models;
+using Geonorge.TiltaksplanApi.Application.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -9,22 +11,21 @@ namespace Geonorge.TiltaksplanApi.Controllers
     [Route("[controller]")]
     public class ActionPlanController : ControllerBase
     {
-        private readonly IActionPlanService _actionPlanService;
+        private readonly IAsyncQuery<IEnumerable<ActionPlanViewModel>> _actionPlanQuery;
         private readonly ILogger<ActionPlanController> _logger;
 
         public ActionPlanController(
-            IActionPlanService actionPlanService,
+            IAsyncQuery<IEnumerable<ActionPlanViewModel>> actionPlanQuery,
             ILogger<ActionPlanController> logger)
         {
-            _actionPlanService = actionPlanService;
+            _actionPlanQuery = actionPlanQuery;
             _logger = logger;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var viewModels = await _actionPlanService
-                .GetAllAsync();
+            var viewModels = await _actionPlanQuery.ExecuteAsync();
 
             return Ok(viewModels);
         }

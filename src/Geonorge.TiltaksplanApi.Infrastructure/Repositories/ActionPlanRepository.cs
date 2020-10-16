@@ -16,16 +16,6 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Repositories
             _context = context;
         }
 
-        public IQueryable<ActionPlan> GetAll()
-        {
-            return _context.ActionPlans;
-        }
-
-        public Task<ActionPlan> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task CreateAsync(ActionPlan domainObject)
         {
             throw new NotImplementedException();
