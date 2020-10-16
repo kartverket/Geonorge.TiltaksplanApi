@@ -1,17 +1,21 @@
+using Geonorge.TiltaksplanApi.Application;
 using Geonorge.TiltaksplanApi.Application.Mapping;
 using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Application.Queries;
 using Geonorge.TiltaksplanApi.Application.Services;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
+using Geonorge.TiltaksplanApi.Infrastructure.DataModel;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork;
 using Geonorge.TiltaksplanApi.Infrastructure.Repositories;
+using Geonorge.TiltaksplanApi.Web;
 using Geonorge.TiltaksplanApi.Web.Configuration;
 using Geonorge.TiltaksplanApi.Web.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -45,6 +49,7 @@ namespace Geonorge.TiltaksplanApi
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddTransient<IUrlProvider, ActionPlanUrlProvider>();
 
             // Application services
             services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
@@ -89,7 +94,17 @@ namespace Geonorge.TiltaksplanApi
                 endpoints.MapControllers();
             });
 
+            UpdateDatabase(app);
+
             hostApplicationLifetime.ApplicationStopped.Register(Log.CloseAndFlush);
+        }
+
+        private static void UpdateDatabase(IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            using var context = serviceScope.ServiceProvider.GetService<ActionPlanContext>();
+            
+            context.Database.Migrate();
         }
     }
 }

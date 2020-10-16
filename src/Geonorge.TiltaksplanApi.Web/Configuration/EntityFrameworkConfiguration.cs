@@ -12,10 +12,9 @@ namespace Geonorge.TiltaksplanApi.Web.Configuration
     {
         public static IServiceCollection AddEntityFrameworkForActionPlan(this IServiceCollection services, IConfigurationRoot configuration)
         {
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<ActionPlanContext>(options =>
-                    options.UseSqlServer(configuration["EntityFramework:ActionPlanContext:ConnectionString"], builder =>
-                        builder.MigrationsAssembly("Geonorge.TiltaksplanApi.Infrastructure")));
+            services.AddDbContext<ActionPlanContext>(options =>
+                options.UseSqlServer(configuration["EntityFramework:ActionPlanContext:ConnectionString"], builder =>
+                    builder.MigrationsAssembly("Geonorge.TiltaksplanApi.Infrastructure")));
 
             return services;
         }
