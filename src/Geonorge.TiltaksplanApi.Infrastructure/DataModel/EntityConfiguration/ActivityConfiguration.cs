@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityFrameworkConfiguration
+namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
 {
     internal static class ActivityConfiguration
     {
