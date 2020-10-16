@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Geonorge.TiltaksplanApi.Domain.Models;
+using System.Collections.Generic;
 
 namespace Geonorge.TiltaksplanApi.Application.Models
 {
@@ -6,6 +7,12 @@ namespace Geonorge.TiltaksplanApi.Application.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Progress { get; set; }
+        public int Volume { get; set; }
+        public int Status { get; set; }
+        public TrafficLight TrafficLight { get; set; }
+        public string Results { get; set; }
+        public string Comment { get; set; }
         public List<ActivityViewModel> Activities { get; set; }
     }
 }

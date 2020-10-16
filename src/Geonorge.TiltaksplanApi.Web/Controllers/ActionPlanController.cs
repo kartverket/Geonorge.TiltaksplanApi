@@ -25,6 +25,8 @@ namespace Geonorge.TiltaksplanApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            _logger.LogInformation("Hello, {Name}!", "Tor Anders");
+
             var viewModels = await _actionPlanQuery.ExecuteAsync();
 
             return Ok(viewModels);

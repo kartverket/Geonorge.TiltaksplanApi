@@ -1,7 +1,8 @@
 ﻿using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel;
-using System;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Geonorge.TiltaksplanApi.Infrastructure.Repositories
@@ -15,19 +16,30 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Repositories
             _context = context;
         }
 
-        public Task CreateAsync(Activity domainObject)
+        public IQueryable<Activity> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Activities.AsQueryable();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task<Activity> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await GetAll()
+                .SingleOrDefaultAsync(activity => activity.Id == id);
         }
 
-        public Task UpdateAsync(int id, Activity domainObject)
+        public Activity Create(Activity activity)
         {
-            throw new NotImplementedException();
+            _context.Activities.Add(activity);
+
+            return activity;
+        }
+
+        public void Delete(Activity activity)
+        {
+            if (activity == null)
+                return;
+
+            _context.Activities.Remove(activity);
         }
     }
 }

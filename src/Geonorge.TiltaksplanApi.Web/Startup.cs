@@ -23,6 +23,8 @@ namespace Geonorge.TiltaksplanApi
 {
     public class Startup
     {
+        public IConfigurationRoot Configuration { get; }
+
         public Startup(IWebHostEnvironment env)
         {
             Configuration = new ConfigurationBuilder()
@@ -31,9 +33,9 @@ namespace Geonorge.TiltaksplanApi
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables()
                 .Build();
-        }
 
-        public IConfigurationRoot Configuration { get; }
+            SerilogConfiguration.ConfigureSerilog(Configuration);
+        }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -59,6 +61,7 @@ namespace Geonorge.TiltaksplanApi
             // Mappers
             services.AddTransient<IViewModelMapper<Activity, ActivityViewModel>, ActivityViewModelMapper>();
             services.AddTransient<IViewModelMapper<ActionPlan, ActionPlanViewModel>, ActionPlanViewModelMapper>();
+            services.AddTransient<IViewModelMapper<Participant, ParticipantViewModel>, ParticipantViewModelMapper>();
         }
 
         public void Configure(
@@ -76,6 +79,7 @@ namespace Geonorge.TiltaksplanApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSerilogRequestLogging();
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();

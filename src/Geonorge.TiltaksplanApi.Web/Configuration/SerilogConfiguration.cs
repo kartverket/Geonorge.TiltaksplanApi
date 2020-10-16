@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using Newtonsoft.Json;
 
-namespace Blt.Web.Configuration
+namespace Geonorge.TiltaksplanApi.Web.Configuration
 {
     public static class SerilogConfiguration
     {

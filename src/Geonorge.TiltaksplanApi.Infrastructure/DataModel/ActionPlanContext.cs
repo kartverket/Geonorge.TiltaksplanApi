@@ -17,6 +17,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel
 
         public DbSet<ActionPlan> ActionPlans { get; set; }
         public DbSet<Activity> Activities { get; set; }
+        public DbSet<Participant> Participants { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -24,6 +25,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel
 
             builder.Entity<ActionPlan>(ActionPlanConfiguration.Configure);
             builder.Entity<Activity>(ActivityConfiguration.Configure);
+            builder.Entity<Participant>(ParticipantConfiguration.Configure);
 
             base.OnModelCreating(builder);
         }

@@ -2,7 +2,7 @@
 
 namespace Geonorge.TiltaksplanApi.Domain.Repositories
 {
-    public interface IActivityRepository : IAsyncRepository<Activity, int>
+    public interface IActivityRepository : IRepository<Activity, int>
     {
     }
 }
