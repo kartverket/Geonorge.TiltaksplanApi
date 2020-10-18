@@ -46,7 +46,13 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
                 return;
 
             existingEntities
-                .ForEach(existing => existing.Update(updatedEntities.Single(updated => updated.Id == existing.Id)));
+                .ForEach(existing =>
+                {
+                    var updated = updatedEntities.SingleOrDefault(updated => updated.Id == existing.Id);
+
+                    if (updated != null)
+                        existing.Update(updated);
+                });
         }
     }
 }

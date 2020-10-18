@@ -3,6 +3,7 @@ using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace Geonorge.TiltaksplanApi.Application.Services
@@ -11,12 +12,12 @@ namespace Geonorge.TiltaksplanApi.Application.Services
     {
         private readonly IUnitOfWorkManager _uowManager;
         private readonly IActionPlanRepository _actionPlanRepository;
-        private readonly IViewModelMapper<ActionPlan, ActionPlanViewModel> _actionPlanViewModelMapper;
+        private readonly IActionPlanViewModelMapper _actionPlanViewModelMapper;
 
         public ActionPlanService(
             IUnitOfWorkManager uowManager,
             IActionPlanRepository actionPlanRepository,
-            IViewModelMapper<ActionPlan, ActionPlanViewModel> actionPlanViewModelMapper)
+            IActionPlanViewModelMapper actionPlanViewModelMapper)
         {
             _uowManager = uowManager;
             _actionPlanRepository = actionPlanRepository;
@@ -31,7 +32,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             _actionPlanRepository.Create(actionPlan);
             await uow.SaveChangesAsync();
             
-            return _actionPlanViewModelMapper.MapToViewModel(actionPlan);
+            return _actionPlanViewModelMapper.MapToViewModel(actionPlan, viewModel.Culture);
         }
 
         public async Task<ActionPlanViewModel> UpdateAsync(int id, ActionPlanViewModel viewModel)
@@ -39,11 +40,15 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             var update = _actionPlanViewModelMapper.MapToDomainModel(viewModel);
 
             using var uow = _uowManager.GetUnitOfWork();
-            var actionPlan = await _actionPlanRepository.GetByIdAsync(id);
+            var actionPlan = await _actionPlanRepository
+                .GetAll()
+                .Include(actionPlan => actionPlan.Translations)
+                .SingleOrDefaultAsync(actionPlan => actionPlan.Id == id);
+
             actionPlan.Update(update);
             await uow.SaveChangesAsync();
 
-            return _actionPlanViewModelMapper.MapToViewModel(update);
+            return _actionPlanViewModelMapper.MapToViewModel(update, viewModel.Culture);
         }
 
         public async Task DeleteAsync(int id)

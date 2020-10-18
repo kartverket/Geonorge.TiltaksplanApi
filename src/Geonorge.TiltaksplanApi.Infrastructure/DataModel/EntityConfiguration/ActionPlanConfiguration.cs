@@ -13,14 +13,6 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
                 .HasKey(actionPlan => actionPlan.Id);
 
             builder
-                .Property(actionPlan => actionPlan.Name)
-                .IsRequired();
-
-            builder
-                .Property(actionPlan => actionPlan.Progress)
-                .IsRequired();
-
-            builder
                 .Property(actionPlan => actionPlan.Volume)
                 .IsRequired();
 
@@ -33,11 +25,18 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
                 .IsRequired();
 
             builder
+                .HasMany(actionPlan => actionPlan.Translations)
+                .WithOne()
+                .HasForeignKey(actionPlanTranslation => actionPlanTranslation.ActionPlanId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
                 .HasMany(actionPlan => actionPlan.Activities)
                 .WithOne()
                 .HasForeignKey(activity => activity.ActionPlanId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Property(actionPlan => actionPlan.Id)

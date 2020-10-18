@@ -16,16 +16,23 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel
         }
 
         public DbSet<ActionPlan> ActionPlans { get; set; }
+        public DbSet<ActionPlanTranslation> ActionPlanTranslations { get; set; }
         public DbSet<Activity> Activities { get; set; }
+        public DbSet<ActivityTranslation> ActivityTranslations { get; set; }
         public DbSet<Participant> Participants { get; set; }
+        public DbSet<Language> Languages { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.HasDefaultSchema("dbo");
 
             builder.Entity<ActionPlan>(ActionPlanConfiguration.Configure);
+            builder.Entity<ActionPlanTranslation>(ActionPlanTranslationConfiguration.Configure);
             builder.Entity<Activity>(ActivityConfiguration.Configure);
+            builder.Entity<ActivityTranslation>(ActivityTranslationConfiguration.Configure);
             builder.Entity<Participant>(ParticipantConfiguration.Configure);
+            builder.Entity<Language>(LanguageConfiguration.Configure);
 
             base.OnModelCreating(builder);
         }

@@ -14,5 +14,7 @@ namespace Geonorge.TiltaksplanApi.Application.Models
         public string Results { get; set; }
         public string Comment { get; set; }
         public List<ActivityViewModel> Activities { get; set; }
+        public int ActionPlanTranslationId { get; set; }
+        public string Culture { get; set; }
     }
 }

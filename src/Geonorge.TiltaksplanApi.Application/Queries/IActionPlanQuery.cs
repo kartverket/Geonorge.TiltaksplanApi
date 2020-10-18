@@ -6,7 +6,7 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
 {
     public interface IActionPlanQuery
     {
-        Task<IList<ActionPlanViewModel>> GetAllAsync();
-        Task<ActionPlanViewModel> GetByIdAsync(int id);
+        Task<IList<ActionPlanViewModel>> GetAllAsync(string culture);
+        Task<ActionPlanViewModel> GetByIdAsync(int id, string culture);
     }
 }

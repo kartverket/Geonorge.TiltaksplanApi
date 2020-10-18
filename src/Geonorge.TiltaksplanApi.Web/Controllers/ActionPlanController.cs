@@ -25,12 +25,12 @@ namespace Geonorge.TiltaksplanApi.Controllers
             _actionPlanService = actionPlanService;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        [HttpGet("{id:int}/{culture?}")]
+        public async Task<IActionResult> GetById(int id, string culture = "nb-NO")
         {
             try
             {
-                var viewModels = await _actionPlanQuery.GetByIdAsync(id);
+                var viewModels = await _actionPlanQuery.GetByIdAsync(id, culture);
 
                 return Ok(viewModels);
             }
@@ -45,12 +45,12 @@ namespace Geonorge.TiltaksplanApi.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("{culture?}")]
+        public async Task<IActionResult> GetAll(string culture = "nb-NO")
         {
             try
             {
-                var viewModels = await _actionPlanQuery.GetAllAsync();
+                var viewModels = await _actionPlanQuery.GetAllAsync(culture);
 
                 return Ok(viewModels);
             }

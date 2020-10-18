@@ -16,6 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{86C7105C-7735-4F51-8C0A-22042665050E}"
 	ProjectSection(SolutionItems) = preProject
 		scripts\add-migration.cmd = scripts\add-migration.cmd
+		scripts\update-database.cmd = scripts\update-database.cmd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{7E09DF11-FE61-4B78-8D0D-CA3D8CDA7BFE}"

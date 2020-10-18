@@ -15,5 +15,6 @@ namespace Geonorge.TiltaksplanApi.Application.Models
         public DateTime ImplementationEnd { get; set; }
         public List<ParticipantViewModel> Participants { get; set; }
         public ActivityStatus Status { get; set; }
+        public string Culture { get; set; }
     }
 }

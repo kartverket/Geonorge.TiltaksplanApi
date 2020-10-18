@@ -1,9 +1,11 @@
 ﻿using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Domain.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Geonorge.TiltaksplanApi.Application.Mapping
 {
-    public class ActionPlanViewModelMapper : IViewModelMapper<ActionPlan, ActionPlanViewModel>
+    public class ActionPlanViewModelMapper : IActionPlanViewModelMapper
     {
         private readonly IViewModelMapper<Activity, ActivityViewModel> _activityViewModelMapper;
 
@@ -21,33 +23,49 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             return new ActionPlan
             {
                 Id = viewModel.Id,
-                Name = viewModel.Name,
-                Progress = viewModel.Progress,
                 Volume = viewModel.Volume,
                 Status = viewModel.Status,
                 TrafficLight = viewModel.TrafficLight,
-                Results = viewModel.Results,
-                Comment = viewModel.Comment,
+                Translations = new List<ActionPlanTranslation>
+                {
+                    new ActionPlanTranslation
+                    {
+                        Id = viewModel.ActionPlanTranslationId,
+                        ActionPlanId = viewModel.Id,
+                        LanguageCulture = viewModel.Culture,
+                        Name = viewModel.Name,
+                        Progress = viewModel.Progress,
+                        Results = viewModel.Results,
+                        Comment = viewModel.Comment
+                    }
+                },
                 Activities = viewModel.Activities?
                     .ConvertAll(activity => _activityViewModelMapper.MapToDomainModel(activity))
             };
         }
 
-        public ActionPlanViewModel MapToViewModel(ActionPlan domainModel)
+        public ActionPlanViewModel MapToViewModel(ActionPlan domainModel, string culture)
         {
             if (domainModel == null)
+                return null;
+
+            var translation = domainModel.Translations
+                .SingleOrDefault(translation => translation.Language.Culture == culture);
+
+            if (translation == null)
                 return null;
 
             return new ActionPlanViewModel
             {
                 Id = domainModel.Id,
-                Name = domainModel.Name,
-                Progress = domainModel.Progress,
+                Name = translation.Name,
+                Progress = translation.Progress,
                 Volume = domainModel.Volume,
                 Status = domainModel.Status,
                 TrafficLight = domainModel.TrafficLight,
-                Results = domainModel.Results,
-                Comment = domainModel.Comment,
+                Results = translation.Results,
+                Comment = translation.Comment,
+                Culture = translation.LanguageCulture,
                 Activities = domainModel.Activities?
                     .ConvertAll(activity => _activityViewModelMapper.MapToViewModel(activity))
             };

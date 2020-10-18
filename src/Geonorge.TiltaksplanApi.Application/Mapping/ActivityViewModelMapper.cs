@@ -18,7 +18,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             if (viewModel == null)
                 return null;
 
-            return new Activity
+            /*return new Activity
             {
                 Id = viewModel.Id,
                 ActionPlanId = viewModel.ActionPlanId,
@@ -30,7 +30,9 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 Participants = viewModel.Participants?
                     .ConvertAll(participant => _participantViewModelMapper.MapToDomainModel(participant)),
                 Status = viewModel.Status
-            };
+            };*/
+
+            return null;
         }
 
         public ActivityViewModel MapToViewModel(Activity domainModel)
@@ -38,7 +40,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             if (domainModel == null)
                 return null;
 
-            return new ActivityViewModel
+            /*return new ActivityViewModel
             {
                 Id = domainModel.Id,
                 ActionPlanId = domainModel.ActionPlanId,
@@ -50,7 +52,9 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 Participants = domainModel.Participants?
                     .ConvertAll(participant => _participantViewModelMapper.MapToViewModel(participant)),
                 Status = domainModel.Status
-            };
+            };*/
+
+            return null;
         }
     }
 }

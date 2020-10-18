@@ -21,7 +21,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using System.Collections.Generic;
 
 namespace Geonorge.TiltaksplanApi
 {
@@ -65,8 +64,9 @@ namespace Geonorge.TiltaksplanApi
 
             // Mappers
             services.AddTransient<IViewModelMapper<Activity, ActivityViewModel>, ActivityViewModelMapper>();
-            services.AddTransient<IViewModelMapper<ActionPlan, ActionPlanViewModel>, ActionPlanViewModelMapper>();
+            services.AddTransient<IActionPlanViewModelMapper, ActionPlanViewModelMapper>();
             services.AddTransient<IViewModelMapper<Participant, ParticipantViewModel>, ParticipantViewModelMapper>();
+            services.AddTransient<IViewModelMapper<Language, LanguageViewModel>, LanguageViewModelMapper>();
         }
 
         public void Configure(
@@ -105,6 +105,8 @@ namespace Geonorge.TiltaksplanApi
             using var context = serviceScope.ServiceProvider.GetService<ActionPlanContext>();
             
             context.Database.Migrate();
+
+            DataSeeder.SeedLanguages(context);
         }
     }
 }

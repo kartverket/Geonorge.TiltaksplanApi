@@ -27,20 +27,6 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Progress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Results")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -55,6 +41,43 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                     b.ToTable("ActionPlans");
                 });
 
+            modelBuilder.Entity("Geonorge.TiltaksplanApi.Domain.Models.ActionPlanTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ActionPlanId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LanguageCulture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Progress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Results")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActionPlanId");
+
+                    b.HasIndex("LanguageCulture");
+
+                    b.ToTable("ActionPlanTranslations");
+                });
+
             modelBuilder.Entity("Geonorge.TiltaksplanApi.Domain.Models.Activity", b =>
                 {
                     b.Property<int>("Id")
@@ -65,21 +88,42 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                     b.Property<int>("ActionPlanId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("ImplementationEnd")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ImplementationStart")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActionPlanId");
+
+                    b.ToTable("Activities");
+                });
+
+            modelBuilder.Entity("Geonorge.TiltaksplanApi.Domain.Models.ActivityTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ActivityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LanguageCulture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -87,9 +131,25 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActionPlanId");
+                    b.HasIndex("ActivityId");
 
-                    b.ToTable("Activities");
+                    b.HasIndex("LanguageCulture");
+
+                    b.ToTable("ActivityTranslations");
+                });
+
+            modelBuilder.Entity("Geonorge.TiltaksplanApi.Domain.Models.Language", b =>
+                {
+                    b.Property<string>("Culture")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Culture");
+
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("Geonorge.TiltaksplanApi.Domain.Models.Participant", b =>
@@ -112,11 +172,41 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                     b.ToTable("Participants");
                 });
 
+            modelBuilder.Entity("Geonorge.TiltaksplanApi.Domain.Models.ActionPlanTranslation", b =>
+                {
+                    b.HasOne("Geonorge.TiltaksplanApi.Domain.Models.ActionPlan", null)
+                        .WithMany("Translations")
+                        .HasForeignKey("ActionPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Geonorge.TiltaksplanApi.Domain.Models.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageCulture")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Geonorge.TiltaksplanApi.Domain.Models.Activity", b =>
                 {
                     b.HasOne("Geonorge.TiltaksplanApi.Domain.Models.ActionPlan", null)
                         .WithMany("Activities")
                         .HasForeignKey("ActionPlanId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Geonorge.TiltaksplanApi.Domain.Models.ActivityTranslation", b =>
+                {
+                    b.HasOne("Geonorge.TiltaksplanApi.Domain.Models.Activity", null)
+                        .WithMany("Translations")
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Geonorge.TiltaksplanApi.Domain.Models.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageCulture")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
