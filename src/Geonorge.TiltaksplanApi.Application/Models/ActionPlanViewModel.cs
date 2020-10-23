@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Geonorge.TiltaksplanApi.Application.Models
 {
-    public class ActionPlanViewModel
+    public class ActionPlanViewModel : ViewModelWithValidation
     {
         public int Id { get; set; }
         public string Name { get; set; }

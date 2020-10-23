@@ -1,6 +1,6 @@
 ﻿namespace Geonorge.TiltaksplanApi.Domain.Models
 {
-    public class ActionPlanTranslation : EntityBase
+    public class ActionPlanTranslation : ValidatableEntity
     {
         public int ActionPlanId { get; set; }
         public string Name { get; set; }

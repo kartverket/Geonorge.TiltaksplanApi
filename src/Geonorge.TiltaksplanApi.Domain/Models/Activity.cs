@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Geonorge.TiltaksplanApi.Domain.Models
 {
-    public class Activity : EntityBase
+    public class Activity : ValidatableEntity
     {
         public int ActionPlanId { get; set; }
         public DateTime ImplementationStart { get; set; }

@@ -30,11 +30,18 @@ namespace Geonorge.TiltaksplanApi.Web
             dynamic apiUrls = new ExpandoObject();
 
             apiUrls.actionPlan = new ExpandoObject();
-            apiUrls.actionPlan.get = GetControllerUrl(urlHelper, "GetById", "ActionPlan", new { id = 0 });
+            apiUrls.actionPlan.get = GetControllerUrl(urlHelper, "GetById", "ActionPlan", new { id = 0, culture = "" });
             apiUrls.actionPlan.getAll = GetControllerUrl(urlHelper, "GetAll", "ActionPlan");
             apiUrls.actionPlan.create = GetControllerUrl(urlHelper, "Create", "ActionPlan");
             apiUrls.actionPlan.update = GetControllerUrl(urlHelper, "Update", "ActionPlan", new { id = 0 });
             apiUrls.actionPlan.delete = GetControllerUrl(urlHelper, "Delete", "ActionPlan", new { id = 0 });
+
+            apiUrls.activity = new ExpandoObject();
+            apiUrls.activity.get = GetControllerUrl(urlHelper, "GetById", "Activity", new { id = 0 });
+            apiUrls.activity.getAll = GetControllerUrl(urlHelper, "GetAll", "Activity");
+            apiUrls.activity.create = GetControllerUrl(urlHelper, "Create", "Activity");
+            apiUrls.activity.update = GetControllerUrl(urlHelper, "Update", "Activity", new { id = 0 });
+            apiUrls.activity.delete = GetControllerUrl(urlHelper, "Delete", "Activity", new { id = 0 });
 
             return apiUrls;
         }

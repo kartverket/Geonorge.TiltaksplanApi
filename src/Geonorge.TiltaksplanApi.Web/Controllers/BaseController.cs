@@ -1,6 +1,5 @@
 ﻿using System;
-using System.IO;
-using Microsoft.AspNetCore.Authorization;
+using Geonorge.TiltaksplanApi.Application.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -30,6 +29,11 @@ namespace Geonorge.TiltaksplanApi.Web.Controllers
             }
 
             return null;
+        }
+
+        protected void LogValidationErrors(ViewModelWithValidation viewModel)
+        {
+            _logger.LogInformation($"Error validating {viewModel.GetType().Name}: {viewModel.AllErrorCodes()}");
         }
     }
 }

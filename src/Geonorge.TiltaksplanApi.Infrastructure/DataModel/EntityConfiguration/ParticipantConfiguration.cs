@@ -15,6 +15,9 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
             builder
                 .Property(participant => participant.Id)
                 .ValueGeneratedOnAdd();
+
+            builder
+                .Ignore(participant => participant.ValidationErrors);
         }
     }
 }

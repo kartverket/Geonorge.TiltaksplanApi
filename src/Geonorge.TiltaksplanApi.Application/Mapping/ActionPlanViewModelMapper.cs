@@ -7,12 +7,15 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
 {
     public class ActionPlanViewModelMapper : IActionPlanViewModelMapper
     {
-        private readonly IViewModelMapper<Activity, ActivityViewModel> _activityViewModelMapper;
+        private readonly IActivityViewModelMapper _activityViewModelMapper;
+        private readonly IViewModelMapper<ValidationError, ValidationErrorViewModel> _validationErrorViewModelMapper;
 
         public ActionPlanViewModelMapper(
-            IViewModelMapper<Activity, ActivityViewModel> activityViewModelMapper)
+            IActivityViewModelMapper activityViewModelMapper,
+            IViewModelMapper<ValidationError, ValidationErrorViewModel> validationErrorViewModelMapper)
         {
             _activityViewModelMapper = activityViewModelMapper;
+            _validationErrorViewModelMapper = validationErrorViewModelMapper;
         }
 
         public ActionPlan MapToDomainModel(ActionPlanViewModel viewModel)
@@ -50,10 +53,15 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 return null;
 
             var translation = domainModel.Translations
-                .SingleOrDefault(translation => translation.Language.Culture == culture);
+                .SingleOrDefault(translation => translation.LanguageCulture == culture);
 
             if (translation == null)
                 return null;
+
+            var activities = domainModel.Activities?
+                .ConvertAll(activity => _activityViewModelMapper.MapToViewModel(activity, culture));
+
+            activities?.RemoveAll(activity => activity == null);
 
             return new ActionPlanViewModel
             {
@@ -65,9 +73,11 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 TrafficLight = domainModel.TrafficLight,
                 Results = translation.Results,
                 Comment = translation.Comment,
+                ActionPlanTranslationId = translation.Id,
                 Culture = translation.LanguageCulture,
-                Activities = domainModel.Activities?
-                    .ConvertAll(activity => _activityViewModelMapper.MapToViewModel(activity))
+                Activities = activities,
+                ValidationErrors = domainModel.ValidationErrors?
+                    .ConvertAll(validationError => _validationErrorViewModelMapper.MapToViewModel(validationError))
             };
         }
     }

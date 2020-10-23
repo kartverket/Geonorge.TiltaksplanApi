@@ -10,7 +10,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
         {
             builder
                 .ToTable("ActionPlanTranslations")
-                .HasKey(actionPlanTranslation => actionPlanTranslation.Id);
+                .HasKey(actionPlanTranslation => new { actionPlanTranslation.ActionPlanId, actionPlanTranslation.LanguageCulture });
 
             builder
                 .Property(actionPlanTranslation => actionPlanTranslation.Name)
@@ -33,6 +33,9 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
             builder
                 .Property(actionPlanTranslation => actionPlanTranslation.Id)
                 .ValueGeneratedOnAdd();
+
+            builder
+                .Ignore(actionPlanTranslation => actionPlanTranslation.ValidationErrors);
         }
     }
 }

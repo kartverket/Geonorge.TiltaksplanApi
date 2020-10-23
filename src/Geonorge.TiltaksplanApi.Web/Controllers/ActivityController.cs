@@ -11,18 +11,18 @@ namespace Geonorge.TiltaksplanApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ActionPlanController : BaseController
+    public class ActivityController : BaseController
     {
-        private readonly IActionPlanQuery _actionPlanQuery;
-        private readonly IActionPlanService _actionPlanService;
+        private readonly IActivityQuery _activityQuery;
+        private readonly IActivityService _activityService;
 
-        public ActionPlanController(
-            IActionPlanQuery actionPlanQuery,
-            IActionPlanService actionPlanService,
-            ILogger<ActionPlanController> logger) : base(logger)
+        public ActivityController(
+            IActivityQuery activityQuery,
+            IActivityService activityService,
+            ILogger<ActivityController> logger) : base(logger)
         {
-            _actionPlanQuery = actionPlanQuery;
-            _actionPlanService = actionPlanService;
+            _activityQuery = activityQuery;
+            _activityService = activityService;
         }
 
         [HttpGet("{id:int}/{culture?}")]
@@ -30,7 +30,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
         {
             try
             {
-                var viewModels = await _actionPlanQuery.GetByIdAsync(id, culture);
+                var viewModels = await _activityQuery.GetByIdAsync(id, culture);
 
                 return Ok(viewModels);
             }
@@ -50,7 +50,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
         {
             try
             {
-                var viewModels = await _actionPlanQuery.GetAllAsync(culture);
+                var viewModels = await _activityQuery.GetAllAsync(culture);
 
                 return Ok(viewModels);
             }
@@ -66,14 +66,14 @@ namespace Geonorge.TiltaksplanApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ActionPlanViewModel viewModel)
+        public async Task<IActionResult> Create([FromBody] ActivityViewModel viewModel)
         {
             if (viewModel == null || viewModel.Id != 0)
                 return BadRequest();
 
             try
             {
-                var resultViewModel = await _actionPlanService.CreateAsync(viewModel);
+                var resultViewModel = await _activityService.CreateAsync(viewModel);
 
                 if (!resultViewModel.HasErrors)
                     return Created("", resultViewModel);
@@ -94,14 +94,14 @@ namespace Geonorge.TiltaksplanApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] ActionPlanViewModel viewModel)
+        public async Task<IActionResult> Update(int id, [FromBody] ActivityViewModel viewModel)
         {
             if (id == 0 || viewModel == null)
                 return BadRequest();
 
             try
             {
-                var resultViewModel = await _actionPlanService.UpdateAsync(id, viewModel);
+                var resultViewModel = await _activityService.UpdateAsync(id, viewModel);
 
                 if (!resultViewModel.HasErrors)
                     return Ok(resultViewModel);
@@ -129,7 +129,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
 
             try
             {
-                await _actionPlanService.DeleteAsync(id);
+                await _activityService.DeleteAsync(id);
 
                 return new NoContentResult();
             }

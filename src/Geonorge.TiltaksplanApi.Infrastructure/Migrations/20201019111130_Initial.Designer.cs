@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
 {
     [DbContext(typeof(ActionPlanContext))]
-    [Migration("20201018174936_Initial")]
+    [Migration("20201019111130_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,20 +45,19 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
 
             modelBuilder.Entity("Geonorge.TiltaksplanApi.Domain.Models.ActionPlanTranslation", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<int>("ActionPlanId")
                         .HasColumnType("int");
+
+                    b.Property<string>("LanguageCulture")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LanguageCulture")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -71,9 +70,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                     b.Property<string>("Results")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActionPlanId");
+                    b.HasKey("ActionPlanId", "LanguageCulture");
 
                     b.HasIndex("LanguageCulture");
 

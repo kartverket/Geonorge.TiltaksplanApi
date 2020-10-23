@@ -68,18 +68,18 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
+                    ActionPlanId = table.Column<int>(nullable: false),
+                    LanguageCulture = table.Column<string>(nullable: false),
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ActionPlanId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Progress = table.Column<string>(nullable: false),
                     Results = table.Column<string>(nullable: true),
-                    Comment = table.Column<string>(nullable: true),
-                    LanguageCulture = table.Column<string>(nullable: false)
+                    Comment = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ActionPlanTranslations", x => x.Id);
+                    table.PrimaryKey("PK_ActionPlanTranslations", x => new { x.ActionPlanId, x.LanguageCulture });
                     table.ForeignKey(
                         name: "FK_ActionPlanTranslations_ActionPlans_ActionPlanId",
                         column: x => x.ActionPlanId,
@@ -149,12 +149,6 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ActionPlanTranslations_ActionPlanId",
-                schema: "dbo",
-                table: "ActionPlanTranslations",
-                column: "ActionPlanId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ActionPlanTranslations_LanguageCulture",

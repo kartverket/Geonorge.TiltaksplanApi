@@ -2,8 +2,8 @@
 using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
+using Geonorge.TiltaksplanApi.Domain.Services.Validation;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace Geonorge.TiltaksplanApi.Application.Services
@@ -13,25 +13,31 @@ namespace Geonorge.TiltaksplanApi.Application.Services
         private readonly IUnitOfWorkManager _uowManager;
         private readonly IActionPlanRepository _actionPlanRepository;
         private readonly IActionPlanViewModelMapper _actionPlanViewModelMapper;
+        private readonly IValidationService<ActionPlan> _actionPlanValidationService;
 
         public ActionPlanService(
             IUnitOfWorkManager uowManager,
             IActionPlanRepository actionPlanRepository,
-            IActionPlanViewModelMapper actionPlanViewModelMapper)
+            IActionPlanViewModelMapper actionPlanViewModelMapper,
+            IValidationService<ActionPlan> actionPlanValidationService)
         {
             _uowManager = uowManager;
             _actionPlanRepository = actionPlanRepository;
             _actionPlanViewModelMapper = actionPlanViewModelMapper;
+            _actionPlanValidationService = actionPlanValidationService;
         }
 
         public async Task<ActionPlanViewModel> CreateAsync(ActionPlanViewModel viewModel)
         {
             var actionPlan = _actionPlanViewModelMapper.MapToDomainModel(viewModel);
 
-            using var uow = _uowManager.GetUnitOfWork();
-            _actionPlanRepository.Create(actionPlan);
-            await uow.SaveChangesAsync();
-            
+            if (_actionPlanValidationService.Validate(actionPlan))
+            {
+                using var uow = _uowManager.GetUnitOfWork();
+                _actionPlanRepository.Create(actionPlan);
+                await uow.SaveChangesAsync();
+            }               
+
             return _actionPlanViewModelMapper.MapToViewModel(actionPlan, viewModel.Culture);
         }
 
@@ -41,9 +47,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
 
             using var uow = _uowManager.GetUnitOfWork();
             var actionPlan = await _actionPlanRepository
-                .GetAll()
-                .Include(actionPlan => actionPlan.Translations)
-                .SingleOrDefaultAsync(actionPlan => actionPlan.Id == id);
+                .GetByIdAsync(id);
 
             actionPlan.Update(update);
             await uow.SaveChangesAsync();

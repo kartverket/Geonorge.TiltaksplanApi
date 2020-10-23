@@ -5,6 +5,7 @@ using Geonorge.TiltaksplanApi.Application.Queries;
 using Geonorge.TiltaksplanApi.Application.Services;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
+using Geonorge.TiltaksplanApi.Domain.Services.Validation;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork;
 using Geonorge.TiltaksplanApi.Infrastructure.Repositories;
@@ -55,18 +56,23 @@ namespace Geonorge.TiltaksplanApi
             services.AddTransient<IActionPlanService, ActionPlanService>();
             services.AddTransient<IActivityService, ActivityService>();
 
+            // Domain services
+            services.AddTransient<IValidationService<ActionPlan>, ActionPlanValidationService>();
+
             // Queries
             services.AddTransient<IActionPlanQuery, ActionPlanQuery>();
+            services.AddTransient<IActivityQuery, ActivityQuery>();
 
             // Repositories
             services.AddScoped<IActionPlanRepository, ActionPlanRepository>();
             services.AddScoped<IActivityRepository, ActivityRepository>();
 
             // Mappers
-            services.AddTransient<IViewModelMapper<Activity, ActivityViewModel>, ActivityViewModelMapper>();
+            services.AddTransient<IActivityViewModelMapper, ActivityViewModelMapper>();
             services.AddTransient<IActionPlanViewModelMapper, ActionPlanViewModelMapper>();
             services.AddTransient<IViewModelMapper<Participant, ParticipantViewModel>, ParticipantViewModelMapper>();
             services.AddTransient<IViewModelMapper<Language, LanguageViewModel>, LanguageViewModelMapper>();
+            services.AddTransient<IViewModelMapper<ValidationError, ValidationErrorViewModel>, ValidationErrorViewModelMapper>();
         }
 
         public void Configure(

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Geonorge.TiltaksplanApi.Application.Models
 {
-    public class ActivityViewModel
+    public class ActivityViewModel : ViewModelWithValidation
     {
         public int Id { get; set; }
         public int ActionPlanId { get; set; }
@@ -15,6 +15,7 @@ namespace Geonorge.TiltaksplanApi.Application.Models
         public DateTime ImplementationEnd { get; set; }
         public List<ParticipantViewModel> Participants { get; set; }
         public ActivityStatus Status { get; set; }
+        public int ActivityTranslationId { get; set; }
         public string Culture { get; set; }
     }
 }

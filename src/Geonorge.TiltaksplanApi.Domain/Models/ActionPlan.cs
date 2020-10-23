@@ -2,7 +2,7 @@
 
 namespace Geonorge.TiltaksplanApi.Domain.Models
 {
-    public class ActionPlan : EntityBase
+    public class ActionPlan : ValidatableEntity
     {
         public int Volume { get; set; }
         public int Status { get; set; }

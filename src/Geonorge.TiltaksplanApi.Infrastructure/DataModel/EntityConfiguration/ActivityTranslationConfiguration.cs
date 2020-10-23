@@ -33,6 +33,9 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
             builder
                 .Property(activityTranslation => activityTranslation.Id)
                 .ValueGeneratedOnAdd();
+
+            builder
+                .Ignore(activityTranslation => activityTranslation.ValidationErrors);
         }
     }
 }

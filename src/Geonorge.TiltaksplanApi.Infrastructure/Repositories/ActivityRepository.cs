@@ -11,19 +11,24 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Repositories
     {
         private readonly ActionPlanContext _context;
 
-        public ActivityRepository(ActionPlanContext context)
+        public ActivityRepository(
+            ActionPlanContext context)
         {
             _context = context;
         }
 
         public IQueryable<Activity> GetAll()
         {
-            return _context.Activities.AsQueryable();
+            return _context.Activities
+                .AsQueryable();
         }
 
         public async Task<Activity> GetByIdAsync(int id)
         {
             return await GetAll()
+                .Include(activity => activity.Translations)
+                    .ThenInclude(translation => translation.Language)
+                .Include(activity => activity.Participants)
                 .SingleOrDefaultAsync(activity => activity.Id == id);
         }
 
