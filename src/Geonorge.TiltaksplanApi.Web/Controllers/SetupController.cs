@@ -8,7 +8,7 @@ using System;
 namespace Geonorge.TiltaksplanApi.Web.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class SetupController : BaseController
     {
         private readonly IWebHostEnvironment _webHostEnvironment;

@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace Geonorge.TiltaksplanApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ActivityController : BaseController
     {
         private readonly IActivityQuery _activityQuery;
@@ -75,12 +75,12 @@ namespace Geonorge.TiltaksplanApi.Controllers
             {
                 var resultViewModel = await _activityService.CreateAsync(viewModel);
 
-                if (!resultViewModel.HasErrors)
+                if (resultViewModel.IsValid)
                     return Created("", resultViewModel);
 
                 LogValidationErrors(resultViewModel);
 
-                return BadRequest(resultViewModel.AllErrorCodes());
+                return BadRequest(resultViewModel.ValidationErrors);
             }
             catch (Exception exception)
             {
@@ -103,12 +103,12 @@ namespace Geonorge.TiltaksplanApi.Controllers
             {
                 var resultViewModel = await _activityService.UpdateAsync(id, viewModel);
 
-                if (!resultViewModel.HasErrors)
+                if (resultViewModel.IsValid)
                     return Ok(resultViewModel);
 
                 LogValidationErrors(resultViewModel);
 
-                return BadRequest(resultViewModel.AllErrorCodes());
+                return BadRequest(resultViewModel.ValidationErrors);
             }
             catch (Exception exception)
             {

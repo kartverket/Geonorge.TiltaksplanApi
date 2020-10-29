@@ -1,4 +1,5 @@
-﻿using Geonorge.TiltaksplanApi.Application.Models;
+﻿using FluentValidation.Results;
+using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,11 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
     public class ActivityViewModelMapper : IActivityViewModelMapper
     {
         private readonly IViewModelMapper<Participant, ParticipantViewModel> _participantViewModelMapper;
-        private readonly IViewModelMapper<ValidationError, ValidationErrorViewModel> _validationErrorViewModelMapper;
+        private readonly IViewModelMapper<ValidationResult, List<string>> _validationErrorViewModelMapper;
 
         public ActivityViewModelMapper(
             IViewModelMapper<Participant, ParticipantViewModel> participantViewModelMapper,
-            IViewModelMapper<ValidationError, ValidationErrorViewModel> validationErrorViewModelMapper)
+            IViewModelMapper<ValidationResult, List<string>> validationErrorViewModelMapper)
         {
             _participantViewModelMapper = participantViewModelMapper;
             _validationErrorViewModelMapper = validationErrorViewModelMapper;
@@ -71,8 +72,8 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                     .ConvertAll(participant => _participantViewModelMapper.MapToViewModel(participant)),
                 Status = domainModel.Status,
                 Culture = translation.LanguageCulture,
-                ValidationErrors = domainModel.ValidationErrors?
-                    .ConvertAll(validationError => _validationErrorViewModelMapper.MapToViewModel(validationError))
+                ValidationErrors = _validationErrorViewModelMapper
+                    .MapToViewModel(domainModel.ValidationResult)
             };
         }
     }

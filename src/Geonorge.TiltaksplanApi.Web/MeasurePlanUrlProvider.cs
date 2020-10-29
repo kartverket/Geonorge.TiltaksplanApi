@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace Geonorge.TiltaksplanApi.Web
 {
-    public class ActionPlanUrlProvider : IUrlProvider
+    public class MeasurePlanUrlProvider : IUrlProvider
     {
         private readonly IActionContextAccessor _actionContextAccessor;
         private readonly IUrlHelperFactory _urlHelperFactory;
 
-        public ActionPlanUrlProvider(
+        public MeasurePlanUrlProvider(
             IActionContextAccessor actionContextAccessor,
             IUrlHelperFactory urlHelperFactory)
         {
@@ -29,12 +29,12 @@ namespace Geonorge.TiltaksplanApi.Web
 
             dynamic apiUrls = new ExpandoObject();
 
-            apiUrls.actionPlan = new ExpandoObject();
-            apiUrls.actionPlan.get = GetControllerUrl(urlHelper, "GetById", "ActionPlan", new { id = 0, culture = "" });
-            apiUrls.actionPlan.getAll = GetControllerUrl(urlHelper, "GetAll", "ActionPlan");
-            apiUrls.actionPlan.create = GetControllerUrl(urlHelper, "Create", "ActionPlan");
-            apiUrls.actionPlan.update = GetControllerUrl(urlHelper, "Update", "ActionPlan", new { id = 0 });
-            apiUrls.actionPlan.delete = GetControllerUrl(urlHelper, "Delete", "ActionPlan", new { id = 0 });
+            apiUrls.measure = new ExpandoObject();
+            apiUrls.measure.get = GetControllerUrl(urlHelper, "GetById", "Measure", new { id = 0, culture = "" });
+            apiUrls.measure.getAll = GetControllerUrl(urlHelper, "GetAll", "Measure");
+            apiUrls.measure.create = GetControllerUrl(urlHelper, "Create", "Measure");
+            apiUrls.measure.update = GetControllerUrl(urlHelper, "Update", "Measure", new { id = 0 });
+            apiUrls.measure.delete = GetControllerUrl(urlHelper, "Delete", "Measure", new { id = 0 });
 
             apiUrls.activity = new ExpandoObject();
             apiUrls.activity.get = GetControllerUrl(urlHelper, "GetById", "Activity", new { id = 0 });
@@ -42,6 +42,12 @@ namespace Geonorge.TiltaksplanApi.Web
             apiUrls.activity.create = GetControllerUrl(urlHelper, "Create", "Activity");
             apiUrls.activity.update = GetControllerUrl(urlHelper, "Update", "Activity", new { id = 0 });
             apiUrls.activity.delete = GetControllerUrl(urlHelper, "Delete", "Activity", new { id = 0 });
+
+            apiUrls.participant = new ExpandoObject();
+            apiUrls.participant.getAll = GetControllerUrl(urlHelper, "GetAll", "Participant");
+
+            apiUrls.setup = new ExpandoObject();
+            apiUrls.setup.get = GetControllerUrl(urlHelper, "Get", "Setup");
 
             return apiUrls;
         }
@@ -69,8 +75,7 @@ namespace Geonorge.TiltaksplanApi.Web
         {
             return values != null ?
                 values.GetType().GetProperties()
-                    .Select(prop => prop.Name)
-                    .Select(propName => char.ToLowerInvariant(propName[0]) + propName.Substring(1))
+                    .Select(prop => char.ToLowerInvariant(prop.Name[0]) + prop.Name.Substring(1))
                     .ToList() :
                 new List<string>();
         }

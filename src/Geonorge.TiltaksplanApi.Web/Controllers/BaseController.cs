@@ -33,7 +33,7 @@ namespace Geonorge.TiltaksplanApi.Web.Controllers
 
         protected void LogValidationErrors(ViewModelWithValidation viewModel)
         {
-            _logger.LogInformation($"Error validating {viewModel.GetType().Name}: {viewModel.AllErrorCodes()}");
+            _logger.LogInformation($"Error validating {viewModel.GetType().Name}: {string.Join(", ", viewModel.ValidationErrors)}");
         }
     }
 }

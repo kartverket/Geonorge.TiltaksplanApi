@@ -4,19 +4,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel
 {
-    public class ActionPlanContext : DbContext
+    public class MeasurePlanContext : DbContext
     {
-        public ActionPlanContext()
+        public MeasurePlanContext()
         {
         }
 
-        public ActionPlanContext(
-            DbContextOptions<ActionPlanContext> options) : base(options)
+        public MeasurePlanContext(
+            DbContextOptions<MeasurePlanContext> options) : base(options)
         {
         }
 
-        public DbSet<ActionPlan> ActionPlans { get; set; }
-        public DbSet<ActionPlanTranslation> ActionPlanTranslations { get; set; }
+        public DbSet<Measure> Measures { get; set; }
+        public DbSet<MeasureTranslation> MeasureTranslations { get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<ActivityTranslation> ActivityTranslations { get; set; }
         public DbSet<Participant> Participants { get; set; }
@@ -27,8 +27,8 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel
         {
             builder.HasDefaultSchema("dbo");
 
-            builder.Entity<ActionPlan>(ActionPlanConfiguration.Configure);
-            builder.Entity<ActionPlanTranslation>(ActionPlanTranslationConfiguration.Configure);
+            builder.Entity<Measure>(MeasureConfiguration.Configure);
+            builder.Entity<MeasureTranslation>(MeasureTranslationConfiguration.Configure);
             builder.Entity<Activity>(ActivityConfiguration.Configure);
             builder.Entity<ActivityTranslation>(ActivityTranslationConfiguration.Configure);
             builder.Entity<Participant>(ParticipantConfiguration.Configure);

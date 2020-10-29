@@ -4,46 +4,46 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
 {
-    internal static class ActionPlanConfiguration
+    internal static class MeasureConfiguration
     {
-        internal static void Configure(EntityTypeBuilder<ActionPlan> builder)
+        internal static void Configure(EntityTypeBuilder<Measure> builder)
         {
             builder
-                .ToTable("ActionPlans")
-                .HasKey(actionPlan => actionPlan.Id);
+                .ToTable("Measures")
+                .HasKey(measure => measure.Id);
 
             builder
-                .Property(actionPlan => actionPlan.Volume)
+                .Property(measure => measure.Volume)
                 .IsRequired();
 
             builder
-                .Property(actionPlan => actionPlan.Status)
+                .Property(measure => measure.Status)
                 .IsRequired();
 
             builder
-                .Property(actionPlan => actionPlan.TrafficLight)
+                .Property(measure => measure.TrafficLight)
                 .IsRequired();
 
             builder
-                .HasMany(actionPlan => actionPlan.Translations)
+                .HasMany(measure => measure.Translations)
                 .WithOne()
-                .HasForeignKey(actionPlanTranslation => actionPlanTranslation.ActionPlanId)
+                .HasForeignKey(measureTranslation => measureTranslation.MeasureId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
-                .HasMany(actionPlan => actionPlan.Activities)
+                .HasMany(measure => measure.Activities)
                 .WithOne()
                 .HasForeignKey(activity => activity.ActionPlanId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .Property(actionPlan => actionPlan.Id)
+                .Property(measure => measure.Id)
                 .ValueGeneratedOnAdd();
 
             builder
-                .Ignore(actionPlan => actionPlan.ValidationErrors);
+                .Ignore(measure => measure.ValidationResult);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel
 {
     public class DataSeeder
     {
-        public static void SeedLanguages(ActionPlanContext context)
+        public static void SeedLanguages(MeasurePlanContext context)
         {
             if (context.Languages.Count() == 0)
             {

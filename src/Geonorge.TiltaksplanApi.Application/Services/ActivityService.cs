@@ -1,5 +1,7 @@
-﻿using Geonorge.TiltaksplanApi.Application.Mapping;
+﻿using FluentValidation;
+using Geonorge.TiltaksplanApi.Application.Mapping;
 using Geonorge.TiltaksplanApi.Application.Models;
+using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork;
 using System.Threading.Tasks;
@@ -11,24 +13,30 @@ namespace Geonorge.TiltaksplanApi.Application.Services
         private readonly IUnitOfWorkManager _uowManager;
         private readonly IActivityRepository _activityRepository;
         private readonly IActivityViewModelMapper _activityViewModelMapper;
+        private readonly IValidator<Activity> _activityValidator;
 
         public ActivityService(
             IUnitOfWorkManager uowManager,
             IActivityRepository activityRepository,
-            IActivityViewModelMapper activityViewModelMapper)
+            IActivityViewModelMapper activityViewModelMapper,
+            IValidator<Activity> activityValidator)
         {
             _uowManager = uowManager;
             _activityRepository = activityRepository;
             _activityViewModelMapper = activityViewModelMapper;
+            _activityValidator = activityValidator;
         }
 
         public async Task<ActivityViewModel> CreateAsync(ActivityViewModel viewModel)
         {
             var activity = _activityViewModelMapper.MapToDomainModel(viewModel);
 
-            using var uow = _uowManager.GetUnitOfWork();
-            _activityRepository.Create(activity);
-            await uow.SaveChangesAsync();
+            if (IsValid(activity))
+            {
+                using var uow = _uowManager.GetUnitOfWork();
+                _activityRepository.Create(activity);
+                await uow.SaveChangesAsync();
+            }
 
             return _activityViewModelMapper.MapToViewModel(activity, viewModel.Culture);
         }
@@ -38,13 +46,15 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             var update = _activityViewModelMapper.MapToDomainModel(viewModel);
 
             using var uow = _uowManager.GetUnitOfWork();
-            var actionPlan = await _activityRepository
+            var activity = await _activityRepository
                 .GetByIdAsync(id);
 
-            actionPlan.Update(update);
-            await uow.SaveChangesAsync();
+            activity.Update(update);
 
-            return _activityViewModelMapper.MapToViewModel(update, viewModel.Culture);
+            if (IsValid(activity))
+                await uow.SaveChangesAsync();
+
+            return _activityViewModelMapper.MapToViewModel(activity, viewModel.Culture);
         }
 
         public async Task DeleteAsync(int id)
@@ -54,6 +64,14 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             _activityRepository.Delete(activity);
 
             await uow.SaveChangesAsync();
+        }
+
+        private bool IsValid(Activity activity)
+        {
+            activity.ValidationResult = _activityValidator
+                .Validate(activity);
+
+            return activity.ValidationResult.IsValid;
         }
     }
 }

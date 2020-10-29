@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace Geonorge.TiltaksplanApi.Application.Queries
 {
-    public interface IActionPlanQuery
+    public interface IMeasureQuery
     {
-        Task<IList<ActionPlanViewModel>> GetAllAsync(string culture);
-        Task<ActionPlanViewModel> GetByIdAsync(int id, string culture);
+        Task<IList<MeasureViewModel>> GetAllAsync(string culture);
+        Task<MeasureViewModel> GetByIdAsync(int id, string culture);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Geonorge.TiltaksplanApi.Domain.Repositories
 {
-    public interface IActionPlanRepository : IRepository<ActionPlan, int>
+    public interface IMeasureRepository : IRepository<Measure, int>
     {
     }
 }

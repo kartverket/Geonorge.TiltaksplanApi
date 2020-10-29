@@ -10,19 +10,19 @@ using Microsoft.Extensions.Logging;
 namespace Geonorge.TiltaksplanApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class ActionPlanController : BaseController
+    [Route("api/[controller]")]
+    public class MeasureController : BaseController
     {
-        private readonly IActionPlanQuery _actionPlanQuery;
-        private readonly IActionPlanService _actionPlanService;
+        private readonly IMeasureQuery _measureQuery;
+        private readonly IMeasureService _measureService;
 
-        public ActionPlanController(
-            IActionPlanQuery actionPlanQuery,
-            IActionPlanService actionPlanService,
-            ILogger<ActionPlanController> logger) : base(logger)
+        public MeasureController(
+            IMeasureQuery measureQuery,
+            IMeasureService measureService,
+            ILogger<MeasureController> logger) : base(logger)
         {
-            _actionPlanQuery = actionPlanQuery;
-            _actionPlanService = actionPlanService;
+            _measureQuery = measureQuery;
+            _measureService = measureService;
         }
 
         [HttpGet("{id:int}/{culture?}")]
@@ -30,7 +30,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
         {
             try
             {
-                var viewModels = await _actionPlanQuery.GetByIdAsync(id, culture);
+                var viewModels = await _measureQuery.GetByIdAsync(id, culture);
 
                 return Ok(viewModels);
             }
@@ -50,7 +50,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
         {
             try
             {
-                var viewModels = await _actionPlanQuery.GetAllAsync(culture);
+                var viewModels = await _measureQuery.GetAllAsync(culture);
 
                 return Ok(viewModels);
             }
@@ -66,21 +66,21 @@ namespace Geonorge.TiltaksplanApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ActionPlanViewModel viewModel)
+        public async Task<IActionResult> Create([FromBody] MeasureViewModel viewModel)
         {
             if (viewModel == null || viewModel.Id != 0)
                 return BadRequest();
 
             try
             {
-                var resultViewModel = await _actionPlanService.CreateAsync(viewModel);
+                var resultViewModel = await _measureService.CreateAsync(viewModel);
 
-                if (!resultViewModel.HasErrors)
+                if (resultViewModel.IsValid)
                     return Created("", resultViewModel);
 
                 LogValidationErrors(resultViewModel);
 
-                return BadRequest(resultViewModel.AllErrorCodes());
+                return BadRequest(resultViewModel.ValidationErrors);
             }
             catch (Exception exception)
             {
@@ -94,21 +94,21 @@ namespace Geonorge.TiltaksplanApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] ActionPlanViewModel viewModel)
+        public async Task<IActionResult> Update(int id, [FromBody] MeasureViewModel viewModel)
         {
             if (id == 0 || viewModel == null)
                 return BadRequest();
 
             try
             {
-                var resultViewModel = await _actionPlanService.UpdateAsync(id, viewModel);
+                var resultViewModel = await _measureService.UpdateAsync(id, viewModel);
 
-                if (!resultViewModel.HasErrors)
+                if (resultViewModel.IsValid)
                     return Ok(resultViewModel);
 
                 LogValidationErrors(resultViewModel);
 
-                return BadRequest(resultViewModel.AllErrorCodes());
+                return BadRequest(resultViewModel.ValidationErrors);
             }
             catch (Exception exception)
             {
@@ -129,7 +129,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
 
             try
             {
-                await _actionPlanService.DeleteAsync(id);
+                await _measureService.DeleteAsync(id);
 
                 return new NoContentResult();
             }

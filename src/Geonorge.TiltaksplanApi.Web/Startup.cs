@@ -1,11 +1,14 @@
+using FluentValidation;
+using FluentValidation.Results;
 using Geonorge.TiltaksplanApi.Application;
+using Geonorge.TiltaksplanApi.Application.Configuration;
 using Geonorge.TiltaksplanApi.Application.Mapping;
 using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Application.Queries;
 using Geonorge.TiltaksplanApi.Application.Services;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
-using Geonorge.TiltaksplanApi.Domain.Services.Validation;
+using Geonorge.TiltaksplanApi.Domain.Validation;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork;
 using Geonorge.TiltaksplanApi.Infrastructure.Repositories;
@@ -22,6 +25,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using System.Collections.Generic;
 
 namespace Geonorge.TiltaksplanApi
 {
@@ -45,34 +49,42 @@ namespace Geonorge.TiltaksplanApi
         {
             services.AddCors();
             services.AddControllers();
-            services.AddEntityFrameworkForActionPlan(Configuration);
+            services.AddSwaggerGen();
+
+            services.AddEntityFrameworkForMeasurePlan(Configuration);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddTransient<IUrlProvider, ActionPlanUrlProvider>();
+            services.AddTransient<IUrlProvider, MeasurePlanUrlProvider>();
 
             // Application services
             services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
-            services.AddTransient<IActionPlanService, ActionPlanService>();
+            services.AddTransient<IMeasureService, MeasureService>();
             services.AddTransient<IActivityService, ActivityService>();
+            services.AddTransient<IParticipantService, ParticipantService>();
 
-            // Domain services
-            services.AddTransient<IValidationService<ActionPlan>, ActionPlanValidationService>();
+            // Validators
+            services.AddTransient<IValidator<Measure>, MeasureValidator>();
+            services.AddTransient<IValidator<Activity>, ActivityValidator>();
+            services.AddTransient<IValidator<Participant>, ParticipantValidator>();
 
             // Queries
-            services.AddTransient<IActionPlanQuery, ActionPlanQuery>();
+            services.AddTransient<IMeasureQuery, MeasureQuery>();
             services.AddTransient<IActivityQuery, ActivityQuery>();
 
             // Repositories
-            services.AddScoped<IActionPlanRepository, ActionPlanRepository>();
+            services.AddScoped<IMeasureRepository, ActionPlanRepository>();
             services.AddScoped<IActivityRepository, ActivityRepository>();
 
             // Mappers
             services.AddTransient<IActivityViewModelMapper, ActivityViewModelMapper>();
-            services.AddTransient<IActionPlanViewModelMapper, ActionPlanViewModelMapper>();
+            services.AddTransient<IMeasureViewModelMapper, MeasureViewModelMapper>();
             services.AddTransient<IViewModelMapper<Participant, ParticipantViewModel>, ParticipantViewModelMapper>();
             services.AddTransient<IViewModelMapper<Language, LanguageViewModel>, LanguageViewModelMapper>();
-            services.AddTransient<IViewModelMapper<ValidationError, ValidationErrorViewModel>, ValidationErrorViewModelMapper>();
+            services.AddTransient<IViewModelMapper<ValidationResult, List<string>>, ValidationErrorViewModelMapper>();
+
+            // Configuration
+            services.Configure<ApiUrlsConfiguration>(Configuration.GetSection(ApiUrlsConfiguration.SectionName));
         }
 
         public void Configure(
@@ -89,6 +101,13 @@ namespace Geonorge.TiltaksplanApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(swagger =>
+            {
+                swagger.SwaggerEndpoint("/swagger/v1/swagger.json", "Geonorge.Tiltaksplan API V1");
+            });
 
             app.UseSerilogRequestLogging();
             app.UseHttpsRedirection();
@@ -108,7 +127,7 @@ namespace Geonorge.TiltaksplanApi
         private static void UpdateDatabase(IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-            using var context = serviceScope.ServiceProvider.GetService<ActionPlanContext>();
+            using var context = serviceScope.ServiceProvider.GetService<MeasurePlanContext>();
             
             context.Database.Migrate();
 

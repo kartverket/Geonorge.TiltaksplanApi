@@ -1,25 +1,24 @@
-﻿using Geonorge.TiltaksplanApi.Application.Models;
-using Geonorge.TiltaksplanApi.Domain.Models;
+﻿using FluentValidation.Results;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Geonorge.TiltaksplanApi.Application.Mapping
 {
-    public class ValidationErrorViewModelMapper : IViewModelMapper<ValidationError, ValidationErrorViewModel>
+    public class ValidationErrorViewModelMapper : IViewModelMapper<ValidationResult, List<string>>
     {
-        public ValidationError MapToDomainModel(ValidationErrorViewModel viewModel)
+        public ValidationResult MapToDomainModel(List<string> errorMessages)
         {
             throw new System.NotImplementedException();
         }
 
-        public ValidationErrorViewModel MapToViewModel(ValidationError domainModel)
+        public List<string> MapToViewModel(ValidationResult domainModel)
         {
             if (domainModel == null)
                 return null;
 
-            return new ValidationErrorViewModel
-            {
-                Property = domainModel.Property,
-                ErrorCode = domainModel.ErrorCode
-            };
+            return domainModel.Errors?
+                .Select(validationFailure => validationFailure.ErrorMessage)
+                .ToList();
         }
     }
 }

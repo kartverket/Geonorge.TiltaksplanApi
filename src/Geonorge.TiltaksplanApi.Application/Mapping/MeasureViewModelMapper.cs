@@ -1,40 +1,41 @@
-﻿using Geonorge.TiltaksplanApi.Application.Models;
+﻿using FluentValidation.Results;
+using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Geonorge.TiltaksplanApi.Application.Mapping
 {
-    public class ActionPlanViewModelMapper : IActionPlanViewModelMapper
+    public class MeasureViewModelMapper : IMeasureViewModelMapper
     {
         private readonly IActivityViewModelMapper _activityViewModelMapper;
-        private readonly IViewModelMapper<ValidationError, ValidationErrorViewModel> _validationErrorViewModelMapper;
+        private readonly IViewModelMapper<ValidationResult, List<string>> _validationErrorViewModelMapper;
 
-        public ActionPlanViewModelMapper(
+        public MeasureViewModelMapper(
             IActivityViewModelMapper activityViewModelMapper,
-            IViewModelMapper<ValidationError, ValidationErrorViewModel> validationErrorViewModelMapper)
+            IViewModelMapper<ValidationResult, List<string>> validationErrorViewModelMapper)
         {
             _activityViewModelMapper = activityViewModelMapper;
             _validationErrorViewModelMapper = validationErrorViewModelMapper;
         }
 
-        public ActionPlan MapToDomainModel(ActionPlanViewModel viewModel)
+        public Measure MapToDomainModel(MeasureViewModel viewModel)
         {
             if (viewModel == null)
                 return null;
 
-            return new ActionPlan
+            return new Measure
             {
                 Id = viewModel.Id,
                 Volume = viewModel.Volume,
                 Status = viewModel.Status,
                 TrafficLight = viewModel.TrafficLight,
-                Translations = new List<ActionPlanTranslation>
+                Translations = new List<MeasureTranslation>
                 {
-                    new ActionPlanTranslation
+                    new MeasureTranslation
                     {
                         Id = viewModel.ActionPlanTranslationId,
-                        ActionPlanId = viewModel.Id,
+                        MeasureId = viewModel.Id,
                         LanguageCulture = viewModel.Culture,
                         Name = viewModel.Name,
                         Progress = viewModel.Progress,
@@ -47,7 +48,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             };
         }
 
-        public ActionPlanViewModel MapToViewModel(ActionPlan domainModel, string culture)
+        public MeasureViewModel MapToViewModel(Measure domainModel, string culture)
         {
             if (domainModel == null)
                 return null;
@@ -63,7 +64,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
 
             activities?.RemoveAll(activity => activity == null);
 
-            return new ActionPlanViewModel
+            return new MeasureViewModel
             {
                 Id = domainModel.Id,
                 Name = translation.Name,
@@ -76,8 +77,8 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 ActionPlanTranslationId = translation.Id,
                 Culture = translation.LanguageCulture,
                 Activities = activities,
-                ValidationErrors = domainModel.ValidationErrors?
-                    .ConvertAll(validationError => _validationErrorViewModelMapper.MapToViewModel(validationError))
+                ValidationErrors = _validationErrorViewModelMapper
+                    .MapToViewModel(domainModel.ValidationResult)
             };
         }
     }

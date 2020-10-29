@@ -5,7 +5,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        ActionPlanContext Context { get; }
+        MeasurePlanContext Context { get; }
         bool IsRoot { get; }
         Task SaveChangesAsync();
     }

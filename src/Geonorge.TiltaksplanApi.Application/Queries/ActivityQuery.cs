@@ -10,11 +10,11 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
 {
     public class ActivityQuery : IActivityQuery
     {
-        private readonly ActionPlanContext _context;
+        private readonly MeasurePlanContext _context;
         private readonly IActivityViewModelMapper _activityViewModelMapper;
 
         public ActivityQuery(
-            ActionPlanContext context,
+            MeasurePlanContext context,
             IActivityViewModelMapper activityViewModelMapper)
         {
             _context = context;

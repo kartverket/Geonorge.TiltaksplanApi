@@ -1,9 +1,10 @@
 ﻿using Geonorge.TiltaksplanApi.Domain.Models;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Geonorge.TiltaksplanApi.Application.Models
 {
-    public class ActionPlanViewModel : ViewModelWithValidation
+    public class MeasureViewModel : ViewModelWithValidation
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -14,7 +15,8 @@ namespace Geonorge.TiltaksplanApi.Application.Models
         public string Results { get; set; }
         public string Comment { get; set; }
         public List<ActivityViewModel> Activities { get; set; }
-        public int ActionPlanTranslationId { get; set; }
         public string Culture { get; set; }
+        [JsonIgnore]
+        public int ActionPlanTranslationId { get; set; }
     }
 }

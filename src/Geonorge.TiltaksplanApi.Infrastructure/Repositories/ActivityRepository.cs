@@ -9,10 +9,10 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Repositories
 {
     public class ActivityRepository : IActivityRepository
     {
-        private readonly ActionPlanContext _context;
+        private readonly MeasurePlanContext _context;
 
         public ActivityRepository(
-            ActionPlanContext context)
+            MeasurePlanContext context)
         {
             _context = context;
         }

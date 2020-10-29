@@ -1,8 +1,8 @@
 ﻿namespace Geonorge.TiltaksplanApi.Domain.Models
 {
-    public class ActionPlanTranslation : ValidatableEntity
+    public class MeasureTranslation : ValidatableEntity
     {
-        public int ActionPlanId { get; set; }
+        public int MeasureId { get; set; }
         public string Name { get; set; }
         public string Progress { get; set; }
         public string Results { get; set; }
@@ -12,7 +12,7 @@
 
         public override void Update(EntityBase updatedEntity)
         {
-            var updated = (ActionPlanTranslation) updatedEntity;
+            var updated = (MeasureTranslation) updatedEntity;
 
             if (Name != updated.Name)
                 Name = updated.Name;
