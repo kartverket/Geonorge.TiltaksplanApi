@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
 {
     [DbContext(typeof(MeasurePlanContext))]
-    [Migration("20201028133233_Initial")]
+    [Migration("20201030101043_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,21 +29,21 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ActionPlanId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("ImplementationEnd")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ImplementationStart")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("MeasureId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActionPlanId");
+                    b.HasIndex("MeasureId");
 
                     b.ToTable("Activities");
                 });
@@ -175,7 +175,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                 {
                     b.HasOne("Geonorge.TiltaksplanApi.Domain.Models.Measure", null)
                         .WithMany("Activities")
-                        .HasForeignKey("ActionPlanId")
+                        .HasForeignKey("MeasureId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

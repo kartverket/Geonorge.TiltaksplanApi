@@ -27,7 +27,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             return new Activity
             {
                 Id = viewModel.Id,
-                ActionPlanId = viewModel.ActionPlanId,
+                MeasureId = viewModel.MeasureId,
                 ImplementationStart = viewModel.ImplementationStart,
                 ImplementationEnd = viewModel.ImplementationEnd,
                 Status = viewModel.Status,
@@ -62,7 +62,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             return new ActivityViewModel
             {
                 Id = domainModel.Id,
-                ActionPlanId = domainModel.ActionPlanId,
+                MeasureId = domainModel.MeasureId,
                 Name = translation.Name,
                 Title = translation.Title,
                 Description = translation.Description,

@@ -1,18 +1,24 @@
 ﻿using FluentValidation;
 using Geonorge.TiltaksplanApi.Domain.Models;
+using Microsoft.Extensions.Localization;
 
 namespace Geonorge.TiltaksplanApi.Domain.Validation
 {
     public class MeasureTranslationValidator : AbstractValidator<MeasureTranslation>
     {
-        public MeasureTranslationValidator()
+        public MeasureTranslationValidator(IStringLocalizer<ValidationResource> localizer)
         {
             RuleFor(measureTranslation => measureTranslation.Name)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage(measure => localizer["Name"]);
+
             RuleFor(measureTranslation => measureTranslation.Progress)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage(measure => localizer["Progress"]);
+
             RuleFor(measureTranslation => measureTranslation.LanguageCulture)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage(measure => localizer["LanguageCulture"]);
         }
     }
 }

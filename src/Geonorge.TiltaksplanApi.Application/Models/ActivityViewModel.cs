@@ -1,14 +1,14 @@
 ﻿using Geonorge.TiltaksplanApi.Domain.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Geonorge.TiltaksplanApi.Application.Models
 {
     public class ActivityViewModel : ViewModelWithValidation
     {
         public int Id { get; set; }
-        public int ActionPlanId { get; set; }
+        public int MeasureId { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

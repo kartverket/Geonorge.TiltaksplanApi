@@ -49,8 +49,8 @@ namespace Geonorge.TiltaksplanApi
         {
             services.AddCors();
             services.AddControllers();
-            services.AddSwaggerGen();
-
+            services.AddSwaggerGen(options => { options.SchemaFilter<SwaggerExcludePropertySchemaFilter>(); });
+            services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
             services.AddEntityFrameworkForMeasurePlan(Configuration);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -73,7 +73,7 @@ namespace Geonorge.TiltaksplanApi
             services.AddTransient<IActivityQuery, ActivityQuery>();
 
             // Repositories
-            services.AddScoped<IMeasureRepository, ActionPlanRepository>();
+            services.AddScoped<IMeasureRepository, MeasureRepository>();
             services.AddScoped<IActivityRepository, ActivityRepository>();
 
             // Mappers

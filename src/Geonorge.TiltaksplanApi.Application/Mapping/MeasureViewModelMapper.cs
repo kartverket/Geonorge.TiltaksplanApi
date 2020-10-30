@@ -34,7 +34,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 {
                     new MeasureTranslation
                     {
-                        Id = viewModel.ActionPlanTranslationId,
+                        Id = viewModel.MeasureTranslationId,
                         MeasureId = viewModel.Id,
                         LanguageCulture = viewModel.Culture,
                         Name = viewModel.Name,
@@ -74,7 +74,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 TrafficLight = domainModel.TrafficLight,
                 Results = translation.Results,
                 Comment = translation.Comment,
-                ActionPlanTranslationId = translation.Id,
+                MeasureTranslationId = translation.Id,
                 Culture = translation.LanguageCulture,
                 Activities = activities,
                 ValidationErrors = _validationErrorViewModelMapper

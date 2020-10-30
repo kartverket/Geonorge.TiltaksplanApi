@@ -46,7 +46,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ActionPlanId = table.Column<int>(nullable: false),
+                    MeasureId = table.Column<int>(nullable: false),
                     ImplementationStart = table.Column<DateTime>(nullable: false),
                     ImplementationEnd = table.Column<DateTime>(nullable: false),
                     Status = table.Column<int>(nullable: false)
@@ -55,8 +55,8 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Activities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Activities_Measures_ActionPlanId",
-                        column: x => x.ActionPlanId,
+                        name: "FK_Activities_Measures_MeasureId",
+                        column: x => x.MeasureId,
                         principalSchema: "dbo",
                         principalTable: "Measures",
                         principalColumn: "Id",
@@ -151,10 +151,10 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Activities_ActionPlanId",
+                name: "IX_Activities_MeasureId",
                 schema: "dbo",
                 table: "Activities",
-                column: "ActionPlanId");
+                column: "MeasureId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ActivityTranslations_ActivityId",

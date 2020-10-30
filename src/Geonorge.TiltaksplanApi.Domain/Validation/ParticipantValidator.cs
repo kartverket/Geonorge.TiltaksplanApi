@@ -1,13 +1,16 @@
 ﻿using FluentValidation;
 using Geonorge.TiltaksplanApi.Domain.Models;
+using Microsoft.Extensions.Localization;
 
 namespace Geonorge.TiltaksplanApi.Domain.Validation
 {
     public class ParticipantValidator : AbstractValidator<Participant>
     {
-        public ParticipantValidator()
+        public ParticipantValidator(IStringLocalizer<ValidationResource> localizer)
         {
-            RuleFor(participant => participant.Name).NotEmpty();
+            RuleFor(participant => participant.Name)
+                .NotEmpty()
+                .WithMessage(activity => localizer["Name"]);
         }
     }
 }

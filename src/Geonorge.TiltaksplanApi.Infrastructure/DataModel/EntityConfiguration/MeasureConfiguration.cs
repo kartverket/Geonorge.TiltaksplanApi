@@ -34,7 +34,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
             builder
                 .HasMany(measure => measure.Activities)
                 .WithOne()
-                .HasForeignKey(activity => activity.ActionPlanId)
+                .HasForeignKey(activity => activity.MeasureId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 

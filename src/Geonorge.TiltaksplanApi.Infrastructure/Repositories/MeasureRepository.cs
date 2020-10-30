@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Geonorge.TiltaksplanApi.Infrastructure.Repositories
 {
-    public class ActionPlanRepository : IMeasureRepository
+    public class MeasureRepository : IMeasureRepository
     {
         private readonly MeasurePlanContext _context;
 
-        public ActionPlanRepository(
+        public MeasureRepository(
             MeasurePlanContext context)
         {
             _context = context;
@@ -26,26 +26,28 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Repositories
         public async Task<Measure> GetByIdAsync(int id)
         {
             return await GetAll()
-                .Include(actionPlan => actionPlan.Translations)
+                .Include(measure => measure.Translations)
                     .ThenInclude(translation => translation.Language)
-                .Include(actionPlan => actionPlan.Activities)
+                .Include(measure => measure.Activities)
                     .ThenInclude(activity => activity.Participants)
-                .SingleOrDefaultAsync(actionPlan => actionPlan.Id == id);
+                .Include(measure => measure.Activities)
+                    .ThenInclude(activity => activity.Translations)
+                .SingleOrDefaultAsync(measure => measure.Id == id);
         }
 
-        public Measure Create(Measure actionPlan)
+        public Measure Create(Measure measure)
         {
-            _context.Measures.Add(actionPlan);
+            _context.Measures.Add(measure);
 
-            return actionPlan;
+            return measure;
         }
 
-        public void Delete(Measure actionPlan)
+        public void Delete(Measure measure)
         {
-            if (actionPlan == null)
+            if (measure == null)
                 return;
 
-            _context.Measures.Remove(actionPlan);
+            _context.Measures.Remove(measure);
         }
     }
 }

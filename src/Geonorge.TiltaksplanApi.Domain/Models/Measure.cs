@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Geonorge.TiltaksplanApi.Domain.Models
 {
@@ -23,8 +24,23 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
             if (TrafficLight != updated.TrafficLight)
                 TrafficLight = updated.TrafficLight;
 
-            AddCreated(Translations, updated.Translations);
-            UpdateRest(Translations, updated.Translations);
+            UpdateTranslations(updated.Translations);
+        }
+
+        private void UpdateTranslations(List<MeasureTranslation> updatedTranslations)
+        {
+            var updatedTranslation = updatedTranslations.SingleOrDefault();
+
+            if (updatedTranslation == null)
+                return;
+
+            var existingTranslation = Translations
+                .SingleOrDefault(translation => translation.LanguageCulture == updatedTranslation.LanguageCulture);
+
+            if (existingTranslation == null)
+                Translations.Add(updatedTranslation);
+            else
+                existingTranslation.Update(updatedTranslation);
         }
     }
 }

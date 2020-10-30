@@ -1,4 +1,5 @@
-﻿using Geonorge.TiltaksplanApi.Domain.Models;
+﻿using Geonorge.TiltaksplanApi.Application.Configuration;
+using Geonorge.TiltaksplanApi.Domain.Models;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -14,9 +15,10 @@ namespace Geonorge.TiltaksplanApi.Application.Models
         public TrafficLight TrafficLight { get; set; }
         public string Results { get; set; }
         public string Comment { get; set; }
+        [SwaggerIgnore]
         public List<ActivityViewModel> Activities { get; set; }
         public string Culture { get; set; }
         [JsonIgnore]
-        public int ActionPlanTranslationId { get; set; }
+        public int MeasureTranslationId { get; set; }
     }
 }
