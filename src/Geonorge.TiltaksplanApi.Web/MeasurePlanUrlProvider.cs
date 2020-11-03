@@ -7,6 +7,7 @@ using Geonorge.TiltaksplanApi.Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Configuration;
 
 namespace Geonorge.TiltaksplanApi.Web
 {
@@ -14,13 +15,16 @@ namespace Geonorge.TiltaksplanApi.Web
     {
         private readonly IActionContextAccessor _actionContextAccessor;
         private readonly IUrlHelperFactory _urlHelperFactory;
+        private readonly IConfiguration _config;
 
         public MeasurePlanUrlProvider(
             IActionContextAccessor actionContextAccessor,
-            IUrlHelperFactory urlHelperFactory)
+            IUrlHelperFactory urlHelperFactory,
+            IConfiguration config)
         {
             _actionContextAccessor = actionContextAccessor;
             _urlHelperFactory = urlHelperFactory;
+            _config = config;
         }
     
         public ExpandoObject ApiUrls()
@@ -82,7 +86,7 @@ namespace Geonorge.TiltaksplanApi.Web
 
         private string GetProtocol()
         {
-            return _actionContextAccessor.ActionContext.HttpContext.Request.Scheme;
+            return _config.GetValue<string>("Protocol");
         }
 
         private string GetHost()

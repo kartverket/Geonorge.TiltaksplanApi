@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Geonorge.TiltaksplanApi
 {
@@ -113,7 +115,7 @@ namespace Geonorge.TiltaksplanApi
 
             app.UseSwaggerUI(swagger =>
             {
-                swagger.SwaggerEndpoint("/swagger/v1/swagger.json", "Geonorge.Tiltaksplan API V1");
+                swagger.SwaggerEndpoint("/api/swagger/v1/swagger.json", "Geonorge.Tiltaksplan API V1");
             });
 
             app.UseSerilogRequestLogging();
