@@ -8,16 +8,16 @@ using System;
 namespace Geonorge.TiltaksplanApi.Web.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class SetupController : BaseController
+    [Route("[controller]")]
+    public class ConfigController : BaseController
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IUrlProvider _urlProvider;
 
-        public SetupController(
+        public ConfigController(
             IWebHostEnvironment webHostEnvironment,
             IUrlProvider urlProvider,
-            ILogger<SetupController> logger) : base(logger)
+            ILogger<ConfigController> logger) : base(logger)
         {
             _webHostEnvironment = webHostEnvironment;
             _urlProvider = urlProvider;
@@ -28,9 +28,8 @@ namespace Geonorge.TiltaksplanApi.Web.Controllers
         {
             try
             {
-                var viewModel = new SetupViewModel
+                var viewModel = new ConfigViewModel
                 {
-                    Environment = _webHostEnvironment.EnvironmentName,
                     ApiUrls = _urlProvider.ApiUrls()
                 };
 

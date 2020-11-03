@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace Geonorge.TiltaksplanApi.Web.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class ParticipantController : BaseController
     {
         private const int CacheDurationSeconds = 2592000;

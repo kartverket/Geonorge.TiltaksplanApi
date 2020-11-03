@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace Geonorge.TiltaksplanApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class MeasureController : BaseController
     {
         private readonly IMeasureQuery _measureQuery;

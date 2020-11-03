@@ -2,9 +2,8 @@
 
 namespace Geonorge.TiltaksplanApi.Application.Models
 {
-    public class SetupViewModel
+    public class ConfigViewModel
     {
-        public string Environment { get; set; }
         public ExpandoObject ApiUrls { get; set; }
     }
 }

@@ -95,6 +95,13 @@ namespace Geonorge.TiltaksplanApi
         {
             loggerFactory.AddSerilog(Log.Logger, true);
 
+            app.UseCors(options =>
+            {
+                options.AllowAnyOrigin();
+                options.AllowAnyMethod();
+                options.AllowAnyHeader();
+            });
+
             app.UseMiddleware<RequestMetricsMiddleware>();
 
             if (env.IsDevelopment())
