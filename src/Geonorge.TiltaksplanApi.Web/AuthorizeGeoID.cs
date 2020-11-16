@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -84,16 +85,22 @@ namespace Geonorge.TiltaksplanApi.Web
 
         private void GetConfig()
         {
-            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            var config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
-            .AddJsonFile($"appsettings.{environment}.json", true)
-            .Build();
+            IConfigurationRoot config;
 
-            if (config.Providers.Count() > 1)
-                _configuration = config.Providers.ElementAt(1);
-            else
-                _configuration = config.Providers.ElementAt(0);
+            if (Debugger.IsAttached) 
+            {
+                 config = new ConfigurationBuilder()
+                .AddJsonFile($"appsettings.Development.json")
+                .Build();
+            }
+            else 
+            {
+                config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+            }
+
+            _configuration = config.Providers.ElementAt(0);
         }
 
         public bool IsValidToken(string authToken)
