@@ -20,6 +20,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel
         public DbSet<Activity> Activities { get; set; }
         public DbSet<ActivityTranslation> ActivityTranslations { get; set; }
         public DbSet<Participant> Participants { get; set; }
+        public DbSet<Organization> Organizations { get; set; }
         public DbSet<Language> Languages { get; set; }
 
 
@@ -32,6 +33,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel
             builder.Entity<Activity>(ActivityConfiguration.Configure);
             builder.Entity<ActivityTranslation>(ActivityTranslationConfiguration.Configure);
             builder.Entity<Participant>(ParticipantConfiguration.Configure);
+            builder.Entity<Organization>(OrganizationConfiguration.Configure);
             builder.Entity<Language>(LanguageConfiguration.Configure);
 
             base.OnModelCreating(builder);

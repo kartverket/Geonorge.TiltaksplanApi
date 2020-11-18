@@ -26,7 +26,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
         }
 
         [HttpGet("{id:int}/{culture?}")]
-        public async Task<IActionResult> GetById(int id, string culture = "nb-NO")
+        public async Task<IActionResult> GetById(int id, string culture = null)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
         }
 
         [HttpGet("{culture?}")]
-        public async Task<IActionResult> GetAll(string culture = "nb-NO")
+        public async Task<IActionResult> GetAll(string culture = null)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
             {
                 var resultViewModel = await _measureService.CreateAsync(viewModel);
 
-                if (resultViewModel.IsValid)
+                if (resultViewModel?.IsValid ?? false)
                     return Created("", resultViewModel);
 
                 LogValidationErrors(resultViewModel);
@@ -103,7 +103,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
             {
                 var resultViewModel = await _measureService.UpdateAsync(id, viewModel);
 
-                if (resultViewModel.IsValid)
+                if (resultViewModel?.IsValid ?? false)
                     return Ok(resultViewModel);
 
                 LogValidationErrors(resultViewModel);

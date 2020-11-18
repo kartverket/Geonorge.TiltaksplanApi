@@ -14,12 +14,12 @@ using Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork;
 using Geonorge.TiltaksplanApi.Infrastructure.Repositories;
 using Geonorge.TiltaksplanApi.Web;
 using Geonorge.TiltaksplanApi.Web.Configuration;
+using Geonorge.TiltaksplanApi.Web.Extensions;
 using Geonorge.TiltaksplanApi.Web.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +27,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using System.Collections.Generic;
-using System.IO;
 
 namespace Geonorge.TiltaksplanApi
 {
@@ -63,7 +62,6 @@ namespace Geonorge.TiltaksplanApi
             services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
             services.AddTransient<IMeasureService, MeasureService>();
             services.AddTransient<IActivityService, ActivityService>();
-            services.AddTransient<IParticipantService, ParticipantService>();
 
             // Validators
             services.AddTransient<IValidator<Measure>, MeasureValidator>();
@@ -73,6 +71,7 @@ namespace Geonorge.TiltaksplanApi
             // Queries
             services.AddTransient<IMeasureQuery, MeasureQuery>();
             services.AddTransient<IActivityQuery, ActivityQuery>();
+            services.AddTransient<IOrganizationQuery, OrganizationQuery>();
 
             // Repositories
             services.AddScoped<IMeasureRepository, MeasureRepository>();
@@ -82,6 +81,7 @@ namespace Geonorge.TiltaksplanApi
             services.AddTransient<IActivityViewModelMapper, ActivityViewModelMapper>();
             services.AddTransient<IMeasureViewModelMapper, MeasureViewModelMapper>();
             services.AddTransient<IViewModelMapper<Participant, ParticipantViewModel>, ParticipantViewModelMapper>();
+            services.AddTransient<IViewModelMapper<Organization, OrganizationViewModel>, OrganizationViewModelMapper>();
             services.AddTransient<IViewModelMapper<Language, LanguageViewModel>, LanguageViewModelMapper>();
             services.AddTransient<IViewModelMapper<ValidationResult, List<string>>, ValidationErrorViewModelMapper>();
 
@@ -90,8 +90,8 @@ namespace Geonorge.TiltaksplanApi
         }
 
         public void Configure(
-            IApplicationBuilder app, 
-            IWebHostEnvironment env, 
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
             ILoggerFactory loggerFactory,
             IHostApplicationLifetime hostApplicationLifetime)
         {
@@ -106,7 +106,7 @@ namespace Geonorge.TiltaksplanApi
 
             app.UseMiddleware<RequestMetricsMiddleware>();
 
-            if (env.IsDevelopment())
+            if (env.IsLocal() || env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -115,7 +115,8 @@ namespace Geonorge.TiltaksplanApi
 
             app.UseSwaggerUI(swagger =>
             {
-                swagger.SwaggerEndpoint("/api/swagger/v1/swagger.json", "Geonorge.Tiltaksplan API V1");
+                var url = $"/{(!env.IsLocal() ? "/api" : "")}swagger/v1/swagger.json";
+                swagger.SwaggerEndpoint(url, "Geonorge.Tiltaksplan API V1");
             });
 
             app.UseSerilogRequestLogging();
@@ -133,13 +134,16 @@ namespace Geonorge.TiltaksplanApi
             hostApplicationLifetime.ApplicationStopped.Register(Log.CloseAndFlush);
         }
 
-        private static void UpdateDatabase(IApplicationBuilder app)
+        private void UpdateDatabase(IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             using var context = serviceScope.ServiceProvider.GetService<MeasurePlanContext>();
-            
+
             context.Database.Migrate();
 
+            var apiUrls = Configuration.GetSection(ApiUrlsConfiguration.SectionName).Get<ApiUrlsConfiguration>();
+            DataSeeder.SeedOrganizations(context, apiUrls.Organizations);
+            
             DataSeeder.SeedLanguages(context);
         }
     }

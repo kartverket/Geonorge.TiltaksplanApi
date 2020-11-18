@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Domain.Models;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,14 +10,20 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
     public class MeasureViewModelMapper : IMeasureViewModelMapper
     {
         private readonly IActivityViewModelMapper _activityViewModelMapper;
+        private readonly IViewModelMapper<Organization, OrganizationViewModel> _organizationViewModelMapper;
         private readonly IViewModelMapper<ValidationResult, List<string>> _validationErrorViewModelMapper;
+        private readonly string _defaultCulture;
 
         public MeasureViewModelMapper(
             IActivityViewModelMapper activityViewModelMapper,
-            IViewModelMapper<ValidationResult, List<string>> validationErrorViewModelMapper)
+            IViewModelMapper<Organization, OrganizationViewModel> organizationViewModelMapper,
+            IViewModelMapper<ValidationResult, List<string>> validationErrorViewModelMapper,
+            IConfiguration configuration)
         {
             _activityViewModelMapper = activityViewModelMapper;
+            _organizationViewModelMapper = organizationViewModelMapper;
             _validationErrorViewModelMapper = validationErrorViewModelMapper;
+            _defaultCulture = configuration.GetValue<string>("DefaultCulture");
         }
 
         public Measure MapToDomainModel(MeasureViewModel viewModel)
@@ -27,24 +34,23 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             return new Measure
             {
                 Id = viewModel.Id,
+                OwnerId = viewModel.Owner?.Id ?? 0,
                 Volume = viewModel.Volume,
                 Status = viewModel.Status,
                 TrafficLight = viewModel.TrafficLight,
+                Results = viewModel.Results,
                 Translations = new List<MeasureTranslation>
                 {
                     new MeasureTranslation
                     {
                         Id = viewModel.MeasureTranslationId,
                         MeasureId = viewModel.Id,
-                        LanguageCulture = viewModel.Culture,
                         Name = viewModel.Name,
                         Progress = viewModel.Progress,
-                        Results = viewModel.Results,
-                        Comment = viewModel.Comment
+                        Comment = viewModel.Comment,
+                        LanguageCulture = GetCulture(viewModel.Culture)
                     }
-                },
-                Activities = viewModel.Activities?
-                    .ConvertAll(activity => _activityViewModelMapper.MapToDomainModel(activity))
+                }
             };
         }
 
@@ -54,13 +60,10 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 return null;
 
             var translation = domainModel.Translations
-                .SingleOrDefault(translation => translation.LanguageCulture == culture);
-
-            if (translation == null)
-                return null;
+                .SingleOrDefault(translation => translation.LanguageCulture == GetCulture(culture));
 
             var activities = domainModel.Activities?
-                .ConvertAll(activity => _activityViewModelMapper.MapToViewModel(activity, culture));
+                .ConvertAll(activity => _activityViewModelMapper.MapToViewModel(activity, GetCulture(culture)));
 
             activities?.RemoveAll(activity => activity == null);
 
@@ -68,18 +71,21 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             {
                 Id = domainModel.Id,
                 Name = translation.Name,
-                Progress = translation.Progress,
+                Owner = _organizationViewModelMapper.MapToViewModel(domainModel.Owner),
+                Progress = translation?.Progress,
                 Volume = domainModel.Volume,
                 Status = domainModel.Status,
                 TrafficLight = domainModel.TrafficLight,
-                Results = translation.Results,
-                Comment = translation.Comment,
-                MeasureTranslationId = translation.Id,
-                Culture = translation.LanguageCulture,
+                Results = domainModel.Results,
+                Comment = translation?.Comment,
+                MeasureTranslationId = translation?.Id ?? 0,
+                Culture = translation?.LanguageCulture,
                 Activities = activities,
                 ValidationErrors = _validationErrorViewModelMapper
                     .MapToViewModel(domainModel.ValidationResult)
             };
         }
+
+        private string GetCulture(string culture) => !string.IsNullOrEmpty(culture) ? culture : _defaultCulture;
     }
 }

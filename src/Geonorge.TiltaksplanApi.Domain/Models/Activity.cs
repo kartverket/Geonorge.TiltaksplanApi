@@ -7,15 +7,20 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
     public class Activity : ValidatableEntity
     {
         public int MeasureId { get; set; }
+        public int ResponsibleAgencyId { get; set; }
+        public Organization ResponsibleAgency { get; set; }
         public DateTime ImplementationStart { get; set; }
         public DateTime ImplementationEnd { get; set; }
         public List<Participant> Participants { get; set; }
-        public ActivityStatus Status { get; set; }
+        public PlanStatus Status { get; set; }
         public List<ActivityTranslation> Translations { get; set; }
 
         public override void Update(EntityBase updatedEntity)
         {
             var updated = (Activity) updatedEntity;
+
+            if (ResponsibleAgency != null && updated.ResponsibleAgency != null)
+                ResponsibleAgency.Update(updated.ResponsibleAgency);
 
             if (ImplementationStart != updated.ImplementationStart)
                 ImplementationStart = updated.ImplementationStart;
@@ -26,7 +31,8 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
             if (Status != updated.Status)
                 Status = updated.Status;
 
-            UpdateList(Participants, updated.Participants);
+            RemoveDeleted(Participants, updated.Participants);
+            AddCreated(Participants, updated.Participants);
 
             UpdateTranslations(updated.Translations);
         }

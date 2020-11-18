@@ -5,15 +5,21 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
 {
     public class Measure : ValidatableEntity
     {
-        public int Volume { get; set; }
-        public int Status { get; set; }
-        public TrafficLight TrafficLight { get; set; }
+        public int OwnerId { get; set; }
+        public Organization Owner { get; set; }
+        public int? Volume { get; set; }
+        public PlanStatus? Status { get; set; }
+        public TrafficLight? TrafficLight { get; set; }
+        public int? Results { get; set; }
         public List<Activity> Activities { get; set; }
         public List<MeasureTranslation> Translations { get; set; }
 
         public override void Update(EntityBase updatedEntity)
         {
             var updated = (Measure) updatedEntity;
+
+            if (OwnerId != updated.OwnerId)
+                OwnerId = updated.OwnerId;
 
             if (Volume != updated.Volume)
                 Volume = updated.Volume;
@@ -23,6 +29,9 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
 
             if (TrafficLight != updated.TrafficLight)
                 TrafficLight = updated.TrafficLight;
+
+            if (Results != updated.Results)
+                Results = updated.Results;
 
             UpdateTranslations(updated.Translations);
         }

@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Domain.Models;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,15 +9,21 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
 {
     public class ActivityViewModelMapper : IActivityViewModelMapper
     {
+        private readonly IViewModelMapper<Organization, OrganizationViewModel> _organizationViewModelMapper;
         private readonly IViewModelMapper<Participant, ParticipantViewModel> _participantViewModelMapper;
         private readonly IViewModelMapper<ValidationResult, List<string>> _validationErrorViewModelMapper;
+        private readonly string _defaultCulture;
 
         public ActivityViewModelMapper(
+            IViewModelMapper<Organization, OrganizationViewModel> organizationViewModelMapper,
             IViewModelMapper<Participant, ParticipantViewModel> participantViewModelMapper,
-            IViewModelMapper<ValidationResult, List<string>> validationErrorViewModelMapper)
+            IViewModelMapper<ValidationResult, List<string>> validationErrorViewModelMapper,
+            IConfiguration configuration)
         {
+            _organizationViewModelMapper = organizationViewModelMapper;
             _participantViewModelMapper = participantViewModelMapper;
             _validationErrorViewModelMapper = validationErrorViewModelMapper;
+            _defaultCulture = configuration.GetValue<string>("DefaultCulture");
         }
 
         public Activity MapToDomainModel(ActivityViewModel viewModel)
@@ -28,6 +35,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             {
                 Id = viewModel.Id,
                 MeasureId = viewModel.MeasureId,
+                ResponsibleAgencyId = viewModel.ResponsibleAgency?.Id ?? 0,
                 ImplementationStart = viewModel.ImplementationStart,
                 ImplementationEnd = viewModel.ImplementationEnd,
                 Status = viewModel.Status,
@@ -39,7 +47,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                     {
                         Id = viewModel.ActivityTranslationId,
                         ActivityId = viewModel.Id,
-                        LanguageCulture = viewModel.Culture,
+                        LanguageCulture = GetCulture(viewModel.Culture),
                         Name = viewModel.Name,
                         Title = viewModel.Title,
                         Description = viewModel.Description
@@ -54,27 +62,27 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 return null;
 
             var translation = domainModel.Translations
-                .SingleOrDefault(translation => translation.LanguageCulture == culture);
-
-            if (translation == null)
-                return null;
+                .SingleOrDefault(translation => translation.LanguageCulture == GetCulture(culture));
 
             return new ActivityViewModel
             {
                 Id = domainModel.Id,
                 MeasureId = domainModel.MeasureId,
-                Name = translation.Name,
-                Title = translation.Title,
-                Description = translation.Description,
+                Name = translation?.Name,
+                ResponsibleAgency = _organizationViewModelMapper.MapToViewModel(domainModel.ResponsibleAgency),
+                Title = translation?.Title,
+                Description = translation?.Description,
                 ImplementationStart = domainModel.ImplementationStart,
                 ImplementationEnd = domainModel.ImplementationEnd,
                 Participants = domainModel.Participants?
                     .ConvertAll(participant => _participantViewModelMapper.MapToViewModel(participant)),
                 Status = domainModel.Status,
-                Culture = translation.LanguageCulture,
+                Culture = translation?.LanguageCulture,
                 ValidationErrors = _validationErrorViewModelMapper
                     .MapToViewModel(domainModel.ValidationResult)
             };
         }
+
+        private string GetCulture(string culture) => !string.IsNullOrEmpty(culture) ? culture : _defaultCulture;
     }
 }

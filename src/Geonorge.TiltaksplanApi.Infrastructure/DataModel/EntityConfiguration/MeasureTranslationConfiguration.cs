@@ -17,10 +17,6 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
                 .IsRequired();
 
             builder
-                .Property(measureTranslation => measureTranslation.Progress)
-                .IsRequired();
-
-            builder
                 .Property(measureTranslation => measureTranslation.LanguageCulture)
                 .IsRequired();
 

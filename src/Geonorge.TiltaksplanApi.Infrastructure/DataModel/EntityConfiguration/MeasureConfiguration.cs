@@ -13,16 +13,11 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
                 .HasKey(measure => measure.Id);
 
             builder
-                .Property(measure => measure.Volume)
-                .IsRequired();
-
-            builder
-                .Property(measure => measure.Status)
-                .IsRequired();
-
-            builder
-                .Property(measure => measure.TrafficLight)
-                .IsRequired();
+                .HasOne(measure => measure.Owner)
+                .WithOne()
+                .HasForeignKey<Measure>(measure => measure.OwnerId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .HasMany(measure => measure.Translations)

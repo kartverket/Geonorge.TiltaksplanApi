@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
 {
     [DbContext(typeof(MeasurePlanContext))]
-    [Migration("20201030101043_Initial")]
+    [Migration("20201117130737_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,12 +38,18 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                     b.Property<int>("MeasureId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ResponsibleAgencyId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MeasureId");
+
+                    b.HasIndex("ResponsibleAgencyId")
+                        .IsUnique();
 
                     b.ToTable("Activities");
                 });
@@ -103,16 +109,25 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Status")
+                    b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TrafficLight")
+                    b.Property<int?>("Results")
                         .HasColumnType("int");
 
-                    b.Property<int>("Volume")
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TrafficLight")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Volume")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId")
+                        .IsUnique();
 
                     b.ToTable("Measures");
                 });
@@ -138,10 +153,6 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Progress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Results")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MeasureId", "LanguageCulture");
@@ -149,6 +160,24 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                     b.HasIndex("LanguageCulture");
 
                     b.ToTable("MeasureTranslations");
+                });
+
+            modelBuilder.Entity("Geonorge.TiltaksplanApi.Domain.Models.Organization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("OrgNumber")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Organizations");
                 });
 
             modelBuilder.Entity("Geonorge.TiltaksplanApi.Domain.Models.Participant", b =>
@@ -164,9 +193,16 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("OrganizationId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ActivityId");
+
+                    b.HasIndex("OrganizationId")
+                        .IsUnique()
+                        .HasFilter("[OrganizationId] IS NOT NULL");
 
                     b.ToTable("Participants");
                 });
@@ -177,6 +213,12 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                         .WithMany("Activities")
                         .HasForeignKey("MeasureId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Geonorge.TiltaksplanApi.Domain.Models.Organization", "ResponsibleAgency")
+                        .WithOne()
+                        .HasForeignKey("Geonorge.TiltaksplanApi.Domain.Models.Activity", "ResponsibleAgencyId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -192,6 +234,15 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("LanguageCulture")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Geonorge.TiltaksplanApi.Domain.Models.Measure", b =>
+                {
+                    b.HasOne("Geonorge.TiltaksplanApi.Domain.Models.Organization", "Owner")
+                        .WithOne()
+                        .HasForeignKey("Geonorge.TiltaksplanApi.Domain.Models.Measure", "OwnerId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -217,6 +268,11 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                         .HasForeignKey("ActivityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Geonorge.TiltaksplanApi.Domain.Models.Organization", "Organization")
+                        .WithOne()
+                        .HasForeignKey("Geonorge.TiltaksplanApi.Domain.Models.Participant", "OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -47,8 +47,11 @@ namespace Geonorge.TiltaksplanApi.Web
             apiUrls.activity.update = GetControllerUrl(urlHelper, "Update", "Activity", new { id = 0 });
             apiUrls.activity.delete = GetControllerUrl(urlHelper, "Delete", "Activity", new { id = 0 });
 
-            apiUrls.participant = new ExpandoObject();
-            apiUrls.participant.getAll = GetControllerUrl(urlHelper, "GetAll", "Participant");
+            apiUrls.organizations = new ExpandoObject();
+            apiUrls.organizations.getAll = GetControllerUrl(urlHelper, "GetAll", "Organization");
+
+            apiUrls.options = new ExpandoObject();
+            apiUrls.options.getAll = GetControllerUrl(urlHelper, "Get", "Options");
 
             apiUrls.config = new ExpandoObject();
             apiUrls.config.get = GetControllerUrl(urlHelper, "Get", "Config");

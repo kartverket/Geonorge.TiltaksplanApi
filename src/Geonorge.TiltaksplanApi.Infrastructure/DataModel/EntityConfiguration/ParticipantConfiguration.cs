@@ -13,6 +13,11 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
                 .HasKey(participant => participant.Id);
 
             builder
+                .HasOne(participant => participant.Organization)                
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
                 .Property(participant => participant.Id)
                 .ValueGeneratedOnAdd();
 

@@ -7,11 +7,14 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
 {
     public class ParticipantViewModelMapper : IViewModelMapper<Participant, ParticipantViewModel>
     {
+        private readonly IViewModelMapper<Organization, OrganizationViewModel> _organizationViewModelMapper;
         private readonly IViewModelMapper<ValidationResult, List<string>> _validationErrorViewModelMapper;
 
         public ParticipantViewModelMapper(
+            IViewModelMapper<Organization, OrganizationViewModel> organizationViewModelMapper,
             IViewModelMapper<ValidationResult, List<string>> validationErrorViewModelMapper)
         {
+            _organizationViewModelMapper = organizationViewModelMapper;
             _validationErrorViewModelMapper = validationErrorViewModelMapper;
         }
 
@@ -24,7 +27,8 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             {
                 Id = viewModel.Id,
                 ActivityId = viewModel.ActivityId,
-                Name = viewModel.Name
+                Name = viewModel.Name,
+                OrganizationId = viewModel.OrganizationId,
             };
         }
 
@@ -33,11 +37,15 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             if (domainModel == null)
                 return null;
 
+            var organization = _organizationViewModelMapper.MapToViewModel(domainModel.Organization);
+
             return new ParticipantViewModel
             {
                 Id = domainModel.Id,
                 ActivityId = domainModel.ActivityId,
-                Name = domainModel.Name,
+                OrganizationId = domainModel.OrganizationId,
+                Name = organization?.Name ?? domainModel.Name,
+                OrgNumber = organization?.OrgNumber,
                 ValidationErrors = _validationErrorViewModelMapper
                     .MapToViewModel(domainModel.ValidationResult)
             };

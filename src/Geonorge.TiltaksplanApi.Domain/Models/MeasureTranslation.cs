@@ -5,7 +5,6 @@
         public int MeasureId { get; set; }
         public string Name { get; set; }
         public string Progress { get; set; }
-        public string Results { get; set; }
         public string Comment { get; set; }
         public string LanguageCulture { get; set; }
         public Language Language { get; set; }
@@ -19,9 +18,6 @@
 
             if (Progress != updated.Progress)
                 Progress = updated.Progress;
-
-            if (Results != updated.Results)
-                Results = updated.Results;
 
             if (Comment != updated.Comment)
                 Comment = updated.Comment;

@@ -26,6 +26,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Repositories
         public async Task<Measure> GetByIdAsync(int id)
         {
             return await GetAll()
+                .Include(measure => measure.Owner)
                 .Include(measure => measure.Translations)
                     .ThenInclude(translation => translation.Language)
                 .Include(measure => measure.Activities)

@@ -24,19 +24,42 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Organizations",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    OrgNumber = table.Column<long>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Organizations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Measures",
                 schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Volume = table.Column<int>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
-                    TrafficLight = table.Column<int>(nullable: false)
+                    OwnerId = table.Column<int>(nullable: false),
+                    Volume = table.Column<int>(nullable: true),
+                    Status = table.Column<int>(nullable: true),
+                    TrafficLight = table.Column<int>(nullable: true),
+                    Results = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Measures", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Measures_Organizations_OwnerId",
+                        column: x => x.OwnerId,
+                        principalSchema: "dbo",
+                        principalTable: "Organizations",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -47,6 +70,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MeasureId = table.Column<int>(nullable: false),
+                    ResponsibleAgencyId = table.Column<int>(nullable: false),
                     ImplementationStart = table.Column<DateTime>(nullable: false),
                     ImplementationEnd = table.Column<DateTime>(nullable: false),
                     Status = table.Column<int>(nullable: false)
@@ -61,6 +85,12 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                         principalTable: "Measures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Activities_Organizations_ResponsibleAgencyId",
+                        column: x => x.ResponsibleAgencyId,
+                        principalSchema: "dbo",
+                        principalTable: "Organizations",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -73,8 +103,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
-                    Progress = table.Column<string>(nullable: false),
-                    Results = table.Column<string>(nullable: true),
+                    Progress = table.Column<string>(nullable: true),
                     Comment = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -136,6 +165,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ActivityId = table.Column<int>(nullable: false),
+                    OrganizationId = table.Column<int>(nullable: true),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -148,6 +178,13 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                         principalTable: "Activities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Participants_Organizations_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalSchema: "dbo",
+                        principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -155,6 +192,13 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                 schema: "dbo",
                 table: "Activities",
                 column: "MeasureId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Activities_ResponsibleAgencyId",
+                schema: "dbo",
+                table: "Activities",
+                column: "ResponsibleAgencyId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ActivityTranslations_ActivityId",
@@ -169,6 +213,13 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                 column: "LanguageCulture");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Measures_OwnerId",
+                schema: "dbo",
+                table: "Measures",
+                column: "OwnerId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MeasureTranslations_LanguageCulture",
                 schema: "dbo",
                 table: "MeasureTranslations",
@@ -179,6 +230,14 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                 schema: "dbo",
                 table: "Participants",
                 column: "ActivityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Participants_OrganizationId",
+                schema: "dbo",
+                table: "Participants",
+                column: "OrganizationId",
+                unique: true,
+                filter: "[OrganizationId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -205,6 +264,10 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Measures",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "Organizations",
                 schema: "dbo");
         }
     }

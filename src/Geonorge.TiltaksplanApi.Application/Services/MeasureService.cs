@@ -1,9 +1,13 @@
 ﻿using FluentValidation;
+using Geonorge.TiltaksplanApi.Application.Exceptions;
 using Geonorge.TiltaksplanApi.Application.Mapping;
 using Geonorge.TiltaksplanApi.Application.Models;
+using Geonorge.TiltaksplanApi.Application.Queries;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork;
+using Microsoft.Extensions.Localization;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Geonorge.TiltaksplanApi.Application.Services
@@ -14,17 +18,23 @@ namespace Geonorge.TiltaksplanApi.Application.Services
         private readonly IMeasureRepository _measureRepository;
         private readonly IMeasureViewModelMapper _measureViewModelMapper;
         private readonly IValidator<Measure> _measureValidator;
+        private readonly IOrganizationQuery _organizationQuery;
+        private readonly IStringLocalizer<ExceptionResource> _localizer;
 
         public MeasureService(
             IUnitOfWorkManager uowManager,
             IMeasureRepository measureRepository,
             IMeasureViewModelMapper measureViewModelMapper,
-            IValidator<Measure> measureValidator)
+            IValidator<Measure> measureValidator,
+            IOrganizationQuery organizationQuery,
+            IStringLocalizer<ExceptionResource> localizer)
         {
             _uowManager = uowManager;
             _measureRepository = measureRepository;
             _measureViewModelMapper = measureViewModelMapper;
             _measureValidator = measureValidator;
+            _organizationQuery = organizationQuery;
+            _localizer = localizer;
         }
 
         public async Task<MeasureViewModel> CreateAsync(MeasureViewModel viewModel)
@@ -38,7 +48,10 @@ namespace Geonorge.TiltaksplanApi.Application.Services
                 await uow.SaveChangesAsync();
             }               
 
-            return _measureViewModelMapper.MapToViewModel(measure, viewModel.Culture);
+            var resultViewModel = _measureViewModelMapper.MapToViewModel(measure, viewModel.Culture);
+            await CompleteDataForViewModel(resultViewModel, measure);
+
+            return resultViewModel;
         }
 
         public async Task<MeasureViewModel> UpdateAsync(int id, MeasureViewModel viewModel)
@@ -54,16 +67,27 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             if (IsValid(measure))
                 await uow.SaveChangesAsync();
 
-            return _measureViewModelMapper.MapToViewModel(measure, viewModel.Culture);
+            var resultViewModel = _measureViewModelMapper.MapToViewModel(measure, viewModel.Culture);
+            await CompleteDataForViewModel(resultViewModel, measure);
+
+            return resultViewModel;
         }
 
         public async Task DeleteAsync(int id)
         {
             using var uow = _uowManager.GetUnitOfWork();
             var measure = await _measureRepository.GetByIdAsync(id);
-            _measureRepository.Delete(measure);
 
+            if (measure.Activities.Any())
+                throw new WorkProcessException(_localizer["CannotDeleteMeasure", measure.Id]);
+
+            _measureRepository.Delete(measure);
             await uow.SaveChangesAsync();
+        }
+
+        private async Task CompleteDataForViewModel(MeasureViewModel viewModel, Measure model)
+        {
+            viewModel.Owner = await _organizationQuery.GetByIdAsync(model.OwnerId);
         }
 
         private bool IsValid(Measure measure)

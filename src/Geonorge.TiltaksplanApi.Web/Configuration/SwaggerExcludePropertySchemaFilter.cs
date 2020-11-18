@@ -1,4 +1,4 @@
-﻿using Geonorge.TiltaksplanApi.Application.Configuration;
+﻿using Geonorge.TiltaksplanApi.Application.Attributes;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
@@ -15,7 +15,7 @@ namespace Geonorge.TiltaksplanApi.Web.Configuration
                 return;
 
             var excludedProperties = context.Type.GetProperties()
-                .Where(type => type.GetCustomAttribute<SwaggerIgnore>() != null);
+                .Where(type => type.GetCustomAttribute<SwaggerIgnoreAttribute>() != null);
 
             foreach (var excludedProperty in excludedProperties)
             {

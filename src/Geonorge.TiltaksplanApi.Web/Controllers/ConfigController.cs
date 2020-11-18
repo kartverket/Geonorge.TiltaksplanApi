@@ -11,15 +11,12 @@ namespace Geonorge.TiltaksplanApi.Web.Controllers
     [Route("[controller]")]
     public class ConfigController : BaseController
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IUrlProvider _urlProvider;
 
         public ConfigController(
-            IWebHostEnvironment webHostEnvironment,
             IUrlProvider urlProvider,
             ILogger<ConfigController> logger) : base(logger)
         {
-            _webHostEnvironment = webHostEnvironment;
             _urlProvider = urlProvider;
         }
 

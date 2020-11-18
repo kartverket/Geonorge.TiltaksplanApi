@@ -1,4 +1,5 @@
 ﻿using System;
+using Geonorge.TiltaksplanApi.Application.Exceptions;
 using Geonorge.TiltaksplanApi.Application.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,8 @@ namespace Geonorge.TiltaksplanApi.Web.Controllers
     {
         private readonly ILogger<ControllerBase> _logger;
 
-        protected BaseController(ILogger<ControllerBase> logger)
+        protected BaseController(
+            ILogger<ControllerBase> logger)
         {
             _logger = logger;
         }
@@ -24,6 +26,8 @@ namespace Geonorge.TiltaksplanApi.Web.Controllers
                 case ArgumentException _:
                 case FormatException _:
                     return BadRequest();
+                case WorkProcessException ex:
+                    return StatusCode(StatusCodes.Status422UnprocessableEntity, ex.Message);
                 case Exception _:
                     return StatusCode(StatusCodes.Status500InternalServerError);
             }

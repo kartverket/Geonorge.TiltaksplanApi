@@ -132,11 +132,17 @@
   <data name="Name" xml:space="preserve">
     <value>'Navn' må fylles ut</value>
   </data>
+  <data name="Owner" xml:space="preserve">
+    <value>'Eier' må fylles ut</value>
+  </data>
   <data name="Participants" xml:space="preserve">
     <value>Minst én deltaker må legges til</value>
   </data>
-  <data name="Progress" xml:space="preserve">
-    <value>'Fremdrift' må fylles ut</value>
+  <data name="ResponsibleAgency" xml:space="preserve">
+    <value>'Ansvarlig etat' må fylles ut</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>'Konkrete resultater' må være mellom 1 og 5</value>
   </data>
   <data name="StatusActivity" xml:space="preserve">
     <value>'Status' må fylles ut</value>

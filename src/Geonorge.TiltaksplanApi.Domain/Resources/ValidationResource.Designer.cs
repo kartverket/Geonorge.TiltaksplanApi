@@ -106,6 +106,15 @@ namespace Geonorge.TiltaksplanApi.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;Eier&apos; må fylles ut.
+        /// </summary>
+        internal static string Owner {
+            get {
+                return ResourceManager.GetString("Owner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minst én deltaker må legges til.
         /// </summary>
         internal static string Participants {
@@ -115,11 +124,20 @@ namespace Geonorge.TiltaksplanApi.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;Fremdrift&apos; må fylles ut.
+        ///   Looks up a localized string similar to &apos;Ansvarlig etat&apos; må fylles ut.
         /// </summary>
-        internal static string Progress {
+        internal static string ResponsibleAgency {
             get {
-                return ResourceManager.GetString("Progress", resourceCulture);
+                return ResourceManager.GetString("ResponsibleAgency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;Konkrete resultater&apos; må være mellom 1 og 5.
+        /// </summary>
+        internal static string Results {
+            get {
+                return ResourceManager.GetString("Results", resourceCulture);
             }
         }
         

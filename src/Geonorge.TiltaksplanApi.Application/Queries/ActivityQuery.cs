@@ -23,28 +23,32 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
 
         public async Task<IList<ActivityViewModel>> GetAllAsync(string culture)
         {
-            var actionPlans = await _context.Activities
+            var activities = await _context.Activities
+                .Include(activity => activity.ResponsibleAgency)
                 .Include(activity => activity.Translations)
                 .Include(activity => activity.Participants)
+                    .ThenInclude(participant => participant.Organization)
                 .AsNoTracking()
                 .Where(activity => activity.Translations
                     .Any(translation => translation.LanguageCulture == culture))
                 .ToListAsync();
 
-            return actionPlans
-                .ConvertAll(actionPlan => _activityViewModelMapper.MapToViewModel(actionPlan, culture));
+            return activities
+                .ConvertAll(activity => _activityViewModelMapper.MapToViewModel(activity, culture));
         }
 
         public async Task<ActivityViewModel> GetByIdAsync(int id, string culture)
         {
-            var actionPlan = await _context.Activities
+            var activity = await _context.Activities
+                .Include(activity => activity.ResponsibleAgency)
                 .Include(activity => activity.Translations)
                 .Include(activity => activity.Participants)
+                    .ThenInclude(participant => participant.Organization)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(activity => activity.Id == id && activity.Translations
                     .Any(translation => translation.LanguageCulture == culture));
 
-            return _activityViewModelMapper.MapToViewModel(actionPlan, culture);
+            return _activityViewModelMapper.MapToViewModel(activity, culture);
         }
     }
 }
