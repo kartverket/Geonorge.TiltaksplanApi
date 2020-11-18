@@ -1,14 +1,11 @@
-﻿using Geonorge.TiltaksplanApi.Application.Configuration;
-using Microsoft.AspNetCore.Http.Features;
+﻿using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -19,10 +16,8 @@ namespace Geonorge.TiltaksplanApi.Web
     public class AuthorizeGeoID : Attribute, IAuthorizationFilter
     {
 
-        private static HttpClient _httpClient = new HttpClient();
-
+        private static readonly HttpClient _httpClient = new HttpClient();
         IConfigurationProvider _configuration;
-
 
         /// <summary>  
         /// Authorize User  
@@ -34,8 +29,7 @@ namespace Geonorge.TiltaksplanApi.Web
 
             if (filterContext != null)
             {
-                Microsoft.Extensions.Primitives.StringValues authTokens;
-                filterContext.HttpContext.Request.Headers.TryGetValue("Authorization", out authTokens);
+                filterContext.HttpContext.Request.Headers.TryGetValue("Authorization", out var authTokens);
 
                 var _token = authTokens.FirstOrDefault();
 
@@ -51,7 +45,6 @@ namespace Geonorge.TiltaksplanApi.Web
                         }
                         else
                         {
-
                             filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                             filterContext.HttpContext.Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = "Not Authorized";
                             filterContext.Result = new JsonResult("NotAuthorized")
@@ -60,10 +53,9 @@ namespace Geonorge.TiltaksplanApi.Web
                                 {
                                     Status = "Error",
                                     Message = "Invalid access token"
-                                },
+                                }
                             };
                         }
-
                     }
 
                 }
@@ -103,14 +95,13 @@ namespace Geonorge.TiltaksplanApi.Web
             _configuration = config.Providers.ElementAt(0);
         }
 
-        public bool IsValidToken(string authToken)
+        private bool IsValidToken(string authToken)
         {
             string geoIdIntrospectionUrl;
             _configuration.TryGet("GeoID:IntrospectionUrl", out geoIdIntrospectionUrl);
 
             string geoIdIntrospectionCredentials;
             _configuration.TryGet("GeoID:IntrospectionCredentials", out geoIdIntrospectionCredentials);
-
 
             var byteArray = Encoding.ASCII.GetBytes(geoIdIntrospectionCredentials);
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
@@ -121,9 +112,8 @@ namespace Geonorge.TiltaksplanApi.Web
             if (result.IsSuccessStatusCode)
             {
                 var rawResponse = result.Content.ReadAsStringAsync().Result;
-
-
                 var jsonResponse = JObject.Parse(rawResponse);
+
                 if (jsonResponse["active"] != null)
                 {
                     var isActiveToken = jsonResponse["active"].Value<bool>();

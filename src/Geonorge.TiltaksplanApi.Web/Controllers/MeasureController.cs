@@ -66,6 +66,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
             }
         }
 
+        [AuthorizeGeoID]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] MeasureViewModel viewModel)
         {
@@ -94,6 +95,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
             }
         }
 
+        [AuthorizeGeoID]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] MeasureViewModel viewModel)
         {
@@ -122,6 +124,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
             }
         }
 
+        [AuthorizeGeoID]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -143,13 +146,6 @@ namespace Geonorge.TiltaksplanApi.Controllers
 
                 throw;
             }
-        }
-
-        [AuthorizeGeoID]
-        [HttpGet("authorizedgeoid")]
-        public IActionResult TestIfAuthorizedGeoID()
-        {
-            return StatusCode(200);
         }
     }
 }
