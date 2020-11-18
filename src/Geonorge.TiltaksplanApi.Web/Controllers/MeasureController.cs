@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Application.Queries;
 using Geonorge.TiltaksplanApi.Application.Services;
+using Geonorge.TiltaksplanApi.Web;
 using Geonorge.TiltaksplanApi.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -142,6 +143,13 @@ namespace Geonorge.TiltaksplanApi.Controllers
 
                 throw;
             }
+        }
+
+        [AuthorizeGeoID]
+        [HttpGet("authorizedgeoid")]
+        public IActionResult TestIfAuthorizedGeoID()
+        {
+            return StatusCode(200);
         }
     }
 }
