@@ -5,27 +5,22 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 
-namespace Geonorge.TiltaksplanApi.Web
+namespace Geonorge.TiltaksplanApi.Web.Configuration
 {
     public class AuthorizeGeoID : Attribute, IAuthorizationFilter
     {
-
+        private IConfiguration _configuration;
         private static readonly HttpClient _httpClient = new HttpClient();
-        IConfigurationProvider _configuration;
 
-        /// <summary>  
-        /// Authorize User  
-        /// </summary>  
-        /// <returns></returns>  
         public void OnAuthorization(AuthorizationFilterContext filterContext)
         {
-            GetConfig();
+            SetConfig();
 
             if (filterContext != null)
             {
@@ -35,18 +30,13 @@ namespace Geonorge.TiltaksplanApi.Web
 
                 if (_token != null)
                 {
-                    string authToken = _token.Replace("Bearer ", ""); ;
+                    var authToken = _token.Replace("Bearer ", "");
                     if (authToken != null)
                     {
-                        if (IsValidToken(authToken))
-                        {
-
-                            return;
-                        }
-                        else
+                        if (!IsValidToken(authToken))
                         {
                             filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                            filterContext.HttpContext.Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = "Not Authorized";
+                            filterContext.HttpContext.Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = "Not authorized";
                             filterContext.Result = new JsonResult("NotAuthorized")
                             {
                                 Value = new
@@ -57,57 +47,44 @@ namespace Geonorge.TiltaksplanApi.Web
                             };
                         }
                     }
-
                 }
                 else
                 {
                     filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.ExpectationFailed;
-                    filterContext.HttpContext.Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = "Please Provide access token";
-                    filterContext.Result = new JsonResult("Please Provide access token")
+                    filterContext.HttpContext.Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = "Please provide access token";
+                    filterContext.Result = new JsonResult("Please provide access token")
                     {
                         Value = new
                         {
                             Status = "Error",
-                            Message = "Please Provide access token"
+                            Message = "Please provide access token"
                         },
                     };
                 }
             }
         }
 
-        private void GetConfig()
+        private void SetConfig()
         {
-            IConfigurationRoot config;
+            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-            if (Debugger.IsAttached) 
-            {
-                 config = new ConfigurationBuilder()
-                .AddJsonFile($"appsettings.Development.json")
-                .Build();
-            }
-            else 
-            {
-                config = new ConfigurationBuilder()
+            _configuration = new ConfigurationBuilder()
+                .SetBasePath(Environment.CurrentDirectory)
                 .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{environmentName}.json", true)
+                .AddEnvironmentVariables()
                 .Build();
-            }
-
-            _configuration = config.Providers.ElementAt(0);
         }
 
         private bool IsValidToken(string authToken)
         {
-            string geoIdIntrospectionUrl;
-            _configuration.TryGet("GeoID:IntrospectionUrl", out geoIdIntrospectionUrl);
+            var geoIDConfig = _configuration.GetSection(GeoIDConfiguration.SectionName).Get<GeoIDConfiguration>();
 
-            string geoIdIntrospectionCredentials;
-            _configuration.TryGet("GeoID:IntrospectionCredentials", out geoIdIntrospectionCredentials);
-
-            var byteArray = Encoding.ASCII.GetBytes(geoIdIntrospectionCredentials);
-            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            var byteArray = Encoding.ASCII.GetBytes(geoIDConfig.IntrospectionCredentials);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
             var formUrlEncodedContent = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("token", authToken) });
-            HttpResponseMessage result = _httpClient.PostAsync(geoIdIntrospectionUrl, formUrlEncodedContent).Result;
+            using var result = _httpClient.PostAsync(geoIDConfig.IntrospectionUrl, formUrlEncodedContent).Result;
 
             if (result.IsSuccessStatusCode)
             {

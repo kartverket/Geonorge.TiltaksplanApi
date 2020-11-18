@@ -87,6 +87,7 @@ namespace Geonorge.TiltaksplanApi
 
             // Configuration
             services.Configure<ApiUrlsConfiguration>(Configuration.GetSection(ApiUrlsConfiguration.SectionName));
+            services.Configure<GeoIDConfiguration>(Configuration.GetSection(GeoIDConfiguration.SectionName));
         }
 
         public void Configure(
@@ -115,7 +116,7 @@ namespace Geonorge.TiltaksplanApi
 
             app.UseSwaggerUI(swagger =>
             {
-                var url = $"/{(!env.IsLocal() ? "/api" : "")}swagger/v1/swagger.json";
+                var url = $"{(!env.IsLocal() ? "/api" : "")}/swagger/v1/swagger.json";
                 swagger.SwaggerEndpoint(url, "Geonorge.Tiltaksplan API V1");
             });
 

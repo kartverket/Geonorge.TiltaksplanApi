@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Application.Queries;
 using Geonorge.TiltaksplanApi.Application.Services;
-using Geonorge.TiltaksplanApi.Web;
+using Geonorge.TiltaksplanApi.Web.Configuration;
 using Geonorge.TiltaksplanApi.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -66,7 +66,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
             }
         }
 
-        [AuthorizeGeoID]
+        //[AuthorizeGeoID]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] MeasureViewModel viewModel)
         {
@@ -95,7 +95,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
             }
         }
 
-        [AuthorizeGeoID]
+        //[AuthorizeGeoID]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] MeasureViewModel viewModel)
         {
@@ -124,7 +124,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
             }
         }
 
-        [AuthorizeGeoID]
+        //[AuthorizeGeoID]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
