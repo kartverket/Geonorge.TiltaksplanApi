@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using Geonorge.TiltaksplanApi.Application.Models;
+using Geonorge.TiltaksplanApi.Domain.Extensions;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using System.Collections.Generic;
 
@@ -27,7 +28,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             {
                 Id = viewModel.Id,
                 ActivityId = viewModel.ActivityId,
-                Name = viewModel.Name,
+                Name = viewModel.Name.ToModel(),
                 OrganizationId = viewModel.OrganizationId,
             };
         }

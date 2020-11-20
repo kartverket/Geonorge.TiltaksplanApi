@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Application.Queries;
 using Geonorge.TiltaksplanApi.Application.Services;
-using Geonorge.TiltaksplanApi.Web.Configuration;
 using Geonorge.TiltaksplanApi.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -135,7 +134,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
             {
                 await _activityService.DeleteAsync(id);
 
-                return new NoContentResult();
+                return Ok(id);
             }
             catch (Exception exception)
             {

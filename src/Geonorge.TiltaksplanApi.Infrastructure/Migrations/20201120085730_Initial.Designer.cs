@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
 {
     [DbContext(typeof(MeasurePlanContext))]
-    [Migration("20201117130737_Initial")]
+    [Migration("20201120085730_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

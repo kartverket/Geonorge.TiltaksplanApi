@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Geonorge.TiltaksplanApi.Domain.Extensions
 {
-    public static class SelectOptionExtensions
+    public static class IEnumerableExtensions
     {
         public static IEnumerable<SelectOption> ToSelectOptions(this int[] values)
         {

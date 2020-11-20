@@ -25,7 +25,8 @@ namespace Geonorge.TiltaksplanApi.Web.Controllers
                 {
                     PlanStatuses = EnumExtensions.EnumToSelectOptions<PlanStatus>(),
                     TrafficLights = EnumExtensions.EnumToSelectOptions<TrafficLight>(),
-                    MeasureVolume = Constants.MeasureVolume.ToSelectOptions()
+                    MeasureVolume = Constants.MeasureVolume.ToSelectOptions(),
+                    MeasureResults = Constants.MeasureResults.ToSelectOptions()
                 };
 
                 return Ok(viewModel);

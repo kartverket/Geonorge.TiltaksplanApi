@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Application.Queries;
 using Geonorge.TiltaksplanApi.Application.Services;
-using Geonorge.TiltaksplanApi.Web.Configuration;
 using Geonorge.TiltaksplanApi.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,14 +14,17 @@ namespace Geonorge.TiltaksplanApi.Controllers
     public class MeasureController : BaseController
     {
         private readonly IMeasureQuery _measureQuery;
+        private readonly IActivityQuery _activityQuery;
         private readonly IMeasureService _measureService;
 
         public MeasureController(
             IMeasureQuery measureQuery,
+            IActivityQuery activityQuery,
             IMeasureService measureService,
             ILogger<MeasureController> logger) : base(logger)
         {
             _measureQuery = measureQuery;
+            _activityQuery = activityQuery;
             _measureService = measureService;
         }
 
@@ -52,6 +54,26 @@ namespace Geonorge.TiltaksplanApi.Controllers
             try
             {
                 var viewModels = await _measureQuery.GetAllAsync(culture);
+
+                return Ok(viewModels);
+            }
+            catch (Exception exception)
+            {
+                var result = HandleException(exception);
+
+                if (result != null)
+                    return result;
+
+                throw;
+            }
+        }
+
+        [HttpGet("{id:int}/Activities/{culture?}")]
+        public async Task<IActionResult> GetActivitiesByMeasureId(int id, string culture = null)
+        {
+            try
+            {
+                var viewModels = await _activityQuery.GetByMeasureIdAsync(id, culture);
 
                 return Ok(viewModels);
             }
@@ -135,7 +157,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
             {
                 await _measureService.DeleteAsync(id);
 
-                return new NoContentResult();
+                return Ok(id);
             }
             catch (Exception exception)
             {
