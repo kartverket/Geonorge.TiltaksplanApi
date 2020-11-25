@@ -17,6 +17,12 @@ namespace Geonorge.TiltaksplanApi.Web.Configuration
     {
         private IConfiguration _configuration;
         private static readonly HttpClient _httpClient = new HttpClient();
+        private readonly string  _roles;
+
+        public AuthorizeGeoID(string roles = "") 
+        {
+            _roles = roles;
+        }
 
         public void OnAuthorization(AuthorizationFilterContext filterContext)
         {
@@ -95,7 +101,54 @@ namespace Geonorge.TiltaksplanApi.Web.Configuration
                 {
                     var isActiveToken = jsonResponse["active"].Value<bool>();
                     if (isActiveToken)
+                    {
+                        if (!string.IsNullOrEmpty(_roles))
+                        {
+                            if (jsonResponse["username"] != null)
+                            {
+                                var username = jsonResponse["username"].Value<string>();
+                                if (!string.IsNullOrWhiteSpace(username))
+                                {
+                                    if (username.Contains('@'))
+                                        username = username.Split('@')[0];
+                                }
+
+                                return UserHasValidRoles(username, authToken);
+                            }
+                        }
+
                         return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool UserHasValidRoles(string username, string accessToken)
+        {
+            var geoIDConfig = _configuration.GetSection(GeoIDConfiguration.SectionName).Get<GeoIDConfiguration>();
+
+            var geoIdUserInfoUrl = geoIDConfig.BaatAuthzApiUrl + "info/" + username;
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            HttpResponseMessage result = _httpClient.GetAsync(geoIdUserInfoUrl).Result;
+
+            if (result.IsSuccessStatusCode)
+            {
+                var rawResponse = result.Content.ReadAsStringAsync().Result;
+
+                var jsonResponse = JObject.Parse(rawResponse);
+                if (jsonResponse["baat_services"] != null)
+                {
+                    var requiredRoles = _roles.Split(",").ToList();
+                    var userRoles =  jsonResponse["baat_services"].ToObject<List<string>>();
+                    foreach(var requiredRole in requiredRoles) 
+                    {
+                        if (userRoles.Contains(requiredRole))
+                            return true;
+                    }
                 }
             }
 
