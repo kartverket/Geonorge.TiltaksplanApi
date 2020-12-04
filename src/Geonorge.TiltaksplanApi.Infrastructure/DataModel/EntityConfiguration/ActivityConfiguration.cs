@@ -13,13 +13,6 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
                 .HasKey(activity => activity.Id);
 
             builder
-                .HasOne(activity => activity.ResponsibleAgency)                
-                .WithOne()
-                .HasForeignKey<Activity>(activity => activity.ResponsibleAgencyId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder
                 .Property(activity => activity.ImplementationStart)
                 .IsRequired();
 

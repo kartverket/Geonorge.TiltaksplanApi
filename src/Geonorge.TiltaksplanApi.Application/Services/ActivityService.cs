@@ -17,19 +17,22 @@ namespace Geonorge.TiltaksplanApi.Application.Services
         private readonly IActivityViewModelMapper _activityViewModelMapper;
         private readonly IValidator<Activity> _activityValidator;
         private readonly IOrganizationQuery _organizationQuery;
+        private readonly IMeasureQuery _measureQuery;
 
         public ActivityService(
             IUnitOfWorkManager uowManager,
             IActivityRepository activityRepository,
             IActivityViewModelMapper activityViewModelMapper,
             IValidator<Activity> activityValidator,
-            IOrganizationQuery organizationQuery)
+            IOrganizationQuery organizationQuery,
+            IMeasureQuery measureQuery)
         {
             _uowManager = uowManager;
             _activityRepository = activityRepository;
             _activityViewModelMapper = activityViewModelMapper;
             _activityValidator = activityValidator;
             _organizationQuery = organizationQuery;
+            _measureQuery = measureQuery;
         }
 
         public async Task<ActivityViewModel> CreateAsync(ActivityViewModel viewModel)
@@ -44,7 +47,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             }
 
             var resultViewModel = _activityViewModelMapper.MapToViewModel(activity, viewModel.Culture);
-            await CompleteDataForViewModel(resultViewModel, activity);
+            await CompleteDataForViewModel(resultViewModel);
 
             return resultViewModel;
         }
@@ -63,7 +66,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
                 await uow.SaveChangesAsync();
 
             var resultViewModel = _activityViewModelMapper.MapToViewModel(activity, viewModel.Culture);
-            await CompleteDataForViewModel(resultViewModel, activity);
+            await CompleteDataForViewModel(resultViewModel);
 
             return resultViewModel;
         }
@@ -77,11 +80,15 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             await uow.SaveChangesAsync();
         }
 
-        private async Task CompleteDataForViewModel(ActivityViewModel viewModel, Activity model)
+        private async Task CompleteDataForViewModel(ActivityViewModel viewModel)
         {
             var organizations = await _organizationQuery.GetAllAsync();
-            viewModel.ResponsibleAgency = organizations
-                .SingleOrDefault(organization => organization.Id == model.ResponsibleAgencyId);
+
+            if (viewModel.MeasureId > 0)
+            {
+                var measure = await _measureQuery.GetByIdAsync(viewModel.MeasureId, null);
+                viewModel.ResponsibleAgency = measure?.Owner;
+            }
 
             viewModel.Participants.ForEach(participant =>
             {

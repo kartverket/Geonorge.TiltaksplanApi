@@ -9,10 +9,6 @@ namespace Geonorge.TiltaksplanApi.Domain.Validation
     {
         public ActivityValidator(IStringLocalizer<ValidationResource> localizer)
         {
-            RuleFor(activity => activity.ResponsibleAgencyId)
-                .Must(responsibleAgencyId => responsibleAgencyId > 0)
-                .WithMessage(activity => localizer["ResponsibleAgency"]);
-
             RuleFor(activity => activity.ImplementationStart)
                 .Must(BeValidDate)
                 .WithMessage(activity => localizer["ImplementationStart"]);

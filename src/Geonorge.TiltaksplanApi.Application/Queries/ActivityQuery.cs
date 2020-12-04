@@ -12,19 +12,21 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
     {
         private readonly MeasurePlanContext _context;
         private readonly IActivityViewModelMapper _activityViewModelMapper;
+        private readonly IMeasureQuery _measureQuery;
 
         public ActivityQuery(
             MeasurePlanContext context,
-            IActivityViewModelMapper activityViewModelMapper)
+            IActivityViewModelMapper activityViewModelMapper,
+            IMeasureQuery measureQuery)
         {
             _context = context;
             _activityViewModelMapper = activityViewModelMapper;
+            _measureQuery = measureQuery;
         }
 
         public async Task<IList<ActivityViewModel>> GetAllAsync(string culture)
         {
             var activities = await _context.Activities
-                .Include(activity => activity.ResponsibleAgency)
                 .Include(activity => activity.Translations)
                 .Include(activity => activity.Participants)
                     .ThenInclude(participant => participant.Organization)
@@ -33,14 +35,18 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
                     .Any(translation => translation.LanguageCulture == culture))
                 .ToListAsync();
 
-            return activities
+            var activityViewModels = activities
                 .ConvertAll(activity => _activityViewModelMapper.MapToViewModel(activity, culture));
+
+            foreach (var viewModel in activityViewModels)
+                await CompleteDataForViewModel(viewModel);
+
+            return activityViewModels;
         }
 
         public async Task<ActivityViewModel> GetByIdAsync(int id, string culture)
         {
             var activity = await _context.Activities
-                .Include(activity => activity.ResponsibleAgency)
                 .Include(activity => activity.Translations)
                 .Include(activity => activity.Participants)
                     .ThenInclude(participant => participant.Organization)
@@ -48,13 +54,16 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
                 .SingleOrDefaultAsync(activity => activity.Id == id && activity.Translations
                     .Any(translation => translation.LanguageCulture == culture));
 
-            return _activityViewModelMapper.MapToViewModel(activity, culture);
+            var activityViewModel = _activityViewModelMapper.MapToViewModel(activity, culture);
+
+            await CompleteDataForViewModel(activityViewModel);
+
+            return activityViewModel;
         }
 
         public async Task<List<ActivityViewModel>> GetByMeasureIdAsync(int measureId, string culture)
         {
             var activities = await _context.Activities
-                .Include(activity => activity.ResponsibleAgency)
                 .Include(activity => activity.Translations)
                 .Include(activity => activity.Participants)
                     .ThenInclude(participant => participant.Organization)
@@ -63,8 +72,22 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
                     .Any(translation => translation.LanguageCulture == culture))
                 .ToListAsync();
 
-            return activities
+            var activityViewModels = activities
                 .ConvertAll(activity => _activityViewModelMapper.MapToViewModel(activity, culture));
+
+            foreach (var viewModel in activityViewModels)
+                await CompleteDataForViewModel(viewModel);
+
+            return activityViewModels;
+        }
+
+        private async Task CompleteDataForViewModel(ActivityViewModel viewModel)
+        {
+            if (viewModel.MeasureId == 0)
+                return;
+
+            var measure = await _measureQuery.GetByIdAsync(viewModel.MeasureId, null);
+            viewModel.ResponsibleAgency = measure?.Owner;
         }
     }
 }

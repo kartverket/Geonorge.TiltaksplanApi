@@ -26,7 +26,6 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Repositories
         public async Task<Activity> GetByIdAsync(int id)
         {
             return await GetAll()
-                .Include(activity => activity.ResponsibleAgency)
                 .Include(activity => activity.Translations)
                     .ThenInclude(translation => translation.Language)
                 .Include(activity => activity.Participants)
