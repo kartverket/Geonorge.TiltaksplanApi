@@ -27,6 +27,8 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
 
         public async Task<IList<MeasureViewModel>> GetAllAsync(string culture)
         {
+            var cult = GetCulture(culture);
+
             var measures = await _context.Measures
                 .Include(measure => measure.Owner)
                 .Include(measure => measure.Translations)
@@ -36,15 +38,21 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
                     .ThenInclude(activity => activity.Participants)
                 .AsNoTracking()
                 .Where(measure => measure.Translations
-                    .Any(translation => translation.LanguageCulture == GetCulture(culture)))
+                    .Any(translation => translation.LanguageCulture == GetCulture(cult)))
                 .ToListAsync();
 
-            return measures
-                .ConvertAll(measure => _measureViewModelMapper.MapToViewModel(measure, culture));
+            var viewModels = measures
+                .ConvertAll(measure => _measureViewModelMapper.MapToViewModel(measure, cult));
+
+            viewModels.ForEach(CompleteDataForViewModel);
+
+            return viewModels;
         }
 
         public async Task<MeasureViewModel> GetByIdAsync(int id, string culture)
         {
+            var cult = GetCulture(culture);
+
             var measure = await _context.Measures
                 .Include(measure => measure.Owner)
                 .Include(measure => measure.Translations)
@@ -54,9 +62,19 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
                     .ThenInclude(activity => activity.Participants)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(measure => measure.Id == id && 
-                    measure.Translations.Any(translation => translation.LanguageCulture == GetCulture(culture)));
+                    measure.Translations.Any(translation => translation.LanguageCulture == cult));
 
-            return _measureViewModelMapper.MapToViewModel(measure, culture);
+            var viewModel = _measureViewModelMapper.MapToViewModel(measure, cult);
+
+            CompleteDataForViewModel(viewModel);
+
+            return viewModel;
+        }
+
+        private void CompleteDataForViewModel(MeasureViewModel viewModel)
+        {
+            viewModel.Activities
+                .ForEach(activity => activity.ResponsibleAgency = viewModel.Owner);
         }
 
         private string GetCulture(string culture) => !string.IsNullOrEmpty(culture) ? culture : _defaultCulture;
