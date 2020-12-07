@@ -17,10 +17,6 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
                 .IsRequired();
 
             builder
-                .Property(activityTranslation => activityTranslation.Title)
-                .IsRequired();
-
-            builder
                 .Property(activityTranslation => activityTranslation.LanguageCulture)
                 .IsRequired();
 

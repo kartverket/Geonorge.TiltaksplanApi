@@ -12,10 +12,6 @@ namespace Geonorge.TiltaksplanApi.Domain.Validation
                 .NotEmpty()
                 .WithMessage(activity => localizer["Name"]);
 
-            RuleFor(activityTranslation => activityTranslation.Title)
-                .NotEmpty()
-                .WithMessage(activity => localizer["Title"]);
-
             RuleFor(activityTranslation => activityTranslation.LanguageCulture)
                 .NotEmpty()
                 .WithMessage(activity => localizer["LanguageCulture"]);

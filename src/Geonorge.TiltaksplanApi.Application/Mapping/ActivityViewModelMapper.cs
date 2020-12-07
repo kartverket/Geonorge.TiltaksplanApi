@@ -48,7 +48,6 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                         ActivityId = viewModel.Id,
                         LanguageCulture = GetCulture(viewModel.Culture),
                         Name = viewModel.Name,
-                        Title = viewModel.Title,
                         Description = viewModel.Description
                     }
                 }
@@ -68,7 +67,6 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 Id = domainModel.Id,
                 MeasureId = domainModel.MeasureId,
                 Name = translation?.Name,
-                Title = translation?.Title,
                 Description = translation?.Description,
                 ImplementationStart = domainModel.ImplementationStart,
                 ImplementationEnd = domainModel.ImplementationEnd,

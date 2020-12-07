@@ -12,7 +12,6 @@ namespace Geonorge.TiltaksplanApi.Domain.Attributes
         public LocalizedDescriptionAttribute(
             string resourceKey)
         {
-            
             _resource = new ResourceManager("Geonorge.TiltaksplanApi.Domain.Resources.EnumResource", typeof(EnumResource).Assembly);
             _resourceKey = resourceKey;
         }

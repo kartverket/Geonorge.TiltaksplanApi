@@ -57,6 +57,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             var update = _activityViewModelMapper.MapToDomainModel(viewModel);
 
             using var uow = _uowManager.GetUnitOfWork();
+            
             var activity = await _activityRepository
                 .GetByIdAsync(id);
 
@@ -74,6 +75,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
         public async Task DeleteAsync(int id)
         {
             using var uow = _uowManager.GetUnitOfWork();
+
             var activity = await _activityRepository.GetByIdAsync(id);
             _activityRepository.Delete(activity);
 
