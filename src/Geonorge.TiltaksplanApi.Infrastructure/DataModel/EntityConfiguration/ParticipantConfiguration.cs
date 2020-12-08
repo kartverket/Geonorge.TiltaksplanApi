@@ -14,7 +14,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
 
             builder
                 .HasOne(participant => participant.Organization)                
-                .WithOne()
+                .WithMany()
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
