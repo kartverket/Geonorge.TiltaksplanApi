@@ -5,6 +5,7 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
 {
     public class Measure : ValidatableEntity
     {
+        public int No { get; set; }
         public int OwnerId { get; set; }
         public Organization Owner { get; set; }
         public int? Volume { get; set; }
@@ -17,6 +18,9 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
         public override void Update(EntityBase updatedEntity)
         {
             var updated = (Measure) updatedEntity;
+
+            if (No != updated.No)
+                No = updated.No;
 
             if (OwnerId != updated.OwnerId)
                 OwnerId = updated.OwnerId;

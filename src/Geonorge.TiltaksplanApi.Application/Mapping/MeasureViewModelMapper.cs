@@ -35,6 +35,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             {
                 Id = viewModel.Id,
                 OwnerId = viewModel.Owner?.Id ?? 0,
+                No = viewModel.No,
                 Volume = viewModel.Volume,
                 Status = viewModel.Status,
                 TrafficLight = viewModel.TrafficLight,
@@ -70,6 +71,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             return new MeasureViewModel
             {
                 Id = domainModel.Id,
+                No = domainModel.No,
                 Name = translation.Name,
                 Owner = _organizationViewModelMapper.MapToViewModel(domainModel.Owner),
                 Progress = translation?.Progress,

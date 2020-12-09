@@ -35,6 +35,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             {
                 Id = viewModel.Id,
                 MeasureId = viewModel.MeasureId,
+                No = viewModel.No,
                 ImplementationStart = viewModel.ImplementationStart,
                 ImplementationEnd = viewModel.ImplementationEnd,
                 Status = viewModel.Status,
@@ -66,6 +67,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
             {
                 Id = domainModel.Id,
                 MeasureId = domainModel.MeasureId,
+                No = domainModel.No,
                 Name = translation?.Name,
                 Description = translation?.Description,
                 ImplementationStart = domainModel.ImplementationStart,

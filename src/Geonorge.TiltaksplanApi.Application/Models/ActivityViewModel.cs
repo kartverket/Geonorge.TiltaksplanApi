@@ -9,6 +9,7 @@ namespace Geonorge.TiltaksplanApi.Application.Models
     {
         public int Id { get; set; }
         public int MeasureId { get; set; }
+        public int No { get; set; }
         public string Name { get; set; }
         public OrganizationViewModel ResponsibleAgency { get; set; }
         public string Description { get; set; }

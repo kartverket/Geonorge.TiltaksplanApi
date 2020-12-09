@@ -13,6 +13,11 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
                 .HasKey(activity => activity.Id);
 
             builder
+                .Property(activity => activity.No)
+                .HasDefaultValue(0)
+                .IsRequired();
+
+            builder
                 .Property(activity => activity.ImplementationStart)
                 .IsRequired();
 

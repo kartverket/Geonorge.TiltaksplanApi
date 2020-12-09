@@ -8,6 +8,7 @@ namespace Geonorge.TiltaksplanApi.Application.Models
     public class MeasureViewModel : ViewModelWithValidation
     {
         public int Id { get; set; }
+        public int No { get; set; }
         public string Name { get; set; }
         public OrganizationViewModel Owner { get; set; }
         public string Progress { get; set; }

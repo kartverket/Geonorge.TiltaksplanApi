@@ -13,6 +13,11 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
                 .HasKey(measure => measure.Id);
 
             builder
+                .Property(measure => measure.No)
+                .HasDefaultValue(0)
+                .IsRequired();
+
+            builder
                 .HasOne(measure => measure.Owner)
                 .WithOne()
                 .HasForeignKey<Measure>(measure => measure.OwnerId)

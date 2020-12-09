@@ -7,6 +7,7 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
     public class Activity : ValidatableEntity
     {
         public int MeasureId { get; set; }
+        public int No { get; set; }
         public DateTime ImplementationStart { get; set; }
         public DateTime ImplementationEnd { get; set; }
         public List<Participant> Participants { get; set; }
@@ -16,6 +17,9 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
         public override void Update(EntityBase updatedEntity)
         {
             var updated = (Activity) updatedEntity;
+
+            if (No != updated.No)
+                No = updated.No;
 
             if (ImplementationStart != updated.ImplementationStart)
                 ImplementationStart = updated.ImplementationStart;
