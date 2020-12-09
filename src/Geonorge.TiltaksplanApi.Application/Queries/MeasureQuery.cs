@@ -39,6 +39,7 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
                 .AsNoTracking()
                 .Where(measure => measure.Translations
                     .Any(translation => translation.LanguageCulture == GetCulture(cult)))
+                .OrderBy(measure => measure.No)
                 .ToListAsync();
 
             var viewModels = measures

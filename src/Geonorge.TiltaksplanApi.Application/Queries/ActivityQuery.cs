@@ -39,6 +39,7 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
                 .AsNoTracking()
                 .Where(activity => activity.Translations
                     .Any(translation => translation.LanguageCulture == cult))
+                .OrderBy(activity => activity.No)
                 .ToListAsync();
 
             var viewModels = activities
@@ -80,6 +81,7 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
                 .AsNoTracking()
                 .Where(activity => activity.MeasureId == measureId && activity.Translations
                     .Any(translation => translation.LanguageCulture == cult))
+                .OrderBy(activity => activity.No)
                 .ToListAsync();
 
             var viewModels = activities

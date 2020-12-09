@@ -64,7 +64,9 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 .SingleOrDefault(translation => translation.LanguageCulture == GetCulture(culture));
 
             var activities = domainModel.Activities?
-                .ConvertAll(activity => _activityViewModelMapper.MapToViewModel(activity, GetCulture(culture)));
+                .ConvertAll(activity => _activityViewModelMapper.MapToViewModel(activity, GetCulture(culture)))
+                .OrderBy(activity => activity.No)
+                .ToList();
 
             activities?.RemoveAll(activity => activity == null);
 
