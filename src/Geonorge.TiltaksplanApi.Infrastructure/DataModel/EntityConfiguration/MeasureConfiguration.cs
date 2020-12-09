@@ -19,8 +19,8 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
 
             builder
                 .HasOne(measure => measure.Owner)
-                .WithOne()
-                .HasForeignKey<Measure>(measure => measure.OwnerId)
+                .WithMany()
+                .HasForeignKey(measure => measure.OwnerId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.NoAction);
 
