@@ -7,6 +7,7 @@ using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork;
 using Microsoft.Extensions.Localization;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,6 +45,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             if (IsValid(measure))
             {
                 using var uow = _uowManager.GetUnitOfWork();
+                measure.LastUpdated = DateTime.Now;
                 _measureRepository.Create(measure);
                 await uow.SaveChangesAsync();
             }               
@@ -65,7 +67,10 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             measure.Update(update);
 
             if (IsValid(measure))
+            {
+                measure.LastUpdated = DateTime.Now;
                 await uow.SaveChangesAsync();
+            }
 
             var resultViewModel = _measureViewModelMapper.MapToViewModel(measure, viewModel.Culture);
             await CompleteDataForViewModel(resultViewModel, measure);

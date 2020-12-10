@@ -13,6 +13,7 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
         public List<Participant> Participants { get; set; }
         public PlanStatus Status { get; set; }
         public List<ActivityTranslation> Translations { get; set; }
+        public DateTime LastUpdated { get; set; }
 
         public override void Update(EntityBase updatedEntity)
         {

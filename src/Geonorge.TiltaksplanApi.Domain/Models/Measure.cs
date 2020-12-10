@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Geonorge.TiltaksplanApi.Domain.Models
@@ -14,6 +15,7 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
         public int? Results { get; set; }
         public List<Activity> Activities { get; set; }
         public List<MeasureTranslation> Translations { get; set; }
+        public DateTime LastUpdated { get; set; }
 
         public override void Update(EntityBase updatedEntity)
         {

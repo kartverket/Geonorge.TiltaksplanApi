@@ -20,5 +20,6 @@ namespace Geonorge.TiltaksplanApi.Application.Models
         public string Culture { get; set; }
         [JsonIgnore]
         public int ActivityTranslationId { get; set; }
+        public DateTime LastUpdated { get; set; }
     }
 }

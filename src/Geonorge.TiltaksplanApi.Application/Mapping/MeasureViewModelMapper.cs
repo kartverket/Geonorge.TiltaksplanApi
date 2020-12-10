@@ -85,6 +85,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 MeasureTranslationId = translation?.Id ?? 0,
                 Culture = translation?.LanguageCulture,
                 Activities = activities,
+                LastUpdated = domainModel.LastUpdated,
                 ValidationErrors = _validationErrorViewModelMapper
                     .MapToViewModel(domainModel.ValidationResult)
             };

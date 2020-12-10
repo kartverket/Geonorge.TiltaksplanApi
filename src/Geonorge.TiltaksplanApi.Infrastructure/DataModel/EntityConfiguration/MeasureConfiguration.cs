@@ -1,6 +1,7 @@
 ﻿using Geonorge.TiltaksplanApi.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
 {
@@ -37,6 +38,11 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
                 .HasForeignKey(activity => activity.MeasureId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Property(measure => measure.LastUpdated)
+                .IsRequired()
+                .HasDefaultValue(DateTime.Now);
 
             builder
                 .Property(measure => measure.Id)

@@ -76,6 +76,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                     .ConvertAll(participant => _participantViewModelMapper.MapToViewModel(participant)),
                 Status = domainModel.Status,
                 Culture = translation?.LanguageCulture,
+                LastUpdated = domainModel.LastUpdated,
                 ValidationErrors = _validationErrorViewModelMapper
                     .MapToViewModel(domainModel.ValidationResult)
             };

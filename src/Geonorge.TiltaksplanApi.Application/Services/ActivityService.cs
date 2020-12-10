@@ -5,6 +5,7 @@ using Geonorge.TiltaksplanApi.Application.Queries;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,6 +43,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             if (IsValid(activity))
             {
                 using var uow = _uowManager.GetUnitOfWork();
+                activity.LastUpdated = DateTime.Now;
                 _activityRepository.Create(activity);
                 await uow.SaveChangesAsync();
             }
@@ -64,7 +66,10 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             activity.Update(update);
 
             if (IsValid(activity))
+            {
+                activity.LastUpdated = DateTime.Now;
                 await uow.SaveChangesAsync();
+            }
 
             var resultViewModel = _activityViewModelMapper.MapToViewModel(activity, viewModel.Culture);
             await CompleteDataForViewModel(resultViewModel);

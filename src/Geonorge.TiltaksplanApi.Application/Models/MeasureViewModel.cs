@@ -1,5 +1,6 @@
 ﻿using Geonorge.TiltaksplanApi.Application.Attributes;
 using Geonorge.TiltaksplanApi.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -22,5 +23,6 @@ namespace Geonorge.TiltaksplanApi.Application.Models
         public string Culture { get; set; }
         [JsonIgnore]
         public int MeasureTranslationId { get; set; }
+        public DateTime LastUpdated { get; set; }
     }
 }
