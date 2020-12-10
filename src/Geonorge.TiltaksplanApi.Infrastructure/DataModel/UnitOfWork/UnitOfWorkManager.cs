@@ -5,12 +5,12 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork
 {
     public class UnitOfWorkManager : IUnitOfWorkManager
     {
-        private readonly ActionPlanContext _rootContext;
+        private readonly MeasurePlanContext _rootContext;
         private readonly ILogger<UnitOfWorkManager> _logger;
         private int _requestCount;
 
         public UnitOfWorkManager(
-            ActionPlanContext rootContext,
+            MeasurePlanContext rootContext,
             ILogger<UnitOfWorkManager> logger)
         {
             _rootContext = rootContext;

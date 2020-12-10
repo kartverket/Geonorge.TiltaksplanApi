@@ -1,7 +1,7 @@
 ﻿using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,36 +9,43 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Repositories
 {
     public class ActivityRepository : IActivityRepository
     {
-        private readonly ActionPlanContext _context;
+        private readonly MeasurePlanContext _context;
 
-        public ActivityRepository(ActionPlanContext context)
+        public ActivityRepository(
+            MeasurePlanContext context)
         {
             _context = context;
         }
 
         public IQueryable<Activity> GetAll()
         {
-            return _context.Activities;
+            return _context.Activities
+                .AsQueryable();
         }
 
-        public Task<Activity> GetByIdAsync(int id)
+        public async Task<Activity> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await GetAll()
+                .Include(activity => activity.Translations)
+                    .ThenInclude(translation => translation.Language)
+                .Include(activity => activity.Participants)
+                    .ThenInclude(participant => participant.Organization)
+                .SingleOrDefaultAsync(activity => activity.Id == id);
         }
 
-        public Task CreateAsync(Activity domainObject)
+        public Activity Create(Activity activity)
         {
-            throw new NotImplementedException();
+            _context.Activities.Add(activity);
+
+            return activity;
         }
 
-        public Task DeleteAsync(int id)
+        public void Delete(Activity activity)
         {
-            throw new NotImplementedException();
-        }
+            if (activity == null)
+                return;
 
-        public Task UpdateAsync(int id, Activity domainObject)
-        {
-            throw new NotImplementedException();
+            _context.Activities.Remove(activity);
         }
     }
 }

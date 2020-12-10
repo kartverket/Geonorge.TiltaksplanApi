@@ -10,20 +10,19 @@ namespace Geonorge.TiltaksplanApi.Web.Configuration
 {
     public static class EntityFrameworkConfiguration
     {
-        public static IServiceCollection AddEntityFrameworkForActionPlan(this IServiceCollection services, IConfigurationRoot configuration)
+        public static IServiceCollection AddEntityFrameworkForMeasurePlan(this IServiceCollection services, IConfigurationRoot configuration)
         {
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<ActionPlanContext>(options =>
-                    options.UseSqlServer(configuration["EntityFramework:ActionPlanContext:ConnectionString"], builder =>
-                        builder.MigrationsAssembly("Geonorge.TiltaksplanApi.Infrastructure")));
+            services.AddDbContext<MeasurePlanContext>(options =>
+                options.UseSqlServer(configuration["EntityFramework:MeasurePlanContext:ConnectionString"], builder =>
+                    builder.MigrationsAssembly("Geonorge.TiltaksplanApi.Infrastructure")));
 
             return services;
         }
     }
 
-    internal class ActionPlanContextFactory : IDesignTimeDbContextFactory<ActionPlanContext>
+    internal class MeasureContextFactory : IDesignTimeDbContextFactory<MeasurePlanContext>
     {
-        public ActionPlanContext CreateDbContext(string[] args)
+        public MeasurePlanContext CreateDbContext(string[] args)
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -32,11 +31,11 @@ namespace Geonorge.TiltaksplanApi.Web.Configuration
                 .AddEnvironmentVariables()
                 .Build();
 
-            var optionsBuilder = new DbContextOptionsBuilder<ActionPlanContext>()
-                .UseSqlServer(configuration["EntityFramework:ActionPlanContext:ConnectionString"], builder =>
+            var optionsBuilder = new DbContextOptionsBuilder<MeasurePlanContext>()
+                .UseSqlServer(configuration["EntityFramework:MeasurePlanContext:ConnectionString"], builder =>
                     builder.MigrationsAssembly("Geonorge.TiltaksplanApi.Infrastructure"));
 
-            return new ActionPlanContext(optionsBuilder.Options);
+            return new MeasurePlanContext(optionsBuilder.Options);
         }
     }
 }

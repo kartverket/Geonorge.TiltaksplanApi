@@ -9,10 +9,10 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork
         private readonly ILogger _logger;
         private bool _disposed;
 
-        public ActionPlanContext Context { get; }
+        public MeasurePlanContext Context { get; }
         public bool IsRoot { get; }
 
-        internal UnitOfWork(ActionPlanContext context, ILogger logger, bool isRoot)
+        internal UnitOfWork(MeasurePlanContext context, ILogger logger, bool isRoot)
         {
             Context = context;
             _logger = logger;
