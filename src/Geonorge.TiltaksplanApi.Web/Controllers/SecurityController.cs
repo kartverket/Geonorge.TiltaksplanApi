@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Geonorge.TiltaksplanApi.Web.Controllers
 {
-    [Route("api/authzinfo")]
+    [Route("authzinfo")]
     [ApiController]
     public class SecurityController : ControllerBase
     {
