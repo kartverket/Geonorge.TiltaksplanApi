@@ -62,6 +62,7 @@ namespace Geonorge.TiltaksplanApi
             services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
             services.AddTransient<IMeasureService, MeasureService>();
             services.AddTransient<IActivityService, ActivityService>();
+            services.AddTransient<ISecurityService, SecurityService>();
 
             // Validators
             services.AddTransient<IValidator<Measure>, MeasureValidator>();
