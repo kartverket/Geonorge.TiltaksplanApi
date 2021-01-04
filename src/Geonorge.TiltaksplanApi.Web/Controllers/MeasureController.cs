@@ -17,19 +17,16 @@ namespace Geonorge.TiltaksplanApi.Controllers
         private readonly IMeasureQuery _measureQuery;
         private readonly IActivityQuery _activityQuery;
         private readonly IMeasureService _measureService;
-        private readonly ISecurityService _securityService;
 
         public MeasureController(
             IMeasureQuery measureQuery,
             IActivityQuery activityQuery,
             IMeasureService measureService,
-            ISecurityService securityService,
             ILogger<MeasureController> logger) : base(logger)
         {
             _measureQuery = measureQuery;
             _activityQuery = activityQuery;
             _measureService = measureService;
-            _securityService = securityService;
         }
 
         [HttpGet("{id:int}/{culture?}")]
@@ -57,8 +54,6 @@ namespace Geonorge.TiltaksplanApi.Controllers
         {
             try
             {
-                //UserViewModel userInfo = _securityService.GetUserInfo(HttpContext);
-
                 var viewModels = await _measureQuery.GetAllAsync(culture);
 
                 return Ok(viewModels);

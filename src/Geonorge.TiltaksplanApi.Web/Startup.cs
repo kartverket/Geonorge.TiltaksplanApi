@@ -6,6 +6,8 @@ using Geonorge.TiltaksplanApi.Application.Mapping;
 using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Application.Queries;
 using Geonorge.TiltaksplanApi.Application.Services;
+using Geonorge.TiltaksplanApi.Application.Services.Authorization;
+using Geonorge.TiltaksplanApi.Application.Services.Authorization.GeoID;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
 using Geonorge.TiltaksplanApi.Domain.Validation;
@@ -25,8 +27,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Serilog;
 using System.Collections.Generic;
+using Serilog;
 
 namespace Geonorge.TiltaksplanApi
 {
@@ -51,8 +53,8 @@ namespace Geonorge.TiltaksplanApi
             services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(options => { options.SchemaFilter<SwaggerExcludePropertySchemaFilter>(); });
-            services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
             services.AddEntityFrameworkForMeasurePlan(Configuration);
+            services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -62,7 +64,9 @@ namespace Geonorge.TiltaksplanApi
             services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
             services.AddTransient<IMeasureService, MeasureService>();
             services.AddTransient<IActivityService, ActivityService>();
-            services.AddTransient<ISecurityService, SecurityService>();
+            services.AddTransient<IGeoIDService, GeoIDService>();
+            services.AddTransient<IAuthorizationService, AuthorizationService>();
+            services.AddTransient<IConfigService, ConfigService>();
 
             // Validators
             services.AddTransient<IValidator<Measure>, MeasureValidator>();

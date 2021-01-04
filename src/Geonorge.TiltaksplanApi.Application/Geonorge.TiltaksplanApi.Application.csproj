@@ -23,6 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\AppTextResource.en-US.resx">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\AppTextResource.nb-NO.resx">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\ExceptionResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionResource.Designer.cs</LastGenOutput>

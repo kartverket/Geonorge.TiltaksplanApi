@@ -1,4 +1,4 @@
-﻿namespace Geonorge.TiltaksplanApi.Web.Configuration
+﻿namespace Geonorge.TiltaksplanApi.Application.Services.Authorization.GeoID
 {
     public class GeoIDConfiguration
     {
