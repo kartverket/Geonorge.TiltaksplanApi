@@ -1,6 +1,7 @@
 ﻿using System;
 using Geonorge.TiltaksplanApi.Application.Exceptions;
 using Geonorge.TiltaksplanApi.Application.Models;
+using Geonorge.TiltaksplanApi.Application.Services.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -26,6 +27,8 @@ namespace Geonorge.TiltaksplanApi.Web.Controllers
                 case ArgumentException _:
                 case FormatException _:
                     return BadRequest();
+                case AuthorizationException ex:
+                    return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
                 case WorkProcessException ex:
                     return StatusCode(StatusCodes.Status422UnprocessableEntity, ex.Message);
                 case Exception _:

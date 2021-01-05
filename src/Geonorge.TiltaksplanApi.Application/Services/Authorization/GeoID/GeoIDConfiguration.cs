@@ -1,4 +1,4 @@
-﻿namespace Geonorge.TiltaksplanApi.Web.Configuration
+﻿namespace Geonorge.TiltaksplanApi.Application.Services.Authorization.GeoID
 {
     public class GeoIDConfiguration
     {
@@ -6,5 +6,6 @@
         public string IntrospectionUrl { get; set; }
         public string IntrospectionCredentials { get; set; }
         public string BaatAuthzApiUrl { get; set; }
+        public string BaatAuthzApiCredentials { get; set; }
     }
 }

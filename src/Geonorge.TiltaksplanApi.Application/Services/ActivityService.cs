@@ -2,6 +2,7 @@
 using Geonorge.TiltaksplanApi.Application.Mapping;
 using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Application.Queries;
+using Geonorge.TiltaksplanApi.Application.Services.Authorization;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork;
@@ -19,6 +20,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
         private readonly IValidator<Activity> _activityValidator;
         private readonly IOrganizationQuery _organizationQuery;
         private readonly IMeasureQuery _measureQuery;
+        private readonly IAuthorizationService _authorizationService;
 
         public ActivityService(
             IUnitOfWorkManager uowManager,
@@ -26,7 +28,8 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             IActivityViewModelMapper activityViewModelMapper,
             IValidator<Activity> activityValidator,
             IOrganizationQuery organizationQuery,
-            IMeasureQuery measureQuery)
+            IMeasureQuery measureQuery,
+            IAuthorizationService authorizationService)
         {
             _uowManager = uowManager;
             _activityRepository = activityRepository;
@@ -34,10 +37,13 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             _activityValidator = activityValidator;
             _organizationQuery = organizationQuery;
             _measureQuery = measureQuery;
+            _authorizationService = authorizationService;
         }
 
         public async Task<ActivityViewModel> CreateAsync(ActivityViewModel viewModel)
         {
+            await _authorizationService.AuthorizeActivity(UserActivity.CreateActivity, viewModel.MeasureId);
+
             var activity = _activityViewModelMapper.MapToDomainModel(viewModel);
 
             if (IsValid(activity))
@@ -56,6 +62,8 @@ namespace Geonorge.TiltaksplanApi.Application.Services
 
         public async Task<ActivityViewModel> UpdateAsync(int id, ActivityViewModel viewModel)
         {
+            await _authorizationService.AuthorizeActivity(UserActivity.UpdateActivity, viewModel.MeasureId);
+
             var update = _activityViewModelMapper.MapToDomainModel(viewModel);
 
             using var uow = _uowManager.GetUnitOfWork();
@@ -78,10 +86,13 @@ namespace Geonorge.TiltaksplanApi.Application.Services
         }
 
         public async Task DeleteAsync(int id)
-        {
+        {          
             using var uow = _uowManager.GetUnitOfWork();
 
             var activity = await _activityRepository.GetByIdAsync(id);
+
+            await _authorizationService.AuthorizeActivity(UserActivity.DeleteActivity, activity.MeasureId);
+
             _activityRepository.Delete(activity);
 
             await uow.SaveChangesAsync();

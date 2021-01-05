@@ -8,5 +8,6 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
     {
         Task<IList<MeasureViewModel>> GetAllAsync(string culture);
         Task<MeasureViewModel> GetByIdAsync(int id, string culture);
+        Task<bool> HasOwnership(int id, long orgNumber);
     }
 }

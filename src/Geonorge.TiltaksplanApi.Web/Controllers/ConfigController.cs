@@ -1,6 +1,4 @@
-﻿using Geonorge.TiltaksplanApi.Application;
-using Geonorge.TiltaksplanApi.Application.Models;
-using Microsoft.AspNetCore.Hosting;
+﻿using Geonorge.TiltaksplanApi.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,13 +9,13 @@ namespace Geonorge.TiltaksplanApi.Web.Controllers
     [Route("[controller]")]
     public class ConfigController : BaseController
     {
-        private readonly IUrlProvider _urlProvider;
+        private readonly IConfigService _configService;
 
         public ConfigController(
-            IUrlProvider urlProvider,
+            IConfigService configService,
             ILogger<ConfigController> logger) : base(logger)
         {
-            _urlProvider = urlProvider;
+            _configService = configService;
         }
 
         [HttpGet]
@@ -25,12 +23,9 @@ namespace Geonorge.TiltaksplanApi.Web.Controllers
         {
             try
             {
-                var viewModel = new ConfigViewModel
-                {
-                    ApiUrls = _urlProvider.ApiUrls()
-                };
+                var config = _configService.Get();
 
-                return Ok(viewModel);
+                return Ok(config);
             }
             catch (Exception exception)
             {

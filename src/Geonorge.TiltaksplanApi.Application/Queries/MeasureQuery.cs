@@ -72,6 +72,19 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
             return viewModel;
         }
 
+        public async Task<bool> HasOwnership(int id, long orgNumber)
+        {
+            var measure = await _context.Measures
+                .Include(measure => measure.Owner)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(measure => measure.Id == id);
+
+            if (measure == null)
+                return false;
+
+            return measure.Owner.OrgNumber == orgNumber;
+        }
+
         private void CompleteDataForViewModel(MeasureViewModel viewModel)
         {
             viewModel.Activities
