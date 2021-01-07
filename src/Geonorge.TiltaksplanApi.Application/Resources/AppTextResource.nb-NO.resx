@@ -120,7 +120,16 @@
   <data name="Activity" xml:space="preserve">
     <value>Aktivitet</value>
   </data>
+  <data name="ActivityPlan" xml:space="preserve">
+    <value>Handlingsplan</value>
+  </data>
   <data name="Measure" xml:space="preserve">
     <value>Tiltak</value>
+  </data>
+  <data name="MeasureActivitiesDescription" xml:space="preserve">
+    <value>For å støtte opp under Geodatastrategien, er det utarbeidet en handlingsplan hvor en rekke tiltak er beskrevet. For hvert tiltak er det definert ulike aktiviteter som skal realisere tiltaket. Her finner du en oversikt over alle tiltakene og tilhørende aktiviteter</value>
+  </data>
+  <data name="MeasureActivitiesTitle" xml:space="preserve">
+    <value>Tiltakplanenes aktiviteter</value>
   </data>
 </root>
