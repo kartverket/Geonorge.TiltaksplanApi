@@ -11,7 +11,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
     {
         private readonly IUrlProvider _urlProvider;
         
-        private static readonly ResourceManager _resourceManager =
+        private static readonly ResourceManager _appTextResourceManager =
             new ResourceManager($"{Assembly.GetExecutingAssembly().GetName().Name}.resources.AppTextResource", typeof(AppTextResource).Assembly);
 
         private static readonly List<CultureInfo> _supportedCultures = new List<CultureInfo>
@@ -35,12 +35,12 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             };
         }
 
-        private List<TranslationViewModel> GetTranslations()
+        private static List<TranslationViewModel> GetTranslations()
         {
             return _supportedCultures
                 .Select(culture =>
                 {
-                    var resourceSet = _resourceManager.GetResourceSet(culture, true, false);
+                    var resourceSet = _appTextResourceManager.GetResourceSet(culture, true, false);
                     var enumerator = resourceSet.GetEnumerator();
                     var texts = new Dictionary<string, string>();
 
