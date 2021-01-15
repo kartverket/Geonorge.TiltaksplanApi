@@ -40,6 +40,9 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
             if (Results != updated.Results)
                 Results = updated.Results;
 
+            if (InfoUrl != updated.InfoUrl)
+                InfoUrl = updated.InfoUrl;
+
             UpdateTranslations(updated.Translations);
         }
 
