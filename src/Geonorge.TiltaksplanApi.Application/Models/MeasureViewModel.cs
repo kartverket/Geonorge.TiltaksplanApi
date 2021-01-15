@@ -23,6 +23,7 @@ namespace Geonorge.TiltaksplanApi.Application.Models
         public string Culture { get; set; }
         [JsonIgnore]
         public int MeasureTranslationId { get; set; }
+        public string InfoUrl { get; set; }
         public DateTime LastUpdated { get; set; }
     }
 }
