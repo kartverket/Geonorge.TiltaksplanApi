@@ -129,14 +129,26 @@
   <data name="btnCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="btnDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="btnEditReport" xml:space="preserve">
+    <value>Edit report</value>
+  </data>
   <data name="btnSave" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Comment</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
   <data name="End" xml:space="preserve">
     <value>End</value>
+  </data>
+  <data name="labelNoActivites" xml:space="preserve">
+    <value>No activites is created for this Measure</value>
   </data>
   <data name="labelNumber" xml:space="preserve">
     <value>Number</value>

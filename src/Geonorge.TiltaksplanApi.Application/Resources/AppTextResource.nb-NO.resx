@@ -129,11 +129,26 @@
   <data name="btnCancel" xml:space="preserve">
     <value>Avbryt</value>
   </data>
+  <data name="btnDelete" xml:space="preserve">
+    <value>Slett</value>
+  </data>
+  <data name="btnEditReport" xml:space="preserve">
+    <value>Rediger rapport</value>
+  </data>
   <data name="btnSave" xml:space="preserve">
     <value>Lagre</value>
   </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Kommentar</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Beskrivelse</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>Slutt</value>
+  </data>
+  <data name="labelNoActivities" xml:space="preserve">
+    <value>Ingen aktiviteter er lagt til enda</value>
   </data>
   <data name="labelNumber" xml:space="preserve">
     <value>Nummer</value>
@@ -164,9 +179,6 @@
   </data>
   <data name="Results" xml:space="preserve">
     <value>Konkrete resultater</value>
-  </data>
-  <data name="Slutt" xml:space="preserve">
-    <value>Slutt</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
