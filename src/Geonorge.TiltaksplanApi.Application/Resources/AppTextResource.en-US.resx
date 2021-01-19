@@ -123,6 +123,24 @@
   <data name="ActivityPlan" xml:space="preserve">
     <value>Activity plan</value>
   </data>
+  <data name="Breadcrumb" xml:space="preserve">
+    <value>You are here:</value>
+  </data>
+  <data name="btnCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="btnSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="labelNumber" xml:space="preserve">
+    <value>Number</value>
+  </data>
   <data name="Measure" xml:space="preserve">
     <value>Measure</value>
   </data>
@@ -131,5 +149,47 @@
   </data>
   <data name="MeasureActivitiesTitle" xml:space="preserve">
     <value>Activities for the action plans</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Owner" xml:space="preserve">
+    <value>Owner</value>
+  </data>
+  <data name="OwnsBy" xml:space="preserve">
+    <value>Owns by</value>
+  </data>
+  <data name="Participants" xml:space="preserve">
+    <value>Participants</value>
+  </data>
+  <data name="ReportLink" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Realized Results</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="statusCloser" xml:space="preserve">
+    <value>Final phase</value>
+  </data>
+  <data name="statusDone" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="statusInprogress" xml:space="preserve">
+    <value>In progress</value>
+  </data>
+  <data name="statusInvestigation" xml:space="preserve">
+    <value>Investigating</value>
+  </data>
+  <data name="statusStartup" xml:space="preserve">
+    <value>Start up</value>
+  </data>
+  <data name="TrafficLight" xml:space="preserve">
+    <value>Traffic Light</value>
+  </data>
+  <data name="Volume" xml:space="preserve">
+    <value>Volume</value>
   </data>
 </root>
