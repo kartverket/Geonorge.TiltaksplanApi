@@ -129,6 +129,9 @@
   <data name="btnCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="btnCreateActivity" xml:space="preserve">
+    <value>Create activity</value>
+  </data>
   <data name="btnDelete" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -153,6 +156,9 @@
   <data name="labelNumber" xml:space="preserve">
     <value>Number</value>
   </data>
+  <data name="lastUpdated" xml:space="preserve">
+    <value>Last updated</value>
+  </data>
   <data name="Measure" xml:space="preserve">
     <value>Measure</value>
   </data>
@@ -174,8 +180,14 @@
   <data name="Participants" xml:space="preserve">
     <value>Participants</value>
   </data>
+  <data name="progressReportTitle" xml:space="preserve">
+    <value>Progress reporting</value>
+  </data>
   <data name="ReportLink" xml:space="preserve">
     <value>Details</value>
+  </data>
+  <data name="ReportLinkClose" xml:space="preserve">
+    <value>Close</value>
   </data>
   <data name="Results" xml:space="preserve">
     <value>Realized Results</value>

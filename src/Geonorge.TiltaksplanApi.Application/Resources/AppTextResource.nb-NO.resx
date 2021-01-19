@@ -129,6 +129,9 @@
   <data name="btnCancel" xml:space="preserve">
     <value>Avbryt</value>
   </data>
+  <data name="btnCreateActivity" xml:space="preserve">
+    <value>Opprett aktivitet</value>
+  </data>
   <data name="btnDelete" xml:space="preserve">
     <value>Slett</value>
   </data>
@@ -153,6 +156,9 @@
   <data name="labelNumber" xml:space="preserve">
     <value>Nummer</value>
   </data>
+  <data name="lastUpdated" xml:space="preserve">
+    <value>Sist oppdatert</value>
+  </data>
   <data name="Measure" xml:space="preserve">
     <value>Tiltak</value>
   </data>
@@ -174,8 +180,14 @@
   <data name="Participants" xml:space="preserve">
     <value>Deltakere</value>
   </data>
+  <data name="progressReportTitle" xml:space="preserve">
+    <value>Rapportering av fremdrift</value>
+  </data>
   <data name="ReportLink" xml:space="preserve">
     <value>Se rapporten</value>
+  </data>
+  <data name="ReportLinkClose" xml:space="preserve">
+    <value>Lukk rapporten</value>
   </data>
   <data name="Results" xml:space="preserve">
     <value>Konkrete resultater</value>
