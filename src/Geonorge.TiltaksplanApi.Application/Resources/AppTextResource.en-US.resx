@@ -150,6 +150,9 @@
   <data name="End" xml:space="preserve">
     <value>End</value>
   </data>
+  <data name="infoLinkMeasure" xml:space="preserve">
+    <value>Measure Information</value>
+  </data>
   <data name="labelNoActivites" xml:space="preserve">
     <value>No activites is created for this Measure</value>
   </data>

@@ -150,6 +150,9 @@
   <data name="End" xml:space="preserve">
     <value>Slutt</value>
   </data>
+  <data name="infoLinkMeasure" xml:space="preserve">
+    <value>Informasjon om tiltaket</value>
+  </data>
   <data name="labelNoActivities" xml:space="preserve">
     <value>Ingen aktiviteter er lagt til enda</value>
   </data>
