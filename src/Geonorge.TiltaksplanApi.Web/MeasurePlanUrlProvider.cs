@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Geonorge.TiltaksplanApi.Application;
+using Geonorge.TiltaksplanApi.Domain.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;

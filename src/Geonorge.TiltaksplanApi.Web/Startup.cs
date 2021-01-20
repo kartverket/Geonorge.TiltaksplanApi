@@ -29,6 +29,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using Serilog;
+using System.Linq;
+using Microsoft.OpenApi.Models;
 
 namespace Geonorge.TiltaksplanApi
 {
@@ -52,7 +54,39 @@ namespace Geonorge.TiltaksplanApi
         {
             services.AddCors();
             services.AddControllers();
-            services.AddSwaggerGen(options => { options.SchemaFilter<SwaggerExcludePropertySchemaFilter>(); });
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SchemaFilter<SwaggerExcludePropertySchemaFilter>();
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "Fyll inn \"Bearer\" [space] og en token i tekstfeltet under. Eksempel: \"Bearer b990274d-2082-34a5-9768-02b396f98d8d\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                });
+            });
+
             services.AddEntityFrameworkForMeasurePlan(Configuration);
             services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
 
@@ -149,7 +183,7 @@ namespace Geonorge.TiltaksplanApi
 
             var apiUrls = Configuration.GetSection(ApiUrlsConfiguration.SectionName).Get<ApiUrlsConfiguration>();
             DataSeeder.SeedOrganizations(context, apiUrls.Organizations);
-            
+
             DataSeeder.SeedLanguages(context);
         }
     }

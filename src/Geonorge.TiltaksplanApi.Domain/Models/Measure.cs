@@ -15,6 +15,7 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
         public int? Results { get; set; }
         public List<Activity> Activities { get; set; }
         public List<MeasureTranslation> Translations { get; set; }
+        public string InfoUrl { get; set; }
         public DateTime LastUpdated { get; set; }
 
         public override void Update(EntityBase updatedEntity)
@@ -38,6 +39,9 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
 
             if (Results != updated.Results)
                 Results = updated.Results;
+
+            if (InfoUrl != updated.InfoUrl)
+                InfoUrl = updated.InfoUrl;
 
             UpdateTranslations(updated.Translations);
         }

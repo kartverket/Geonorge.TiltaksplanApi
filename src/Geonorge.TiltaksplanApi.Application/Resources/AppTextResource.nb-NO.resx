@@ -120,7 +120,103 @@
   <data name="Activity" xml:space="preserve">
     <value>Aktivitet</value>
   </data>
+  <data name="ActivityPlan" xml:space="preserve">
+    <value>Handlingsplan</value>
+  </data>
+  <data name="Breadcrumb" xml:space="preserve">
+    <value>Du er her:</value>
+  </data>
+  <data name="btnCancel" xml:space="preserve">
+    <value>Avbryt</value>
+  </data>
+  <data name="btnCreateActivity" xml:space="preserve">
+    <value>Opprett aktivitet</value>
+  </data>
+  <data name="btnDelete" xml:space="preserve">
+    <value>Slett</value>
+  </data>
+  <data name="btnEditReport" xml:space="preserve">
+    <value>Rediger rapport</value>
+  </data>
+  <data name="btnSave" xml:space="preserve">
+    <value>Lagre</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Kommentar</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Beskrivelse</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>Slutt</value>
+  </data>
+  <data name="infoLinkMeasure" xml:space="preserve">
+    <value>Informasjon om tiltaket</value>
+  </data>
+  <data name="labelNoActivities" xml:space="preserve">
+    <value>Ingen aktiviteter er lagt til enda</value>
+  </data>
+  <data name="labelNumber" xml:space="preserve">
+    <value>Nummer</value>
+  </data>
+  <data name="lastUpdated" xml:space="preserve">
+    <value>Sist oppdatert</value>
+  </data>
   <data name="Measure" xml:space="preserve">
     <value>Tiltak</value>
+  </data>
+  <data name="MeasureActivitiesDescription" xml:space="preserve">
+    <value>For å støtte opp under Geodatastrategien, er det utarbeidet en handlingsplan hvor en rekke tiltak er beskrevet. For hvert tiltak er det definert ulike aktiviteter som skal realisere tiltaket. Her finner du en oversikt over alle tiltakene og tilhørende aktiviteter</value>
+  </data>
+  <data name="MeasureActivitiesTitle" xml:space="preserve">
+    <value>Tiltakplanenes aktiviteter</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Navn</value>
+  </data>
+  <data name="Owner" xml:space="preserve">
+    <value>Eier</value>
+  </data>
+  <data name="OwnsBy" xml:space="preserve">
+    <value>Eies av</value>
+  </data>
+  <data name="Participants" xml:space="preserve">
+    <value>Deltakere</value>
+  </data>
+  <data name="progressReportTitle" xml:space="preserve">
+    <value>Rapportering av fremdrift</value>
+  </data>
+  <data name="ReportLink" xml:space="preserve">
+    <value>Se rapporten</value>
+  </data>
+  <data name="ReportLinkClose" xml:space="preserve">
+    <value>Lukk rapporten</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Konkrete resultater</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="statusCloser" xml:space="preserve">
+    <value>Avsluttende fase</value>
+  </data>
+  <data name="statusDone" xml:space="preserve">
+    <value>Gjennomført</value>
+  </data>
+  <data name="statusInprogress" xml:space="preserve">
+    <value>I prosess</value>
+  </data>
+  <data name="statusInvestigation" xml:space="preserve">
+    <value>Utredning</value>
+  </data>
+  <data name="statusStartup" xml:space="preserve">
+    <value>Oppstart</value>
+  </data>
+  <data name="TrafficLight" xml:space="preserve">
+    <value>Trafikklys</value>
+  </data>
+  <data name="Volume" xml:space="preserve">
+    <value>Volum</value>
   </data>
 </root>

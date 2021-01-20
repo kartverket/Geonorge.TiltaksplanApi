@@ -23,7 +23,6 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Language> Languages { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.HasDefaultSchema("dbo");

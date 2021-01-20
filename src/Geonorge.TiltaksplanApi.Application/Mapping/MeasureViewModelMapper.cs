@@ -40,6 +40,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 Status = viewModel.Status,
                 TrafficLight = viewModel.TrafficLight,
                 Results = viewModel.Results,
+                InfoUrl = viewModel.InfoUrl,
                 Translations = new List<MeasureTranslation>
                 {
                     new MeasureTranslation
@@ -85,6 +86,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 MeasureTranslationId = translation?.Id ?? 0,
                 Culture = translation?.LanguageCulture,
                 Activities = activities,
+                InfoUrl = domainModel.InfoUrl,
                 LastUpdated = domainModel.LastUpdated,
                 ValidationErrors = _validationErrorViewModelMapper
                     .MapToViewModel(domainModel.ValidationResult)
