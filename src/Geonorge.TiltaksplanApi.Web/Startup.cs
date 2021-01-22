@@ -31,6 +31,8 @@ using System.Collections.Generic;
 using Serilog;
 using System.Linq;
 using Microsoft.OpenApi.Models;
+using System.Net;
+using System.Net.Http;
 
 namespace Geonorge.TiltaksplanApi
 {
@@ -127,6 +129,8 @@ namespace Geonorge.TiltaksplanApi
             // Configuration
             services.Configure<ApiUrlsConfiguration>(Configuration.GetSection(ApiUrlsConfiguration.SectionName));
             services.Configure<GeoIDConfiguration>(Configuration.GetSection(GeoIDConfiguration.SectionName));
+
+            ConfigureProxy(Configuration);
         }
 
         public void Configure(
@@ -185,6 +189,21 @@ namespace Geonorge.TiltaksplanApi
             DataSeeder.SeedOrganizations(context, apiUrls.Organizations);
 
             DataSeeder.SeedLanguages(context);
+        }
+
+        private static void ConfigureProxy(IConfigurationRoot settings)
+        {
+            var urlProxy = settings.GetValue<string>("UrlProxy");
+
+            if (!string.IsNullOrWhiteSpace(urlProxy))
+            {
+                WebProxy proxy = new WebProxy(urlProxy);
+
+                proxy.Credentials = CredentialCache.DefaultCredentials;
+
+                WebRequest.DefaultWebProxy = proxy;
+                HttpClient.DefaultProxy = proxy;
+            }
         }
     }
 }
