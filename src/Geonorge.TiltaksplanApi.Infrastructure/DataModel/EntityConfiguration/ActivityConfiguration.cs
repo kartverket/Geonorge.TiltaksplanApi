@@ -18,7 +18,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
                 .IsRequired();
 
             builder
-                .HasIndex(activity => activity.No)
+                .HasIndex(activity => new { activity.MeasureId, activity.No })
                 .IsUnique();
 
             builder

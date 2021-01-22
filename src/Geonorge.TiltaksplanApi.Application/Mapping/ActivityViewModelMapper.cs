@@ -36,8 +36,8 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 Id = viewModel.Id,
                 MeasureId = viewModel.MeasureId,
                 No = viewModel.No,
-                ImplementationStart = viewModel.ImplementationStart,
-                ImplementationEnd = viewModel.ImplementationEnd,
+                ImplementationStart = viewModel.ImplementationStart.GetValueOrDefault(),
+                ImplementationEnd = viewModel.ImplementationEnd.GetValueOrDefault(),
                 Status = viewModel.Status,
                 Participants = viewModel.Participants?
                     .ConvertAll(participant => _participantViewModelMapper.MapToDomainModel(participant)),
