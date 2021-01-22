@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
 {
     [DbContext(typeof(MeasurePlanContext))]
-    [Migration("20210121122037_AddedNoAsUniqueIndexForMeasureAndActivity")]
+    [Migration("20210122143115_AddedNoAsUniqueIndexForMeasureAndActivity")]
     partial class AddedNoAsUniqueIndexForMeasureAndActivity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,9 +36,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("LastUpdated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 1, 21, 13, 20, 37, 435, DateTimeKind.Local).AddTicks(1133));
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("MeasureId")
                         .HasColumnType("int");
@@ -51,9 +49,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeasureId");
-
-                    b.HasIndex("No")
+                    b.HasIndex("MeasureId", "No")
                         .IsUnique();
 
                     b.ToTable("Activities");
@@ -114,9 +110,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 1, 21, 13, 20, 37, 384, DateTimeKind.Local).AddTicks(552));
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("No")
                         .HasColumnType("int");

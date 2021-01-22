@@ -3,14 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
 {
-    public partial class ReplacedUniqueIndexForActivity : Migration
+    public partial class AddedNoAsUniqueIndexForMeasureAndActivity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Activities_No",
+            migrationBuilder.CreateIndex(
+                name: "IX_Measures_No",
                 schema: "dbo",
-                table: "Activities");
+                table: "Measures",
+                column: "No",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Activities_MeasureId_No",
@@ -23,16 +25,12 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
-                name: "IX_Activities_MeasureId_No",
-                schema: "dbo",
-                table: "Activities");
+                name: "IX_Measures_No",
+                schema: "dbo");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Activities_No",
-                schema: "dbo",
-                table: "Activities",
-                column: "No",
-                unique: true);
+            migrationBuilder.DropIndex(
+                name: "IX_Activities_MeasureId_No",
+                schema: "dbo");
         }
     }
 }
