@@ -70,27 +70,29 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
             return viewModel;
         }
 
-        public async Task<List<ActivityViewModel>> GetByMeasureIdAsync(int measureId, string culture)
+        public async Task<ActivityViewModel> GetByNumberAsync(int measureNumber, int number, string culture)
         {
-            var cult = GetCulture(culture);
+            var measureViewModel = await _measureQuery.GetByNumberAsync(measureNumber, GetCulture(culture));
 
-            var activities = await _context.Activities
-                .Include(activity => activity.Translations)
-                .Include(activity => activity.Participants)
-                    .ThenInclude(participant => participant.Organization)
-                .AsNoTracking()
-                .Where(activity => activity.MeasureId == measureId && activity.Translations
-                    .Any(translation => translation.LanguageCulture == cult))
-                .OrderBy(activity => activity.No)
-                .ToListAsync();
+            return measureViewModel?.Activities
+                .SingleOrDefault(activity => activity.No == number);
+        }
 
-            var viewModels = activities
-                .ConvertAll(activity => _activityViewModelMapper.MapToViewModel(activity, cult));
+        public async Task<List<ActivityViewModel>> GetAllByMeasureNumberAsync(int measureNumber, string culture)
+        {
+            var measureViewModel = await _measureQuery.GetByNumberAsync(measureNumber, GetCulture(culture));
 
-            foreach (var viewModel in viewModels)
-                await CompleteDataForViewModel(viewModel);
+            return measureViewModel.Activities;
+        }
 
-            return viewModels;
+        public async Task<bool> IsNumberAvailable(int measureId, int id, int number)
+        {
+            var measure = await _context.Measures
+                .Include(measure => measure.Activities)
+                .SingleOrDefaultAsync(measure => measure.Id == measureId);
+
+            return measure?.Activities
+                .All(activity => activity.No != number || activity.Id == id) ?? true;
         }
 
         private async Task CompleteDataForViewModel(ActivityViewModel viewModel)

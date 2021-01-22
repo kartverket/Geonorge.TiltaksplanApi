@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Geonorge.TiltaksplanApi.Domain.Resources {
+namespace Geonorge.TiltaksplanApi.Application.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Geonorge.TiltaksplanApi.Domain.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Geonorge.TiltaksplanApi.Domain.Resources.ValidationResource", typeof(ValidationResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Geonorge.TiltaksplanApi.Application.Resources.ValidationResource", typeof(ValidationResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -102,6 +102,33 @@ namespace Geonorge.TiltaksplanApi.Domain.Resources {
         internal static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;Nummer&apos; må fylles ut.
+        /// </summary>
+        internal static string Number {
+            get {
+                return ResourceManager.GetString("Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Det finnes allerede en aktivitet registrert med nummeret {0}.
+        /// </summary>
+        internal static string NumberUniqueActivity {
+            get {
+                return ResourceManager.GetString("NumberUniqueActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Det finnes allerede et tiltak registrert med nummeret {0}.
+        /// </summary>
+        internal static string NumberUniqueMeasure {
+            get {
+                return ResourceManager.GetString("NumberUniqueMeasure", resourceCulture);
             }
         }
         

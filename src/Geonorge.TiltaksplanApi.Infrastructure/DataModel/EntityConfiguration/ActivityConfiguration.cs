@@ -15,8 +15,11 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
 
             builder
                 .Property(activity => activity.No)
-                .HasDefaultValue(0)
                 .IsRequired();
+
+            builder
+                .HasIndex(activity => activity.No)
+                .IsUnique();
 
             builder
                 .Property(activity => activity.ImplementationStart)
@@ -46,8 +49,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel.EntityConfiguration
 
             builder
                 .Property(activity => activity.LastUpdated)
-                .IsRequired()
-                .HasDefaultValue(DateTime.Now);
+                .IsRequired();
 
             builder
                 .Property(activity => activity.Id)

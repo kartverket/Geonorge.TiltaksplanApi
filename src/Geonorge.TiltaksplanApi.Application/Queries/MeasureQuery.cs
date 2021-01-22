@@ -72,6 +72,28 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
             return viewModel;
         }
 
+        public async Task<MeasureViewModel> GetByNumberAsync(int number, string culture)
+        {
+            var cult = GetCulture(culture);
+
+            var measure = await _context.Measures
+                .Include(measure => measure.Owner)
+                .Include(measure => measure.Translations)
+                .Include(measure => measure.Activities)
+                    .ThenInclude(activity => activity.Translations)
+                .Include(measure => measure.Activities)
+                    .ThenInclude(activity => activity.Participants)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(measure => measure.No == number &&
+                    measure.Translations.Any(translation => translation.LanguageCulture == cult));
+
+            var viewModel = _measureViewModelMapper.MapToViewModel(measure, cult);
+
+            CompleteDataForViewModel(viewModel);
+
+            return viewModel;
+        }
+
         public async Task<bool> HasOwnership(int id, long orgNumber)
         {
             var measure = await _context.Measures
@@ -83,6 +105,12 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
                 return false;
 
             return measure.Owner.OrgNumber == orgNumber;
+        }
+
+        public async Task<bool> IsNumberAvailable(int id, int number)
+        {
+            return await _context.Measures
+                .AllAsync(measure => measure.No != number || measure.Id == id);
         }
 
         private void CompleteDataForViewModel(MeasureViewModel viewModel)

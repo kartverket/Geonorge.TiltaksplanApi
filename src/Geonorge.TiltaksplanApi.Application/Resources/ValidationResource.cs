@@ -1,4 +1,4 @@
-﻿namespace Geonorge.TiltaksplanApi.Domain
+﻿namespace Geonorge.TiltaksplanApi.Application
 {
     public class ValidationResource
     {

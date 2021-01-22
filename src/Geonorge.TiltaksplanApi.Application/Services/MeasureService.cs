@@ -48,7 +48,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
 
             var measure = _measureViewModelMapper.MapToDomainModel(viewModel);
 
-            if (IsValid(measure))
+            if (await IsValid(measure))
             {
                 using var uow = _uowManager.GetUnitOfWork();
                 measure.LastUpdated = DateTime.Now;
@@ -74,7 +74,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
 
             measure.Update(update);
 
-            if (IsValid(measure))
+            if (await IsValid(measure))
             {
                 measure.LastUpdated = DateTime.Now;
                 await uow.SaveChangesAsync();
@@ -105,10 +105,10 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             viewModel.Owner = await _organizationQuery.GetByIdAsync(model.OwnerId);
         }
 
-        private bool IsValid(Measure measure)
+        private async Task<bool> IsValid(Measure measure)
         {
-            measure.ValidationResult = _measureValidator
-                .Validate(measure);
+            measure.ValidationResult = await _measureValidator
+                .ValidateAsync(measure);
 
             return measure.ValidationResult.IsValid;
         }

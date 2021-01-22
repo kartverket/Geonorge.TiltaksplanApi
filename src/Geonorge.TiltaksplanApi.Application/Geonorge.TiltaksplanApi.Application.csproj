@@ -20,6 +20,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ExceptionResource.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\ValidationResource.Designer.cs">
+      <DependentUpon>ValidationResource.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +37,10 @@
     <EmbeddedResource Update="Resources\ExceptionResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ValidationResource.resx">
+      <LastGenOutput>ValidationResource.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
 

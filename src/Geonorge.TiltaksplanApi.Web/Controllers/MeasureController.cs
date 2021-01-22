@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Application.Queries;
 using Geonorge.TiltaksplanApi.Application.Services;
-using Geonorge.TiltaksplanApi.Web.Configuration;
 using Geonorge.TiltaksplanApi.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,46 +10,22 @@ using Microsoft.Extensions.Logging;
 namespace Geonorge.TiltaksplanApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class MeasureController : BaseController
     {
         private readonly IMeasureQuery _measureQuery;
-        private readonly IActivityQuery _activityQuery;
         private readonly IMeasureService _measureService;
 
         public MeasureController(
             IMeasureQuery measureQuery,
-            IActivityQuery activityQuery,
             IMeasureService measureService,
             ILogger<MeasureController> logger) : base(logger)
         {
             _measureQuery = measureQuery;
-            _activityQuery = activityQuery;
             _measureService = measureService;
         }
 
-        [HttpGet("{id:int}/{culture?}")]
-        public async Task<IActionResult> GetById(int id, string culture = null)
-        {
-            try
-            {
-                var viewModels = await _measureQuery.GetByIdAsync(id, culture);
-
-                return Ok(viewModels);
-            }
-            catch (Exception exception)
-            {
-                var result = HandleException(exception);
-
-                if (result != null)
-                    return result;
-
-                throw;
-            }
-        }
-
-        [HttpGet("{culture?}")]
-        public async Task<IActionResult> GetAll(string culture = null)
+        [HttpGet("Measure/{culture ?}")]
+        public async Task<IActionResult> GetAll(string culture = "nb-NO")
         {
             try
             {
@@ -69,14 +44,14 @@ namespace Geonorge.TiltaksplanApi.Controllers
             }
         }
 
-        [HttpGet("{id:int}/Activities/{culture?}")]
-        public async Task<IActionResult> GetActivitiesByMeasureId(int id, string culture = null)
+        [HttpGet("Measure/{number:int}/{culture?}")]
+        public async Task<IActionResult> GetByNumber(int number, string culture = "nb-NO")
         {
             try
             {
-                var viewModels = await _activityQuery.GetByMeasureIdAsync(id, culture);
+                var viewModel = await _measureQuery.GetByNumberAsync(number, culture);
 
-                return Ok(viewModels);
+                return Ok(viewModel);
             }
             catch (Exception exception)
             {
@@ -89,7 +64,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Measure")]
         public async Task<IActionResult> Create([FromBody] MeasureViewModel viewModel)
         {
             if (viewModel == null || viewModel.Id != 0)
@@ -117,7 +92,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("Measure/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] MeasureViewModel viewModel)
         {
             if (id == 0 || viewModel == null)
@@ -145,7 +120,7 @@ namespace Geonorge.TiltaksplanApi.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Measure/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id == 0)

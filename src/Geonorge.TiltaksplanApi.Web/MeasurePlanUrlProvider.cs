@@ -35,15 +35,16 @@ namespace Geonorge.TiltaksplanApi.Web
             dynamic apiUrls = new ExpandoObject();
 
             apiUrls.measure = new ExpandoObject();
-            apiUrls.measure.get = GetControllerUrl(urlHelper, "GetById", "Measure", new { id = 0, culture = "" });
+            apiUrls.measure.get = GetControllerUrl(urlHelper, "GetByNumber", "Measure", new { number = 0 });
             apiUrls.measure.getAll = GetControllerUrl(urlHelper, "GetAll", "Measure");
             apiUrls.measure.create = GetControllerUrl(urlHelper, "Create", "Measure");
             apiUrls.measure.update = GetControllerUrl(urlHelper, "Update", "Measure", new { id = 0 });
             apiUrls.measure.delete = GetControllerUrl(urlHelper, "Delete", "Measure", new { id = 0 });
 
             apiUrls.activity = new ExpandoObject();
-            apiUrls.activity.get = GetControllerUrl(urlHelper, "GetById", "Activity", new { id = 0 });
+            apiUrls.activity.get = GetControllerUrl(urlHelper, "GetByNumber", "Activity", new { measureNumber = 0, number = 0 });
             apiUrls.activity.getAll = GetControllerUrl(urlHelper, "GetAll", "Activity");
+            apiUrls.activity.getAllByMeasureNumber = GetControllerUrl(urlHelper, "GetAllByMeasureNumber", "Activity", new { measureNumber = 0 });
             apiUrls.activity.create = GetControllerUrl(urlHelper, "Create", "Activity");
             apiUrls.activity.update = GetControllerUrl(urlHelper, "Update", "Activity", new { id = 0 });
             apiUrls.activity.delete = GetControllerUrl(urlHelper, "Delete", "Activity", new { id = 0 });

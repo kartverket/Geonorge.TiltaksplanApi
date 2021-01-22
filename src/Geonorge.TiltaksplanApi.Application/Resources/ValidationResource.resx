@@ -132,6 +132,15 @@
   <data name="Name" xml:space="preserve">
     <value>'Navn' må fylles ut</value>
   </data>
+  <data name="Number" xml:space="preserve">
+    <value>'Nummer' må fylles ut</value>
+  </data>
+  <data name="NumberUniqueActivity" xml:space="preserve">
+    <value>Det finnes allerede en aktivitet registrert med nummeret {0}</value>
+  </data>
+  <data name="NumberUniqueMeasure" xml:space="preserve">
+    <value>Det finnes allerede et tiltak registrert med nummeret {0}</value>
+  </data>
   <data name="Owner" xml:space="preserve">
     <value>'Eier' må fylles ut</value>
   </data>
