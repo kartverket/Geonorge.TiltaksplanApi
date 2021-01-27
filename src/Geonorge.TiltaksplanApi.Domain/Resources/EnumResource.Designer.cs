@@ -70,7 +70,7 @@ namespace Geonorge.TiltaksplanApi.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gjennomført.
+        ///   Looks up a localized string similar to Avsluttet.
         /// </summary>
         internal static string Done {
             get {
@@ -88,7 +88,7 @@ namespace Geonorge.TiltaksplanApi.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utredning.
+        ///   Looks up a localized string similar to Utredningsfase.
         /// </summary>
         internal static string Investigation {
             get {
@@ -106,7 +106,7 @@ namespace Geonorge.TiltaksplanApi.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Oppstart.
+        ///   Looks up a localized string similar to Oppstartsfase.
         /// </summary>
         internal static string StartUp {
             get {
@@ -115,7 +115,7 @@ namespace Geonorge.TiltaksplanApi.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I prosess.
+        ///   Looks up a localized string similar to Gjennomføringsfase.
         /// </summary>
         internal static string WorkingOut {
             get {

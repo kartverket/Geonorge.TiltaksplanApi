@@ -205,13 +205,13 @@
     <value>Avsluttet</value>
   </data>
   <data name="statusInprogress" xml:space="preserve">
-    <value>Gjennomførings- fase</value>
+    <value>Gjennomføringsfase</value>
   </data>
   <data name="statusInvestigation" xml:space="preserve">
-    <value>Utrednings- fase</value>
+    <value>Utredningsfase</value>
   </data>
   <data name="statusStartup" xml:space="preserve">
-    <value>Oppstart- fase</value>
+    <value>Oppstartsfase</value>
   </data>
   <data name="TrafficLight" xml:space="preserve">
     <value>Trafikklys</value>

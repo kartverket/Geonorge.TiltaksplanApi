@@ -121,22 +121,22 @@
     <value>Avsluttende fase</value>
   </data>
   <data name="Done" xml:space="preserve">
-    <value>Gjennomført</value>
+    <value>Avsluttet</value>
   </data>
   <data name="Green" xml:space="preserve">
     <value>Grønn</value>
   </data>
   <data name="Investigation" xml:space="preserve">
-    <value>Utredning</value>
+    <value>Utredningsfase</value>
   </data>
   <data name="Red" xml:space="preserve">
     <value>Rød</value>
   </data>
   <data name="StartUp" xml:space="preserve">
-    <value>Oppstart</value>
+    <value>Oppstartsfase</value>
   </data>
   <data name="WorkingOut" xml:space="preserve">
-    <value>I prosess</value>
+    <value>Gjennomføringsfase</value>
   </data>
   <data name="Yellow" xml:space="preserve">
     <value>Gul</value>
