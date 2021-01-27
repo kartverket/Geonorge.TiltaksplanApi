@@ -17,7 +17,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel
                 var languages = new List<Language>
                 {
                     new Language { Culture = "nb-NO", Name = "Norsk", },
-                    new Language { Culture = "en-GB", Name = "Engelsk",  }
+                    new Language { Culture = "en-US", Name = "Engelsk",  }
                 };
 
                 context.AddRange(languages);
@@ -42,7 +42,7 @@ namespace Geonorge.TiltaksplanApi.Infrastructure.DataModel
             response.EnsureSuccessStatusCode();
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            var jObject = JsonConvert.DeserializeObject<JObject>(responseBody);
+            var jObject = JObject.Parse(responseBody);
 
             return jObject["containeditems"]
                 .Select(jToken => {

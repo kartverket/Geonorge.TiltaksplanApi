@@ -13,8 +13,8 @@ namespace Geonorge.TiltaksplanApi.Application.Models
         public string Name { get; set; }
         public OrganizationViewModel ResponsibleAgency { get; set; }
         public string Description { get; set; }
-        public DateTime ImplementationStart { get; set; }
-        public DateTime ImplementationEnd { get; set; }
+        public DateTime? ImplementationStart { get; set; }
+        public DateTime? ImplementationEnd { get; set; }
         public List<ParticipantViewModel> Participants { get; set; }
         public PlanStatus Status { get; set; }
         public string Culture { get; set; }

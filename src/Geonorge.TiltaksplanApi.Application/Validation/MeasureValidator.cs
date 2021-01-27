@@ -1,13 +1,24 @@
 ﻿using FluentValidation;
+using Geonorge.TiltaksplanApi.Application.Queries;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using Microsoft.Extensions.Localization;
 
-namespace Geonorge.TiltaksplanApi.Domain.Validation
+namespace Geonorge.TiltaksplanApi.Application.Validation
 {
     public class MeasureValidator : AbstractValidator<Measure>
     {
-        public MeasureValidator(IStringLocalizer<ValidationResource> localizer)
+        public MeasureValidator(
+            IStringLocalizer<ValidationResource> localizer,
+            IMeasureQuery measureQuery)
         {
+            RuleFor(measure => measure.No)
+                .NotEmpty()
+                .WithMessage(measure => localizer["Number"]);
+
+            RuleFor(measure => measure.No)
+                .MustAsync(async (measure, no, cancellation) => await measureQuery.IsNumberAvailable(measure.Id, measure.No))
+                .WithMessage(measure => localizer["NumberUniqueMeasure", measure.No]);
+
             RuleFor(measure => measure.OwnerId)
                 .Must(ownerId => ownerId > 0)
                 .WithMessage(measure => localizer["Owner"]);

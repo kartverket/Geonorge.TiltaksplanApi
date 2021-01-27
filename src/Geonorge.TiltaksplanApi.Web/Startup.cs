@@ -10,7 +10,6 @@ using Geonorge.TiltaksplanApi.Application.Services.Authorization;
 using Geonorge.TiltaksplanApi.Application.Services.Authorization.GeoID;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Domain.Repositories;
-using Geonorge.TiltaksplanApi.Domain.Validation;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel.UnitOfWork;
 using Geonorge.TiltaksplanApi.Infrastructure.Repositories;
@@ -33,6 +32,7 @@ using System.Linq;
 using Microsoft.OpenApi.Models;
 using System.Net;
 using System.Net.Http;
+using Geonorge.TiltaksplanApi.Application.Validation;
 
 namespace Geonorge.TiltaksplanApi
 {

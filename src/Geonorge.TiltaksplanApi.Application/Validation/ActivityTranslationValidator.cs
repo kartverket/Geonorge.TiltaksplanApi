@@ -2,7 +2,7 @@
 using Geonorge.TiltaksplanApi.Domain.Models;
 using Microsoft.Extensions.Localization;
 
-namespace Geonorge.TiltaksplanApi.Domain.Validation
+namespace Geonorge.TiltaksplanApi.Application.Validation
 {
     public class ActivityTranslationValidator : AbstractValidator<ActivityTranslation>
     {

@@ -46,7 +46,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
 
             var activity = _activityViewModelMapper.MapToDomainModel(viewModel);
 
-            if (IsValid(activity))
+            if (await IsValid(activity))
             {
                 using var uow = _uowManager.GetUnitOfWork();
                 activity.LastUpdated = DateTime.Now;
@@ -73,7 +73,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
 
             activity.Update(update);
 
-            if (IsValid(activity))
+            if (await IsValid(activity))
             {
                 activity.LastUpdated = DateTime.Now;
                 await uow.SaveChangesAsync();
@@ -121,10 +121,10 @@ namespace Geonorge.TiltaksplanApi.Application.Services
             });
         }
 
-        private bool IsValid(Activity activity)
+        private async Task<bool> IsValid(Activity activity)
         {
-            activity.ValidationResult = _activityValidator
-                .Validate(activity);
+            activity.ValidationResult = await _activityValidator
+                .ValidateAsync(activity);
 
             return activity.ValidationResult.IsValid;
         }
