@@ -144,6 +144,9 @@
   <data name="Comment" xml:space="preserve">
     <value>Comment</value>
   </data>
+  <data name="CommentDescription" xml:space="preserve">
+    <value>only keywords if necessary, text / comments are otherwise entered under "progress"</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
@@ -192,6 +195,9 @@
   <data name="ReportLinkClose" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="ResultDescription" xml:space="preserve">
+    <value>Concrete results are shown with stars; 0 stars: no concrete results - 5 stars: significant concrete results.</value>
+  </data>
   <data name="Results" xml:space="preserve">
     <value>Realized Results</value>
   </data>
@@ -200,6 +206,9 @@
   </data>
   <data name="statusCloser" xml:space="preserve">
     <value>Final phase</value>
+  </data>
+  <data name="StatusDescription" xml:space="preserve">
+    <value>Progression is shown with stars; 0 stars: no progression - 5 stars: full progression</value>
   </data>
   <data name="statusDone" xml:space="preserve">
     <value>Done</value>
@@ -213,10 +222,19 @@
   <data name="statusStartup" xml:space="preserve">
     <value>Start up</value>
   </data>
+  <data name="String4" xml:space="preserve">
+    <value />
+  </data>
   <data name="TrafficLight" xml:space="preserve">
     <value>Traffic Light</value>
   </data>
+  <data name="TrafficlightDescription" xml:space="preserve">
+    <value>Progression shown by visual categorization by traffic light method (0 or 1 star = Red, 2-3 stars = Yellow, 4 or 5 stars = Green)</value>
+  </data>
   <data name="Volume" xml:space="preserve">
     <value>Volume</value>
+  </data>
+  <data name="VolumeDescription" xml:space="preserve">
+    <value>Size / volume of each measure; 0 stars: not rated - 1 star: small scope - 5 stars: extensive and a lot of work</value>
   </data>
 </root>

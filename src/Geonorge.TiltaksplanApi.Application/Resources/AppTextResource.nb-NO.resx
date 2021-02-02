@@ -144,6 +144,9 @@
   <data name="Comment" xml:space="preserve">
     <value>Kommentar</value>
   </data>
+  <data name="CommentDescription" xml:space="preserve">
+    <value>kun stikkord hvis nødvendig, tekst/kommentarer legges ellers inn under "fremdrift"</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Beskrivelse</value>
   </data>
@@ -192,6 +195,9 @@
   <data name="ReportLinkClose" xml:space="preserve">
     <value>Lukk rapporten</value>
   </data>
+  <data name="ResultDescription" xml:space="preserve">
+    <value>0 stjerner: ingen konkrete resultater - 5 stjerner: betydelige konkrete resultater.</value>
+  </data>
   <data name="Results" xml:space="preserve">
     <value>Konkrete resultater</value>
   </data>
@@ -200,6 +206,9 @@
   </data>
   <data name="statusCloser" xml:space="preserve">
     <value>Avsluttende fase</value>
+  </data>
+  <data name="StatusDescription" xml:space="preserve">
+    <value>0 stjerner: ikke vurdert - 1 stjerne: lite omfang - 5 stjerner: omfattende og mye arbeid</value>
   </data>
   <data name="statusDone" xml:space="preserve">
     <value>Avsluttet</value>
@@ -216,7 +225,13 @@
   <data name="TrafficLight" xml:space="preserve">
     <value>Trafikklys</value>
   </data>
+  <data name="TrafficlightDescription" xml:space="preserve">
+    <value>Progresjon i forhold til plan vist ved visuell kategorisering etter trafikklys-metode (0 eller 1 stjerne = Rød, 2-3 stjerner = Gul, 4 eller 5 stjerner = Grønn)</value>
+  </data>
   <data name="Volume" xml:space="preserve">
     <value>Volum</value>
+  </data>
+  <data name="VolumeDescription" xml:space="preserve">
+    <value>0 stjerner: ikke vurdert - 1 stjerne: lite omfang - 5 stjerner: omfattende og mye arbeid</value>
   </data>
 </root>
