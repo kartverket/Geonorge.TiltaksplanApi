@@ -64,7 +64,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services
 
         public async Task<MeasureViewModel> UpdateAsync(int id, MeasureViewModel viewModel)
         {
-            await _authorizationService.AuthorizeActivity(UserActivity.UpdateMeasure);
+            await _authorizationService.AuthorizeActivity(UserActivity.UpdateMeasure, id);
 
             var update = _measureViewModelMapper.MapToDomainModel(viewModel);
 
