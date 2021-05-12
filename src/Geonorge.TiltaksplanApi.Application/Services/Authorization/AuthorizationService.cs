@@ -24,7 +24,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services.Authorization
             _accesses = new List<ActivityAccess>
             {
                 new ActivityAccess(UserActivity.CreateMeasure, new List<string> { GeonorgeRole.Admin }),
-                new ActivityAccess(UserActivity.UpdateMeasure, new List<string> { GeonorgeRole.Admin }),
+                new ActivityAccess(UserActivity.UpdateMeasure, new List<string> { GeonorgeRole.Admin, GeonorgeRole.Editor }, measureQuery.HasOwnership),
                 new ActivityAccess(UserActivity.DeleteMeasure, new List<string> { GeonorgeRole.Admin }),
                 new ActivityAccess(UserActivity.CreateActivity, new List<string> { GeonorgeRole.Admin, GeonorgeRole.Editor }, measureQuery.HasOwnership),
                 new ActivityAccess(UserActivity.UpdateActivity, new List<string> { GeonorgeRole.Admin, GeonorgeRole.Editor }, measureQuery.HasOwnership),
