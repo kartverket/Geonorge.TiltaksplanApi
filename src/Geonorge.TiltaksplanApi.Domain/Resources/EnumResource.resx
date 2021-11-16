@@ -123,8 +123,14 @@
   <data name="Done" xml:space="preserve">
     <value>Avsluttet</value>
   </data>
+  <data name="Expires" xml:space="preserve">
+    <value>Utgår</value>
+  </data>
   <data name="Green" xml:space="preserve">
     <value>Grønn</value>
+  </data>
+  <data name="IncludedOther" xml:space="preserve">
+    <value>Inngår i annet tiltak</value>
   </data>
   <data name="Investigation" xml:space="preserve">
     <value>Utredningsfase</value>
