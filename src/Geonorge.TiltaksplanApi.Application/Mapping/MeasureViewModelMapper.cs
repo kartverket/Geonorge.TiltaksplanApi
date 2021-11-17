@@ -2,6 +2,7 @@
 using Geonorge.TiltaksplanApi.Application.Models;
 using Geonorge.TiltaksplanApi.Domain.Models;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -69,6 +70,11 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 .OrderBy(activity => activity.No)
                 .ToList();
 
+            DateTime? lastUpdatedActivity = null;
+
+            if (activities != null && activities.Count > 0)
+                lastUpdatedActivity = activities.Max(a => a.LastUpdated);
+
             activities?.RemoveAll(activity => activity == null);
 
             return new MeasureViewModel
@@ -88,6 +94,7 @@ namespace Geonorge.TiltaksplanApi.Application.Mapping
                 Activities = activities,
                 InfoUrl = domainModel.InfoUrl,
                 LastUpdated = domainModel.LastUpdated,
+                LastUpdatedActivity = lastUpdatedActivity,
                 ValidationErrors = _validationErrorViewModelMapper
                     .MapToViewModel(domainModel.ValidationResult)
             };

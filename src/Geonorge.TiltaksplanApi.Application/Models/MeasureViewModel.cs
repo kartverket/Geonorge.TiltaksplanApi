@@ -25,5 +25,6 @@ namespace Geonorge.TiltaksplanApi.Application.Models
         public int MeasureTranslationId { get; set; }
         public string InfoUrl { get; set; }
         public DateTime LastUpdated { get; set; }
+        public DateTime? LastUpdatedActivity { get; set; }
     }
 }
