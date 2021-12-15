@@ -25,7 +25,7 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
             _defaultCulture = configuration.GetValue<string>("DefaultCulture");
         }
 
-        public async Task<IList<MeasureViewModel>> GetAllAsync(string culture)
+        public async Task<IList<MeasureViewModel>> GetAllAsync(string culture, string organization)
         {
             var cult = GetCulture(culture);
 
@@ -41,6 +41,9 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
                     .Any(translation => translation.LanguageCulture == GetCulture(cult)))
                 .OrderBy(measure => measure.No)
                 .ToListAsync();
+
+            if (!string.IsNullOrEmpty(organization))
+                measures = measures.Where(o => o.Owner.Name.ToLower() == organization.ToLower()).ToList();
 
             var viewModels = measures
                 .ConvertAll(measure => _measureViewModelMapper.MapToViewModel(measure, cult));

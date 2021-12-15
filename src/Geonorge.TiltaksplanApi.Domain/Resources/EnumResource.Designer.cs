@@ -79,11 +79,29 @@ namespace Geonorge.TiltaksplanApi.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Utgår.
+        /// </summary>
+        internal static string Expires {
+            get {
+                return ResourceManager.GetString("Expires", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Grønn.
         /// </summary>
         internal static string Green {
             get {
                 return ResourceManager.GetString("Green", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inngår i annet tiltak.
+        /// </summary>
+        internal static string IncludedOther {
+            get {
+                return ResourceManager.GetString("IncludedOther", resourceCulture);
             }
         }
         
