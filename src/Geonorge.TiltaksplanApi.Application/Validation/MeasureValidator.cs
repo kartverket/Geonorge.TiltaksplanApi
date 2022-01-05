@@ -29,7 +29,7 @@ namespace Geonorge.TiltaksplanApi.Application.Validation
                 .WithMessage(measure => localizer["Volume"]);
 
             RuleFor(measure => (int) measure.Status)
-                .InclusiveBetween(1, 5)
+                .InclusiveBetween(1, 7)
                 .When(measure => measure.Status.HasValue)
                 .WithMessage(measure => localizer["StatusMeasure"]);
 

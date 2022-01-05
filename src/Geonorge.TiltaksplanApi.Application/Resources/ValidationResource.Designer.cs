@@ -178,7 +178,7 @@ namespace Geonorge.TiltaksplanApi.Application.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;Status&apos; må være mellom 1 og 5.
+        ///   Looks up a localized string similar to &apos;Status&apos; må være mellom 1 og 7.
         /// </summary>
         internal static string StatusMeasure {
             get {
