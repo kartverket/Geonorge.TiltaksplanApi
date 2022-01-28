@@ -24,9 +24,9 @@ namespace Geonorge.TiltaksplanApi.Domain.Models
         Concluding = 4,
         [LocalizedDescription("Done")]
         Done = 5,
-        [LocalizedDescription("Expires")]
-        Expires = 6,
         [LocalizedDescription("IncludedOther")]
-        IncludedOther = 7
+        IncludedOther = 6,
+        [LocalizedDescription("Expires")]
+        Expires = 7
     }
 }
