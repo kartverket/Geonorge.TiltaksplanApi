@@ -197,9 +197,10 @@ namespace Geonorge.TiltaksplanApi
 
             if (!string.IsNullOrWhiteSpace(urlProxy))
             {
-                WebProxy proxy = new WebProxy(urlProxy);
-
-                proxy.Credentials = CredentialCache.DefaultCredentials;
+                var proxy = new WebProxy(urlProxy)
+                {
+                    Credentials = CredentialCache.DefaultCredentials
+                };
 
                 WebRequest.DefaultWebProxy = proxy;
                 HttpClient.DefaultProxy = proxy;
