@@ -47,7 +47,12 @@ namespace Geonorge.TiltaksplanApi.Application.Services.Authorization.GeoID
             var byteArray = Encoding.ASCII.GetBytes(_config.IntrospectionCredentials);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
-            var formUrlEncodedContent = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("token", authToken) });
+            var formUrlEncodedContent = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string, string>("token", authToken),
+                new KeyValuePair<string, string>("client_id", _config.ClientId),
+                new KeyValuePair<string, string>("client_secret", _config.ClientSecret)
+            }
+            );
 
             try
             {
@@ -86,7 +91,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services.Authorization.GeoID
         {
             var userViewModel = new UserViewModel();
 
-            await SetOrganizationInfo(userViewModel, username);
+            await SetOrganizationInfo(userViewModel, username, authToken);
 
             if (string.IsNullOrWhiteSpace(userViewModel.OrganizationName) || userViewModel.OrganizationNumber == default)
                 return null;
@@ -96,12 +101,10 @@ namespace Geonorge.TiltaksplanApi.Application.Services.Authorization.GeoID
             return userViewModel.Roles != null ? userViewModel : null;
         }
 
-        private async Task SetOrganizationInfo(UserViewModel userViewModel, string username)
+        private async Task SetOrganizationInfo(UserViewModel userViewModel, string username, string authToken)
         {
-            var geoIdUserInfoUrl = $"{_config.BaatAuthzApiUrl}authzinfo/{username}";
-            var byteArray = Encoding.ASCII.GetBytes(_config.BaatAuthzApiCredentials);
-
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            var geoIdUserInfoUrl = $"{_config.BaatAuthzApiUrl}info/{username}";
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
 
             try
             {
@@ -110,7 +113,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services.Authorization.GeoID
 
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var json = JObject.Parse(responseBody);
-                var organization = json["organization"];
+                var organization = json["baat_organization"];
 
                 if (organization == null)
                 {
