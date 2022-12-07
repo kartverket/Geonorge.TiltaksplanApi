@@ -108,6 +108,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services.Authorization.GeoID
 
             try
             {
+                _logger.LogInformation($"Request geoIdUserInfoUrl: {geoIdUserInfoUrl}");
                 using var response = await _httpClient.GetAsync(geoIdUserInfoUrl);
                 response.EnsureSuccessStatusCode();
 
