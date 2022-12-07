@@ -112,6 +112,7 @@ namespace Geonorge.TiltaksplanApi.Application.Services.Authorization.GeoID
                 response.EnsureSuccessStatusCode();
 
                 var responseBody = await response.Content.ReadAsStringAsync();
+                _logger.LogInformation(responseBody);
                 var json = JObject.Parse(responseBody);
                 var organization = json["baat_organization"];
 
