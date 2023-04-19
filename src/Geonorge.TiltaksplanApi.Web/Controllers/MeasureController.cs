@@ -25,11 +25,11 @@ namespace Geonorge.TiltaksplanApi.Controllers
         }
 
         [HttpGet("Measure/{culture ?}")]
-        public async Task<IActionResult> GetAll(string culture = "nb-NO", string organization = "")
+        public async Task<IActionResult> GetAll(string culture = "nb-NO", string organization = "", bool displayAllStatuses = false)
         {
             try
             {
-                var viewModels = await _measureQuery.GetAllAsync(culture, organization);
+                var viewModels = await _measureQuery.GetAllAsync(culture, organization, displayAllStatuses);
 
                 return Ok(viewModels);
             }

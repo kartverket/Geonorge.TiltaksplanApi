@@ -1,5 +1,7 @@
 ﻿using Geonorge.TiltaksplanApi.Application.Mapping;
 using Geonorge.TiltaksplanApi.Application.Models;
+using Geonorge.TiltaksplanApi.Application.Services.Authorization.GeoID;
+using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +27,7 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
             _defaultCulture = configuration.GetValue<string>("DefaultCulture");
         }
 
-        public async Task<IList<MeasureViewModel>> GetAllAsync(string culture, string organization)
+        public async Task<IList<MeasureViewModel>> GetAllAsync(string culture, string organization, bool displayAllStatuses = false)
         {
             var cult = GetCulture(culture);
 
@@ -44,6 +46,9 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
 
             if (!string.IsNullOrEmpty(organization))
                 measures = measures.Where(o => o.Owner.Name.ToLower() == organization.ToLower()).ToList();
+
+            if (!displayAllStatuses)
+                measures = measures.Where(v => v.Status != PlanStatus.Done && v.Status != PlanStatus.Expires).ToList();
 
             var viewModels = measures
                 .ConvertAll(measure => _measureViewModelMapper.MapToViewModel(measure, cult));
