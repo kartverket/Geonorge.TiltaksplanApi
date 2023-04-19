@@ -6,7 +6,7 @@ namespace Geonorge.TiltaksplanApi.Application.Queries
 {
     public interface IMeasureQuery
     {
-        Task<IList<MeasureViewModel>> GetAllAsync(string culture, string organization);
+        Task<IList<MeasureViewModel>> GetAllAsync(string culture, string organization, bool displayAllStatuses = false);
         Task<MeasureViewModel> GetByIdAsync(int id, string culture);
         Task<MeasureViewModel> GetByNumberAsync(int number, string culture);
         Task<bool> HasOwnership(int id, long orgNumber);
