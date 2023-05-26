@@ -154,7 +154,7 @@
     <value>Slutt</value>
   </data>
   <data name="infoLinkMeasure" xml:space="preserve">
-    <value>Informasjon om tiltaket</value>
+    <value>Oversikt over tiltak</value>
   </data>
   <data name="labelNoActivities" xml:space="preserve">
     <value>Ingen aktiviteter er lagt til enda</value>
@@ -172,7 +172,7 @@
     <value>For å støtte opp under Geodatastrategien, er det utarbeidet en handlingsplan hvor en rekke tiltak er beskrevet. For hvert tiltak er det definert ulike aktiviteter som skal realisere tiltaket. Her finner du en oversikt over alle tiltakene og tilhørende aktiviteter</value>
   </data>
   <data name="MeasureActivitiesTitle" xml:space="preserve">
-    <value>Handlingsplanens tiltak og aktiviteter</value>
+    <value>Tiltakets aktiviteter</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Navn</value>
