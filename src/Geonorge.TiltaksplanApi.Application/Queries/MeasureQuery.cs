@@ -1,5 +1,7 @@
 ﻿using Geonorge.TiltaksplanApi.Application.Mapping;
 using Geonorge.TiltaksplanApi.Application.Models;
+using Geonorge.TiltaksplanApi.Application.Services.Authorization.GeoID;
+using Geonorge.TiltaksplanApi.Domain.Models;
 using Geonorge.TiltaksplanApi.Infrastructure.DataModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
