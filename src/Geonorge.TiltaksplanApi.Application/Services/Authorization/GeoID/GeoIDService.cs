@@ -57,9 +57,22 @@ namespace Geonorge.TiltaksplanApi.Application.Services.Authorization.GeoID
             try
             {
                 using var response = await _httpClient.PostAsync(_config.IntrospectionUrl, formUrlEncodedContent);
-                response.EnsureSuccessStatusCode();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    _logger.LogError(
+                        "Introspection request failed. Status: {StatusCode}, Reason: {ReasonPhrase}, Content: {Content}",
+                        response.StatusCode,
+                        response.ReasonPhrase,
+                        errorContent
+                    );
+                    return null;
+                }
 
                 var responseBody = await response.Content.ReadAsStringAsync();
+                response.EnsureSuccessStatusCode();
+
                 var json = JObject.Parse(responseBody);
                 var isActiveToken = json["active"]?.Value<bool>() ?? false;
 
